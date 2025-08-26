@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sala VIP Inmersiva - Banco de Corrientes</title>
+    <title>Dashboard Asignaciones - Proyecto Sala VIP</title>
     <style>
         * {
             margin: 0;
@@ -12,1486 +12,823 @@
         }
 
         body {
-            font-family: 'Roboto', Arial, sans-serif;
-            line-height: 1.6;
-            color: #2c3e50;
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #dbeafe 100%);
-            overflow-x: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: #1e293b;
+            min-height: 100vh;
         }
 
-        :root {
-            --banco-azul-oscuro: #1e3a8a;
-            --banco-azul-principal: #2563eb;
-            --banco-azul-claro: #dbeafe;
-            --banco-azul-medio: #3b82f6;
-            --banco-dorado: #f59e0b;
-            --banco-amarillo: #fbbf24;
-            --banco-blanco: #ffffff;
-            --banco-gris: #64748b;
-            --banco-morado: #7c3aed;
-            --banco-verde: #10b981;
+        .header {
+            background: rgba(30, 58, 138, 0.95);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            opacity: 0.9;
         }
 
         .container {
             max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 20px;
+            margin: 2rem auto;
+            padding: 0 1rem;
         }
 
-        /* Navigation */
-        .nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(30, 58, 138, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 100;
-            padding: 1rem 0;
-            border-bottom: 3px solid var(--banco-dorado);
-        }
-
-        .nav-content {
+        .controls {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             display: flex;
-            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
             align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 20px;
         }
 
-        .nav-brand {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--banco-blanco);
-        }
-
-        .nav-items {
+        .control-group {
             display: flex;
-            gap: 1.5rem;
+            flex-direction: column;
+            gap: 0.5rem;
         }
 
-        .nav-item {
+        .control-group label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #374151;
+        }
+
+        select, button {
             padding: 0.5rem 1rem;
-            color: var(--banco-blanco);
-            text-decoration: none;
-            font-weight: 600;
-            border-radius: 20px;
-            transition: all 0.3s ease;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
         }
 
-        .nav-item:hover, .nav-item.active {
-            background: var(--banco-dorado);
-            color: var(--banco-azul-oscuro);
+        select:focus, button:focus {
+            outline: none;
+            border-color: #3b82f6;
         }
 
-        /* Slides */
-        .slide {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 100px 0 50px 0;
-        }
-
-        .slide-content {
-            width: 100%;
-        }
-
-        /* Hero */
-        .hero {
-            background: linear-gradient(135deg, var(--banco-azul-oscuro), var(--banco-azul-principal));
+        button {
+            background: #3b82f6;
             color: white;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: 4rem;
-            font-weight: 900;
-            margin-bottom: 1rem;
-        }
-
-        .hero .subtitle {
-            font-size: 1.8rem;
-            margin-bottom: 2rem;
-            color: var(--banco-azul-claro);
-        }
-
-        .hero .tagline {
-            background: var(--banco-dorado);
-            color: var(--banco-azul-oscuro);
-            padding: 1rem 2rem;
-            border-radius: 30px;
-            display: inline-block;
+            border-color: #3b82f6;
+            cursor: pointer;
             font-weight: 600;
-            margin-bottom: 3rem;
         }
 
-        /* Content Slides */
-        .content-slide {
-            background: var(--banco-blanco);
-            color: var(--banco-azul-oscuro);
+        button:hover {
+            background: #2563eb;
         }
 
-        .slide-title {
-            font-size: 3rem;
-            font-weight: 800;
-            margin-bottom: 2rem;
+        .tab-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .tab-button {
+            padding: 0.5rem 1rem;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .tab-button.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .chart-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1rem;
             text-align: center;
-            color: var(--banco-azul-oscuro);
         }
 
-        /* Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin: 3rem 0;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
         }
 
-        .stat-item {
+        .stat-card {
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            padding: 1rem;
+            border-radius: 8px;
             text-align: center;
-            background: rgba(255,255,255,0.1);
-            padding: 2rem;
-            border-radius: 15px;
-            border: 2px solid var(--banco-dorado);
+            border-left: 4px solid #3b82f6;
         }
 
-        .stat-number {
-            font-size: 3rem;
-            font-weight: 900;
-            color: var(--banco-dorado);
-            margin-bottom: 0.5rem;
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #1e293b;
         }
 
         .stat-label {
-            color: white;
-            font-weight: 600;
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 0.25rem;
         }
 
-        /* Interactive Card Grid */
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin: 3rem 0;
-        }
-
-        .card {
-            background: var(--banco-blanco);
-            padding: 2rem;
-            border-radius: 15px;
-            border-left: 5px solid var(--banco-azul-principal);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
-        }
-
-        .card h3 {
-            color: var(--banco-azul-oscuro);
-            margin-bottom: 1rem;
-            font-size: 1.4rem;
-            font-weight: 700;
-        }
-
-        /* Carousel System */
-        .carousel-container {
-            background: var(--banco-blanco);
-            border-radius: 20px;
-            margin: 4rem 0;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* Step Indicator */
-        .step-indicator {
+        /* Custom Bar Chart */
+        .bar-chart {
             display: flex;
-            justify-content: center;
-            padding: 2rem 1rem;
-            background: linear-gradient(135deg, #f8fafc, var(--banco-azul-claro));
-            gap: 1rem;
-            overflow-x: auto;
-            scrollbar-width: none;
+            align-items: end;
+            height: 300px;
+            gap: 8px;
+            padding: 20px 0;
         }
 
-        .step-indicator::-webkit-scrollbar {
-            display: none;
-        }
-
-        .step {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 1rem;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            min-width: 80px;
+        .bar {
+            flex: 1;
+            background: linear-gradient(to top, #3b82f6, #60a5fa);
+            border-radius: 4px 4px 0 0;
             position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            min-height: 20px;
         }
 
-        .step:hover {
-            background: rgba(37, 99, 235, 0.1);
-            transform: translateY(-3px);
-        }
-
-        .step.active {
-            background: var(--banco-azul-principal);
-            color: white;
+        .bar:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
         }
 
-        .step-icon {
-            font-size: 1.5rem;
-            margin-bottom: 0.2rem;
-        }
+        .bar.high { background: linear-gradient(to top, #ef4444, #f87171); }
+        .bar.medium { background: linear-gradient(to top, #f59e0b, #fbbf24); }
+        .bar.low { background: linear-gradient(to top, #10b981, #34d399); }
 
-        .step span {
+        .bar-label {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
             font-size: 0.8rem;
             font-weight: 600;
-            text-align: center;
+            color: #374151;
         }
 
-        /* Carousel Wrapper */
-        .carousel-wrapper {
-            position: relative;
-            overflow: hidden;
-            height: 600px;
-        }
-
-        .carousel-track {
-            display: flex;
-            width: 800%; /* 8 slides */
-            height: 100%;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .carousel-slide {
-            width: 12.5%; /* 100% / 8 slides */
-            height: 100%;
-            padding: 3rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .slide-card {
-            width: 100%;
-            max-width: 900px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(248,250,252,0.9));
-            border-radius: 20px;
-            padding: 3rem;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.1);
-            border: 1px solid rgba(37, 99, 235, 0.1);
-        }
-
-        /* Overview Card */
-        .overview-card {
-            text-align: center;
-        }
-
-        .card-header {
-            margin-bottom: 3rem;
-        }
-
-        .card-header h3 {
-            font-size: 2.5rem;
-            color: var(--banco-azul-oscuro);
-            margin-bottom: 1rem;
-            font-weight: 800;
-        }
-
-        .card-header p {
-            color: var(--banco-gris);
-            font-size: 1.2rem;
-        }
-
-        .module-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 1.5rem;
-            margin: 3rem 0;
-        }
-
-        .mini-module {
-            background: linear-gradient(135deg, var(--banco-amarillo), #fbbf24);
-            color: var(--banco-azul-oscuro);
-            padding: 1.5rem;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-align: center;
-            border: 2px solid transparent;
-        }
-
-        .mini-module:hover {
-            transform: translateY(-8px) scale(1.05);
-            border-color: var(--banco-azul-principal);
-            box-shadow: 0 15px 40px rgba(37, 99, 235, 0.2);
-        }
-
-        .mini-icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        .mini-module span {
-            font-size: 0.9rem;
-            font-weight: 700;
-        }
-
-        .overview-footer {
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background: rgba(37, 99, 235, 0.05);
-            border-radius: 12px;
-            border-left: 4px solid var(--banco-azul-principal);
-        }
-
-        .overview-footer p {
-            color: var(--banco-gris);
-            margin: 0;
-            font-style: italic;
-        }
-
-        /* Module Cards */
-        .module-card .card-header {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-            margin-bottom: 3rem;
-            text-align: left;
-        }
-
-        .header-icon {
-            font-size: 4rem;
-            background: linear-gradient(135deg, var(--banco-azul-principal), var(--banco-dorado));
-            color: white;
-            width: 80px;
-            height: 80px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        /* Feature Grid */
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .feature-item {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            border: 2px solid rgba(37, 99, 235, 0.1);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-item::before {
-            content: '';
+        .bar-value {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--banco-azul-principal), var(--banco-dorado));
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #374151;
+            background: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        .feature-item:hover {
-            transform: translateY(-8px);
-            border-color: var(--banco-azul-principal);
-            box-shadow: 0 15px 40px rgba(37, 99, 235, 0.15);
+        /* Gantt Chart */
+        .gantt-chart {
+            overflow-x: auto;
+            margin: 20px 0;
         }
 
-        .feature-item:hover::before {
-            transform: scaleX(1);
+        .gantt-header {
+            display: grid;
+            grid-template-columns: 100px repeat(18, 40px);
+            gap: 2px;
+            margin-bottom: 5px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #64748b;
         }
 
-        .feature-icon {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--banco-azul-claro), rgba(37, 99, 235, 0.1));
-            width: 60px;
-            height: 60px;
-            border-radius: 15px;
+        .gantt-row {
+            display: grid;
+            grid-template-columns: 100px repeat(18, 40px);
+            gap: 2px;
+            margin-bottom: 4px;
+            align-items: center;
+        }
+
+        .gantt-label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #374151;
+            text-align: right;
+            padding-right: 10px;
+        }
+
+        .gantt-cell {
+            height: 25px;
+            border-radius: 4px;
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 1rem auto;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
 
-        .feature-item h4 {
-            color: var(--banco-azul-oscuro);
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-            font-size: 1.1rem;
+        .gantt-cell.high { background: #ef4444; }
+        .gantt-cell.medium { background: #f59e0b; }
+        .gantt-cell.low { background: #10b981; }
+        .gantt-cell.none { background: #e5e7eb; }
+
+        /* Module Timeline */
+        .module-timeline {
+            margin: 20px 0;
         }
 
-        .feature-item p {
-            color: var(--banco-gris);
-            line-height: 1.5;
-            margin: 0;
-            font-size: 0.9rem;
+        .module-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
         }
 
-        /* Carousel Controls */
-        .carousel-controls {
+        .module-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 2rem 3rem;
-            background: rgba(248, 250, 252, 0.8);
+            margin-bottom: 10px;
         }
 
-        .carousel-btn {
-            background: var(--banco-azul-principal);
-            color: white;
-            border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        .module-name {
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .module-weeks {
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+
+        .module-roles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .role-tag {
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Team Analysis */
+        .team-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .team-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .role-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #1e293b;
+        }
+
+        .utilization-percent {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #3b82f6;
+        }
+
+        .utilization-bar {
+            width: 100%;
+            height: 12px;
+            background: #e5e7eb;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+
+        .utilization-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.8s ease;
+        }
+
+        .phase-breakdown {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .phase-item {
+            text-align: center;
+            padding: 8px;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .phase-value {
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .phase-label {
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
             display: flex;
             align-items: center;
-            justify-content: center;
-        }
-
-        .carousel-btn:hover {
-            background: var(--banco-azul-oscuro);
-            transform: scale(1.1);
-            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
-        }
-
-        .carousel-btn:disabled {
-            background: var(--banco-gris);
-            cursor: not-allowed;
-            transform: scale(1);
-            box-shadow: none;
-        }
-
-        .swipe-hint {
-            color: var(--banco-gris);
-            font-size: 0.9rem;
-            font-style: italic;
-            text-align: center;
-        }
-
-        /* Progress Bar */
-        .progress-container {
-            padding: 1rem 3rem 2rem;
-            background: rgba(248, 250, 252, 0.8);
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: rgba(37, 99, 235, 0.1);
-            border-radius: 3px;
-            overflow: hidden;
-            margin-bottom: 1rem;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--banco-azul-principal), var(--banco-dorado));
-            border-radius: 3px;
-            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .progress-text {
-            text-align: center;
-            color: var(--banco-gris);
+            gap: 8px;
+            font-size: 0.85rem;
             font-weight: 600;
-            font-size: 0.9rem;
         }
 
-        /* Use Cases Enhanced */
-        .use-case-container {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            margin: 2rem 0;
-            border: 2px solid var(--banco-azul-claro);
-            transition: all 0.3s ease;
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
         }
 
-        .use-case-container:hover {
-            border-color: var(--banco-dorado);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-        }
-
-        .use-case {
-            background: #f8fafc;
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin: 1rem 0;
-            border-left: 4px solid var(--banco-azul-principal);
-            transition: all 0.3s ease;
-        }
-
-        .use-case:hover {
-            background: var(--banco-azul-claro);
-            border-left-color: var(--banco-dorado);
-            transform: translateX(10px);
-        }
-
-        /* Detail Panel */
-        .detail-panel {
-            position: fixed;
-            top: 0;
-            right: -400px;
-            width: 400px;
-            height: 100vh;
-            background: linear-gradient(135deg, var(--banco-azul-oscuro), var(--banco-azul-principal));
-            color: white;
-            padding: 2rem;
-            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 200;
-            overflow-y: auto;
-            box-shadow: -10px 0 30px rgba(0,0,0,0.3);
-        }
-
-        .detail-panel.open {
-            right: 0;
-        }
-
-        .detail-panel .close-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 2rem;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-
-        .detail-panel .close-btn:hover {
-            color: var(--banco-dorado);
-        }
-
-        .detail-panel h3 {
-            margin-bottom: 1.5rem;
-            color: var(--banco-dorado);
-            font-size: 1.8rem;
-        }
-
-        .detail-panel .feature-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .detail-panel .feature-list li {
-            padding: 0.8rem 0;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-            position: relative;
-            padding-left: 1.5rem;
-        }
-
-        .detail-panel .feature-list li::before {
-            content: '•';
-            position: absolute;
-            left: 0;
-            color: var(--banco-dorado);
-            font-weight: bold;
-        }
-
-        /* Trust badges */
-        .trust-badge {
-            background: var(--banco-verde);
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin: 0.2rem;
-            display: inline-block;
-            transition: all 0.3s ease;
-        }
-
-        .trust-badge:hover {
-            background: var(--banco-dorado);
-            color: var(--banco-azul-oscuro);
-            transform: scale(1.1);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            .slide-title { font-size: 2rem; }
-            .nav-items { 
-                flex-direction: column; 
-                gap: 0.5rem;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: var(--banco-azul-oscuro);
-                padding: 1rem;
-                display: none;
-            }
-            .nav-items.show { display: flex; }
-            .card-grid { grid-template-columns: 1fr; }
-            .flow-grid { grid-template-columns: 1fr; }
-            .detail-panel { width: 100%; right: -100%; }
-            
-            .hero .tagline {
-                font-size: 1rem;
-                padding: 0.8rem 1.5rem;
-            }
-            
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1rem;
-            }
-        }
-
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Menu Toggle for Mobile */
-        .menu-toggle {
+        .view-content {
             display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
+        }
+
+        .view-content.active {
+            display: block;
         }
 
         @media (max-width: 768px) {
-            .menu-toggle { display: block; }
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .control-group {
+                width: 100%;
+            }
+
+            .gantt-header, .gantt-row {
+                grid-template-columns: 80px repeat(18, 30px);
+            }
+
+            .phase-breakdown {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="nav">
-        <div class="nav-content">
-            <div class="nav-brand">Banco de Corrientes</div>
-            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-            <div class="nav-items" id="navItems">
-                <a href="#hero" class="nav-item active">Inicio</a>
-                <a href="#overview" class="nav-item">Resumen</a>
-                <a href="#diagram" class="nav-item">Desglose de Solución</a>
-                <a href="#casos-uso" class="nav-item">Casos de Uso</a>
-            </div>
-        </div>
-    </nav>
+    <div class="header">
+        <h1>Dashboard de Asignaciones</h1>
+        <p>Proyecto Sala VIP Inmersiva - 18 Semanas - 10 Roles</p>
+    </div>
 
-    <!-- Hero -->
-    <section id="hero" class="slide hero">
-        <div class="container">
-            <div class="slide-content">
-                <h1>Sala VIP Inmersiva</h1>
-                <p class="subtitle">Aplicación Inmersiva Multipantallas</p>
-                <div class="tagline">
-                    Sistema integrado para experiencia VIP bancaria
-                </div>
-                
-                <div class="stats-grid">
-                    <div class="stat-item fade-in">
-                        <div class="stat-number">VIP</div>
-                        <div class="stat-label">Segmento Objetivo</div>
-                    </div>
-                    <div class="stat-item fade-in">
-                        <div class="stat-number">7</div>
-                        <div class="stat-label">Módulos Integrados</div>
-                    </div>
-                    <div class="stat-item fade-in">
-                        <div class="stat-number">Multi</div>
-                        <div class="stat-label">Pantallas Táctiles</div>
-                    </div>
-                    <div class="stat-item fade-in">
-                        <div class="stat-number">IA</div>
-                        <div class="stat-label">Narrativa de Datos</div>
-                    </div>
-                </div>
-
-                <div style="margin-top: 2rem;">
-                    <span class="trust-badge">Biometría</span>
-                    <span class="trust-badge">Cloud</span>
-                    <span class="trust-badge">Seguridad</span>
-                    <span class="trust-badge">Visualización</span>
+    <div class="container">
+        
+        <!-- Controls -->
+        <div class="controls">
+            <div class="control-group">
+                <label>Vista Principal:</label>
+                <div class="tab-buttons">
+                    <button class="tab-button active" onclick="switchView('overview')">Overview</button>
+                    <button class="tab-button" onclick="switchView('gantt')">Timeline</button>
+                    <button class="tab-button" onclick="switchView('modules')">Módulos</button>
+                    <button class="tab-button" onclick="switchView('team')">Equipo</button>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Overview -->
-    <section id="overview" class="slide content-slide">
-        <div class="container">
-            <h2 class="slide-title">Resumen del Sistema</h2>
-            
-            <div class="card-grid">
-                <div class="card fade-in">
-                    <h3>Aplicación Inmersiva</h3>
-                    <p>Sistema de experiencia multipantalla diseñado para interacción simultánea de múltiples usuarios VIP. Integra autenticación biométrica, visualización de datos financieros y narrativa conversacional.</p>
+            <div class="control-group">
+                <label>Filtrar por Rol:</label>
+                <select id="roleFilter" onchange="filterData()">
+                    <option value="all">Todos los Roles</option>
+                    <option value="PM">Project Manager</option>
+                    <option value="SEG">Seguridad</option>
+                    <option value="DATA-A">Analista Datos</option>
+                    <option value="DEVOPS">DevOps</option>
+                    <option value="IA-LLM">IA/LLM</option>
+                    <option value="UX/UI">UX/UI</option>
+                    <option value="FE-DEV">Frontend</option>
+                    <option value="BE-DEV">Backend</option>
+                    <option value="DATA-E">Data Engineer</option>
+                    <option value="FINTECH">Fintech</option>
+                </select>
+            </div>
+
+            <button onclick="resetFilters()">Reset Filtros</button>
+        </div>
+
+        <!-- Overview View -->
+        <div id="overview-view" class="view-content active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">118</div>
+                    <div class="stat-label">Total Semanas-Persona</div>
                 </div>
-                
-                <div class="card fade-in">
-                    <h3>Arquitectura Modular</h3>
-                    <p>Siete módulos interconectados que procesan desde autenticación hasta soporte. Cada componente opera independientemente y se sincroniza con los demás sistemas.</p>
+                <div class="stat-card">
+                    <div class="stat-value">64%</div>
+                    <div class="stat-label">Utilización Promedio</div>
                 </div>
-                
-                <div class="card fade-in">
-                    <h3>Seguridad Bancaria</h3>
-                    <p>Implementación de estándares de seguridad informática bancaria con encriptación, anonimización de datos y cumplimiento normativo BCRA.</p>
+                <div class="stat-card">
+                    <div class="stat-value">Fase 3</div>
+                    <div class="stat-label">Fase de Mayor Carga</div>
                 </div>
-                
-                <div class="card fade-in">
-                    <h3>Narrativa IA</h3>
-                    <p>Motor de inteligencia artificial que convierte datos financieros estructurados en narrativas comprensibles para toma de decisiones ejecutivas.</p>
+                <div class="stat-card">
+                    <div class="stat-value">10</div>
+                    <div class="stat-label">Roles en Proyecto</div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="chart-container">
+                    <h3 class="chart-title">Utilización por Rol (%)</h3>
+                    <div class="bar-chart" id="utilizationChart"></div>
+                </div>
+
+                <div class="chart-container">
+                    <h3 class="chart-title">Total FT por Fase</h3>
+                    <div class="bar-chart" id="phaseChart"></div>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- Solution Breakdown -->
-    <section id="diagram" class="slide content-slide">
-        <div class="container">
-            <h2 class="slide-title">Desglose de Solución</h2>
-            
-            <!-- Carousel Navigation -->
-            <div class="carousel-container">
-                
-                <!-- Step Indicator -->
-                <div class="step-indicator">
-                    <div class="step active" data-step="0">
-                        <div class="step-icon">🎯</div>
-                        <span>Overview</span>
+        <!-- Gantt View -->
+        <div id="gantt-view" class="view-content">
+            <div class="chart-container">
+                <h3 class="chart-title">Timeline de Asignaciones</h3>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #10b981;"></div>
+                        <span>Baja (0.1-0.4 FT)</span>
                     </div>
-                    <div class="step" data-step="1">
-                        <div class="step-icon">🔐</div>
-                        <span>Biometría</span>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #f59e0b;"></div>
+                        <span>Media (0.5-0.8 FT)</span>
                     </div>
-                    <div class="step" data-step="2">
-                        <div class="step-icon">☁️</div>
-                        <span>Datos</span>
-                    </div>
-                    <div class="step" data-step="3">
-                        <div class="step-icon">🛡️</div>
-                        <span>Seguridad</span>
-                    </div>
-                    <div class="step" data-step="4">
-                        <div class="step-icon">📱</div>
-                        <span>Visualización</span>
-                    </div>
-                    <div class="step" data-step="5">
-                        <div class="step-icon">🧠</div>
-                        <span>IA</span>
-                    </div>
-                    <div class="step" data-step="6">
-                        <div class="step-icon">⚙️</div>
-                        <span>Admin</span>
-                    </div>
-                    <div class="step" data-step="7">
-                        <div class="step-icon">🔧</div>
-                        <span>Soporte</span>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #ef4444;"></div>
+                        <span>Alta (0.9-1.0 FT)</span>
                     </div>
                 </div>
-                
-                <!-- Carousel Content -->
-                <div class="carousel-wrapper">
-                    <div class="carousel-track" id="carouselTrack">
-                        
-                        <!-- Slide 0: Overview -->
-                        <div class="carousel-slide active">
-                            <div class="slide-card overview-card">
-                                <div class="card-header">
-                                    <h3>Aplicación Inmersiva Multipantallas</h3>
-                                    <p>Sistema integrado de 7 módulos especializados</p>
-                                </div>
-                                
-                                <div class="module-grid">
-                                    <div class="mini-module" data-goto="1">
-                                        <div class="mini-icon">🔐</div>
-                                        <span>Biometría</span>
-                                    </div>
-                                    <div class="mini-module" data-goto="2">
-                                        <div class="mini-icon">☁️</div>
-                                        <span>Datos Cloud</span>
-                                    </div>
-                                    <div class="mini-module" data-goto="3">
-                                        <div class="mini-icon">🛡️</div>
-                                        <span>Seguridad</span>
-                                    </div>
-                                    <div class="mini-module" data-goto="4">
-                                        <div class="mini-icon">📱</div>
-                                        <span>Visualización</span>
-                                    </div>
-                                    <div class="mini-module" data-goto="5">
-                                        <div class="mini-icon">🧠</div>
-                                        <span>IA Narrativa</span>
-                                    </div>
-                                    <div class="mini-module" data-goto="6">
-                                        <div class="mini-icon">⚙️</div>
-                                        <span>Administración</span>
-                                    </div>
-                                    <div class="mini-module" data-goto="7">
-                                        <div class="mini-icon">🔧</div>
-                                        <span>Soporte</span>
-                                    </div>
-                                </div>
-                                
-                                <div class="overview-footer">
-                                    <p>Haz click en cualquier módulo o usa las flechas para explorar</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Slide 1: Biometría -->
-                        <div class="carousel-slide">
-                            <div class="slide-card module-card">
-                                <div class="card-header">
-                                    <div class="header-icon">🔐</div>
-                                    <div>
-                                        <h3>Autenticación con Biometría</h3>
-                                        <p>Sistema de identificación multi-factor</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="feature-grid">
-                                    <div class="feature-item">
-                                        <div class="feature-icon">📝</div>
-                                        <h4>Registro</h4>
-                                        <p>Procedimientos de registro biométrico seguro</p>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-icon">✅</div>
-                                        <h4>Validación</h4>
-                                        <p>Multi-factor de identidad en tiempo real</p>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-icon">🗃️</div>
-                                        <h4>Base de Datos</h4>
-                                        <p>Almacenamiento biométrico seguro</p>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-icon">🔒</div>
-                                        <h4>Permisos</h4>
-                                        <p>Gestión granular de accesos</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Slide 2: Datos Cloud -->
-                        <div class="carousel-slide">
-                            <div class="slide-card module-card">
-                                <div class="card-header">
-                                    <div class="header-icon">☁️</div>
-                                    <div>
-                                        <h3>Arquitectura de Datos Cloud</h3>
-                                        <p>Gestión integral de información financiera</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="feature-grid">
-                                    <div class="feature-item">
-                                        <div class="feature-icon">📊</div>
-                                        <h4>Recolección</h4>
-                                        <p>Datos financieros internos y externos</p>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-icon">⚡</div>
-                                        <h4>Procesamiento</h4>
-                                        <p>Análisis en tiempo real</p>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-icon">💾</div>
-                                        <h4>Almacenamiento</h4>
-                                        <p>Cloud seguro con backup</p>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-icon">📈</div>
-                                        <h4>Escalabilidad</h4>
-                                        <p>Infraestructura adaptable</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Slide 3: Seguridad -->
-                        <div class="carousel-slide">
-                            <div class="slide-card module-card">
-                                <div class="card-header">
-                                    <div class="header-icon">🛡️</div>
-                                    <div>
-                                        <h3>Seguridad Informática</h3>
-                                        <p>Protección integral de datos bancarios</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="feature-grid">
-                                    <div class="feature-item">
-                                        <div class="feature-icon">🔐</div>
-                                        <h4>Encriptación</h4>
-                                        <p>AES-256 end-to-end</p>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-icon">🎭</div>
-                                        <h4>Anonimización</h4>
-                                        <p>Datos punto a punto, reposo y transferencia</p>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-icon">👁️</div>
-                                        <h4>Monitoreo</h4>
-                                        <p>SOC 24/7 con respuesta automática</p>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-icon">📋</div>
-                                        <h4>Compliance</h4>
-                                        <p>Certificación BCRA y auditoría</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Slide 4: Visualización -->
-                        <div class="carousel-slide">
-                            <div class="slide-card module-card">
-                                <div class="card-header">
-                                    <div class="header-icon">📱</div>
-                                    <div>
-                                        <h3>Visualización Inmersiva</h3>
-                                        <p>Dashboard multipantalla interactivo</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="feature-grid">
-                                    <div class="feature-item">
-                                        <div class="feature-icon">📺</div>
-                                        <h4>Multipantalla</h4>
-                                        <p>Mesas táctiles 4K sincronizadas</p>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-icon">🎨</div>
-                                        <h4>Dashboard 360°</h4>
-                                        <p>Información financiera inmersiva</p>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-icon">👤</div>
-                                        <h4>Avatar Virtual</h4>
-                                        <p>Interfaz conversacional</p>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-icon">👆</div>
-                                        <h4>Interactividad</h4>
-                                        <p>Gestos multi-touch intuitivos</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Slide 5: IA Narrativa -->
-                        <div class="carousel-slide">
-                            <div class="slide-card module-card">
-                                <div class="card-header">
-                                    <div class="header-icon">🧠</div>
-                                    <div>
-                                        <h3>Narrativa de los Datos</h3>
-                                        <p>Story telling con IA avanzada</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="feature-grid">
-                                    <div class="feature-item">
-                                        <div class="feature-icon">💬</div>
-                                        <h4>IA Conversacional</h4>
-                                        <p>Modelo avanzado de procesamiento</p>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-icon">📖</div>
-                                        <h4>Story Telling</h4>
-                                        <p>Narrativas de datos complejos</p>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-icon">🔊</div>
-                                        <h4>Voz Virtual</h4>
-                                        <p>Síntesis de voz natural</p>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-icon">🎯</div>
-                                        <h4>Contextualización</h4>
-                                        <p>Adaptación al perfil VIP</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Slide 6: Administración -->
-                        <div class="carousel-slide">
-                            <div class="slide-card module-card">
-                                <div class="card-header">
-                                    <div class="header-icon">⚙️</div>
-                                    <div>
-                                        <h3>Administración de Sistema</h3>
-                                        <p>Gestión centralizada y analítica</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="feature-grid">
-                                    <div class="feature-item">
-                                        <div class="feature-icon">👥</div>
-                                        <h4>Roles</h4>
-                                        <p>Gestión granular de permisos</p>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-icon">📊</div>
-                                        <h4>Analytics VIP</h4>
-                                        <p>Métricas de uso y satisfacción</p>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-icon">🎛️</div>
-                                        <h4>Panel Central</h4>
-                                        <p>Configuración de experiencias</p>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-icon">📋</div>
-                                        <h4>Reportes</h4>
-                                        <p>Dashboards ejecutivos</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Slide 7: Soporte -->
-                        <div class="carousel-slide">
-                            <div class="slide-card module-card">
-                                <div class="card-header">
-                                    <div class="header-icon">🔧</div>
-                                    <div>
-                                        <h3>Soporte y Evolución</h3>
-                                        <p>Mantenimiento y mejora continua</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="feature-grid">
-                                    <div class="feature-item">
-                                        <div class="feature-icon">🔧</div>
-                                        <h4>Mantenimiento</h4>
-                                        <p>Procesos preventivos automatizados</p>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-icon">🔄</div>
-                                        <h4>Actualizaciones</h4>
-                                        <p>Sin interrupción del servicio</p>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-icon">📞</div>
-                                        <h4>Soporte 24/7</h4>
-                                        <p>Especializado bancario</p>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-icon">🚀</div>
-                                        <h4>Evolución</h4>
-                                        <p>Mejoras basadas en feedback</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div>
-                </div>
-                
-                <!-- Navigation Controls -->
-                <div class="carousel-controls">
-                    <button class="carousel-btn prev" id="prevBtn">‹</button>
-                    <div class="swipe-hint">Arrastra o usa las flechas para navegar</div>
-                    <button class="carousel-btn next" id="nextBtn">›</button>
-                </div>
-                
-                <!-- Progress Bar -->
-                <div class="progress-container">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill"></div>
-                    </div>
-                    <div class="progress-text">
-                        <span id="currentSlide">1</span> de <span id="totalSlides">8</span>
-                    </div>
-                </div>
-                
+                <div class="gantt-chart" id="ganttChart"></div>
             </div>
         </div>
-    </section>
 
-    <!-- Casos de Uso -->
-    <section id="casos-uso" class="slide content-slide">
-        <div class="container">
-            <h2 class="slide-title">Casos de Uso del Sistema</h2>
-            
-            <div class="use-case-container">
-                <h3 style="text-align: center; margin-bottom: 2rem; color: var(--banco-azul-oscuro);">Escenarios de Implementación</h3>
-                
-                <div class="use-case">
-                    <strong style="color: var(--banco-azul-oscuro);">Cliente empresario familiar:</strong><br>
-                    <em style="color: var(--banco-gris); font-style: italic; line-height: 1.6;">
-                        Accede mediante biometría, el sistema presenta su portafolio consolidado en múltiples pantallas mientras la IA narrativa explica el performance de sus inversiones, correlaciones entre activos y sugiere optimizaciones basadas en su perfil de riesgo.
-                    </em>
-                </div>
-                
-                <div class="use-case">
-                    <strong style="color: var(--banco-azul-oscuro);">Profesional de alta renta:</strong><br>
-                    <em style="color: var(--banco-gris); font-style: italic; line-height: 1.6;">
-                        La aplicación presenta análisis comparativo de su portfolio versus benchmarks sectoriales, mientras el módulo de narrativa traduce métricas complejas en insights conversacionales para decisiones de reinversión.
-                    </em>
-                </div>
-
-                <div class="use-case">
-                    <strong style="color: var(--banco-azul-oscuro);">Sesión grupal familiar:</strong><br>
-                    <em style="color: var(--banco-gris); font-style: italic; line-height: 1.6;">
-                        Múltiples usuarios autenticados simultáneamente visualizan planificación patrimonial multi-generacional, con narrativa IA que facilita la comprensión de estructuras financieras complejas para todos los participantes.
-                    </em>
-                </div>
-            </div>
-
-            <div class="use-case-container">
-                <h3 style="text-align: center; margin-bottom: 2rem; color: var(--banco-azul-oscuro);">Funcionalidades Técnicas</h3>
-                
-                <div class="use-case">
-                    <strong style="color: var(--banco-azul-oscuro);">Análisis de datos en tiempo real:</strong><br>
-                    <em style="color: var(--banco-gris); font-style: italic; line-height: 1.6;">
-                        El sistema procesa información financiera actualizada, cruza datos internos con fuentes externas y presenta análisis contextualizado según el perfil específico del cliente.
-                    </em>
-                </div>
-                
-                <div class="use-case">
-                    <strong style="color: var(--banco-azul-oscuro);">Personalización de experiencia:</strong><br>
-                    <em style="color: var(--banco-gris); font-style: italic; line-height: 1.6;">
-                        La aplicación adapta visualizaciones, métricas relevantes y narrativa según preferencias e historial del usuario, manteniendo consistencia entre sesiones.
-                    </em>
-                </div>
-
-                <div class="use-case">
-                    <strong style="color: var(--banco-azul-oscuro);">Seguridad operativa:</strong><br>
-                    <em style="color: var(--banco-gris); font-style: italic; line-height: 1.6;">
-                        Todos los datos se procesan bajo anonimización, con trazabilidad completa de accesos y modificaciones, cumpliendo estándares de seguridad bancaria.
-                    </em>
-                </div>
-            </div>
-
-            <div style="background: linear-gradient(135deg, var(--banco-dorado), #f59e0b); color: var(--banco-azul-oscuro); padding: 2rem; border-radius: 15px; margin: 2rem 0;">
-                <h4 style="margin-bottom: 1.5rem; text-align: center;">Interacciones del Sistema</h4>
-                
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
-                    <div style="background: rgba(255,255,255,0.9); padding: 1rem; border-radius: 10px;">
-                        <strong>Consulta conversacional</strong>
-                        <br><em>Usuario pregunta sobre performance → IA procesa datos → Respuesta contextualizada</em>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.9); padding: 1rem; border-radius: 10px;">
-                        <strong>Análisis comparativo</strong>
-                        <br><em>Sistema cruza datos propios con benchmarks → Visualización relativa → Narrativa explicativa</em>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.9); padding: 1rem; border-radius: 10px;">
-                        <strong>Simulación de escenarios</strong>
-                        <br><em>Parámetros de entrada → Modelado financiero → Presentación de resultados</em>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.9); padding: 1rem; border-radius: 10px;">
-                        <strong>Gestión de sesión</strong>
-                        <br><em>Autenticación → Configuración personalizada → Registro de actividad</em>
-                    </div>
-                </div>
+        <!-- Modules View -->
+        <div id="modules-view" class="view-content">
+            <div class="chart-container">
+                <h3 class="chart-title">Cronograma de Módulos</h3>
+                <div class="module-timeline" id="moduleTimeline"></div>
             </div>
         </div>
-    </section>
 
-    <!-- Detail Panel -->
-    <div class="detail-panel" id="detailPanel">
-        <button class="close-btn" onclick="closeDetailPanel()">✕</button>
-        <div id="detailContent">
-            <!-- Content will be populated by JavaScript -->
+        <!-- Team View -->
+        <div id="team-view" class="view-content">
+            <div class="chart-container">
+                <h3 class="chart-title">Análisis Detallado del Equipo</h3>
+                <div id="teamAnalysis"></div>
+            </div>
         </div>
+
     </div>
 
     <script>
-        // Navigation
-        function toggleMenu() {
-            const navItems = document.getElementById('navItems');
-            navItems.classList.toggle('show');
-        }
-
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.preventDefault();
-                document.querySelectorAll('.nav-item').forEach(navItem => {
-                    navItem.classList.remove('active');
-                });
-                item.classList.add('active');
-                const target = document.querySelector(item.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-                document.getElementById('navItems').classList.remove('show');
-            });
-        });
-
-        // Update active nav on scroll
-        window.addEventListener('scroll', () => {
-            const sections = document.querySelectorAll('.slide');
-            const navItems = document.querySelectorAll('.nav-item');
+        // Project Data
+        const projectData = {
+            roles: ['PM', 'SEG', 'DATA-A', 'DEVOPS', 'IA-LLM', 'UX/UI', 'FE-DEV', 'BE-DEV', 'DATA-E', 'FINTECH'],
             
-            let current = '';
-            sections.forEach(section => {
-                const rect = section.getBoundingClientRect();
-                if (rect.top <= 100 && rect.bottom >= 100) {
-                    current = section.id;
-                }
-            });
-            
-            navItems.forEach(item => {
-                item.classList.remove('active');
-                if (item.getAttribute('href') === `#${current}`) {
-                    item.classList.add('active');
-                }
-            });
-        });
+            phaseAssignments: {
+                'PM': [1.0, 1.0, 1.0, 1.0],
+                'SEG': [0.5, 1.0, 0.8, 1.0],
+                'DATA-A': [0.3, 0.8, 1.0, 0.5],
+                'DEVOPS': [0.2, 1.0, 0.6, 1.0],
+                'IA-LLM': [0.2, 0.4, 1.0, 0.3],
+                'UX/UI': [0.8, 0.3, 1.0, 0.2],
+                'FE-DEV': [0.1, 0.6, 1.0, 0.8],
+                'BE-DEV': [0.2, 1.0, 1.0, 0.6],
+                'DATA-E': [0.2, 1.0, 0.8, 0.4],
+                'FINTECH': [0.8, 0.4, 0.3, 0.2]
+            },
 
-        // Fade in animation
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1 });
+            totalUtilization: {
+                'PM': 18.0, 'SEG': 14.3, 'DATA-A': 11.7, 'DEVOPS': 12.0, 'IA-LLM': 8.1,
+                'UX/UI': 10.5, 'FE-DEV': 11.1, 'BE-DEV': 13.8, 'DATA-E': 10.8, 'FINTECH': 7.7
+            },
 
-        document.querySelectorAll('.fade-in').forEach(el => {
-            observer.observe(el);
-        });
+            modules: [
+                { name: 'Biometría', weeks: [4,7], roles: ['SEG', 'BE-DEV', 'DEVOPS', 'FINTECH', 'PM'] },
+                { name: 'Datos Cloud', weeks: [4,8], roles: ['DATA-E', 'BE-DEV', 'DEVOPS', 'DATA-A', 'SEG'] },
+                { name: 'Seguridad', weeks: [5,9], roles: ['SEG', 'DEVOPS', 'BE-DEV', 'FINTECH'] },
+                { name: 'Visualización', weeks: [10,14], roles: ['UX/UI', 'FE-DEV', 'DATA-A', 'BE-DEV', 'FINTECH'] },
+                { name: 'Narrativa IA', weeks: [11,15], roles: ['IA-LLM', 'DATA-A', 'BE-DEV', 'FINTECH', 'DATA-E'] },
+                { name: 'Administración', weeks: [12,15], roles: ['BE-DEV', 'FE-DEV', 'SEG', 'DATA-A'] },
+                { name: 'Soporte', weeks: [14,18], roles: ['DEVOPS', 'PM', 'SEG', 'BE-DEV', 'FE-DEV'] }
+            ],
 
-        // Carousel System
-        let currentSlide = 0;
-        const totalSlides = 8;
-        const carouselTrack = document.getElementById('carouselTrack');
-        const steps = document.querySelectorAll('.step');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const progressFill = document.getElementById('progressFill');
-        const currentSlideSpan = document.getElementById('currentSlide');
-        const totalSlidesSpan = document.getElementById('totalSlides');
-
-        function updateCarousel(slideIndex, smooth = true) {
-            // Clamp slide index
-            slideIndex = Math.max(0, Math.min(slideIndex, totalSlides - 1));
-            currentSlide = slideIndex;
-            
-            // Move carousel
-            const translateX = -slideIndex * (100 / totalSlides);
-            if (smooth) {
-                carouselTrack.style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-            } else {
-                carouselTrack.style.transition = 'none';
-            }
-            carouselTrack.style.transform = `translateX(${translateX}%)`;
-            
-            // Update step indicators
-            steps.forEach((step, index) => {
-                step.classList.toggle('active', index === slideIndex);
-            });
-            
-            // Update progress
-            const progress = ((slideIndex + 1) / totalSlides) * 100;
-            progressFill.style.width = `${progress}%`;
-            
-            // Update counters
-            currentSlideSpan.textContent = slideIndex + 1;
-            totalSlidesSpan.textContent = totalSlides;
-            
-            // Update button states
-            prevBtn.disabled = slideIndex === 0;
-            nextBtn.disabled = slideIndex === totalSlides - 1;
-        }
-
-        // Navigation controls
-        prevBtn.addEventListener('click', () => {
-            updateCarousel(currentSlide - 1);
-        });
-
-        nextBtn.addEventListener('click', () => {
-            updateCarousel(currentSlide + 1);
-        });
-
-        // Step indicator clicks
-        steps.forEach((step, index) => {
-            step.addEventListener('click', () => {
-                updateCarousel(index);
-            });
-        });
-
-        // Mini module navigation from overview
-        document.querySelectorAll('.mini-module').forEach(module => {
-            module.addEventListener('click', () => {
-                const targetSlide = parseInt(module.getAttribute('data-goto'));
-                updateCarousel(targetSlide);
-            });
-        });
-
-        // Touch/Swipe Support
-        let startX = 0;
-        let startY = 0;
-        let isDragging = false;
-
-        carouselTrack.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-            startY = e.touches[0].clientY;
-            isDragging = true;
-        }, { passive: true });
-
-        carouselTrack.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
-            
-            const deltaX = e.touches[0].clientX - startX;
-            const deltaY = e.touches[0].clientY - startY;
-            
-            // Prevent vertical scroll if horizontal swipe is detected
-            if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                e.preventDefault();
-            }
-        }, { passive: false });
-
-        carouselTrack.addEventListener('touchend', (e) => {
-            if (!isDragging) return;
-            isDragging = false;
-            
-            const endX = e.changedTouches[0].clientX;
-            const deltaX = endX - startX;
-            const threshold = 50; // Minimum swipe distance
-            
-            if (Math.abs(deltaX) > threshold) {
-                if (deltaX > 0) {
-                    // Swipe right - go to previous
-                    updateCarousel(currentSlide - 1);
-                } else {
-                    // Swipe left - go to next
-                    updateCarousel(currentSlide + 1);
-                }
-            }
-        }, { passive: true });
-
-        // Mouse drag support for desktop
-        let mouseDown = false;
-        let mouseStartX = 0;
-
-        carouselTrack.addEventListener('mousedown', (e) => {
-            mouseDown = true;
-            mouseStartX = e.clientX;
-            carouselTrack.style.cursor = 'grabbing';
-        });
-
-        document.addEventListener('mousemove', (e) => {
-            if (!mouseDown) return;
-            e.preventDefault();
-        });
-
-        document.addEventListener('mouseup', (e) => {
-            if (!mouseDown) return;
-            mouseDown = false;
-            carouselTrack.style.cursor = 'grab';
-            
-            const deltaX = e.clientX - mouseStartX;
-            const threshold = 50;
-            
-            if (Math.abs(deltaX) > threshold) {
-                if (deltaX > 0) {
-                    updateCarousel(currentSlide - 1);
-                } else {
-                    updateCarousel(currentSlide + 1);
-                }
-            }
-        });
-
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') {
-                e.preventDefault();
-                updateCarousel(currentSlide - 1);
-            } else if (e.key === 'ArrowRight') {
-                e.preventDefault();
-                updateCarousel(currentSlide + 1);
-            } else if (e.key >= '1' && e.key <= '8') {
-                e.preventDefault();
-                updateCarousel(parseInt(e.key) - 1);
-            }
-        });
-
-        // Auto-advance (optional - can be removed)
-        let autoAdvanceInterval;
-        
-        function startAutoAdvance() {
-            autoAdvanceInterval = setInterval(() => {
-                if (currentSlide < totalSlides - 1) {
-                    updateCarousel(currentSlide + 1);
-                } else {
-                    updateCarousel(0); // Loop back to start
-                }
-            }, 5000); // 5 seconds
-        }
-
-        function stopAutoAdvance() {
-            clearInterval(autoAdvanceInterval);
-        }
-
-        // Start auto-advance when page loads
-        startAutoAdvance();
-
-        // Pause auto-advance on interaction
-        document.addEventListener('click', stopAutoAdvance);
-        document.addEventListener('keydown', stopAutoAdvance);
-        carouselTrack.addEventListener('touchstart', stopAutoAdvance);
-
-        // Initialize carousel
-        document.addEventListener('DOMContentLoaded', () => {
-            updateCarousel(0, false);
-        });
-
-        // Legacy functions cleanup
-
-        // Flow Animation System (removed as we're now using tabs)
-        // Module Details (moved to tab system)
-        const moduleDetails = {
+            phases: ['Fase 1 (Sem 1-3)', 'Fase 2 (Sem 4-9)', 'Fase 3 (Sem 10-15)', 'Fase 4 (Sem 16-18)']
         };
 
-        // Legacy functions removed - using tab system now
-        function closeDetailPanel() {
-            document.getElementById('detailPanel').classList.remove('open');
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCharts();
+        });
+
+        function switchView(viewName) {
+            // Hide all views
+            document.querySelectorAll('.view-content').forEach(view => {
+                view.classList.remove('active');
+            });
+            
+            // Remove active from all buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected view
+            document.getElementById(viewName + '-view').classList.add('active');
+            event.target.classList.add('active');
+            
+            // Initialize specific charts for the view
+            setTimeout(() => {
+                switch(viewName) {
+                    case 'gantt':
+                        initializeGanttChart();
+                        break;
+                    case 'modules':
+                        initializeModuleView();
+                        break;
+                    case 'team':
+                        initializeTeamAnalysis();
+                        break;
+                }
+            }, 100);
         }
 
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.detail-panel') && !e.target.closest('.tab-btn')) {
-                closeDetailPanel();
-            }
-        });
+        function initializeCharts() {
+            // Utilization Chart
+            const utilizationChart = document.getElementById('utilizationChart');
+            utilizationChart.innerHTML = '';
+            
+            projectData.roles.forEach(role => {
+                const utilization = Math.round((projectData.totalUtilization[role] / 18) * 100);
+                const height = Math.max((utilization / 100) * 280, 20);
+                
+                const bar = document.createElement('div');
+                bar.className = `bar ${utilization >= 70 ? 'high' : utilization >= 50 ? 'medium' : 'low'}`;
+                bar.style.height = height + 'px';
+                
+                const label = document.createElement('div');
+                label.className = 'bar-label';
+                label.textContent = role;
+                bar.appendChild(label);
+                
+                const value = document.createElement('div');
+                value.className = 'bar-value';
+                value.textContent = utilization + '%';
+                bar.appendChild(value);
+                
+                utilizationChart.appendChild(bar);
+            });
+
+            // Phase Chart
+            const phaseChart = document.getElementById('phaseChart');
+            phaseChart.innerHTML = '';
+            
+            const phaseData = projectData.phases.map((phase, index) => {
+                return projectData.roles.reduce((sum, role) => 
+                    sum + projectData.phaseAssignments[role][index], 0
+                );
+            });
+            
+            const maxPhaseValue = Math.max(...phaseData);
+            
+            phaseData.forEach((value, index) => {
+                const height = Math.max((value / maxPhaseValue) * 280, 20);
+                
+                const bar = document.createElement('div');
+                bar.className = 'bar medium';
+                bar.style.height = height + 'px';
+                
+                const label = document.createElement('div');
+                label.className = 'bar-label';
+                label.textContent = `F${index + 1}`;
+                bar.appendChild(label);
+                
+                const valueDiv = document.createElement('div');
+                valueDiv.className = 'bar-value';
+                valueDiv.textContent = value.toFixed(1);
+                bar.appendChild(valueDiv);
+                
+                phaseChart.appendChild(bar);
+            });
+        }
+
+        function initializeGanttChart() {
+            const ganttChart = document.getElementById('ganttChart');
+            ganttChart.innerHTML = '';
+            
+            // Header
+            const header = document.createElement('div');
+            header.className = 'gantt-header';
+            header.innerHTML = '<div>Rol</div>' + 
+                Array.from({length: 18}, (_, i) => `<div>S${i+1}</div>`).join('');
+            ganttChart.appendChild(header);
+            
+            // Rows for each role
+            projectData.roles.forEach(role => {
+                const row = document.createElement('div');
+                row.className = 'gantt-row';
+                
+                const label = document.createElement('div');
+                label.className = 'gantt-label';
+                label.textContent = role;
+                row.appendChild(label);
+                
+                // Generate weekly data from phase data
+                for (let week = 1; week <= 18; week++) {
+                    let assignment = 0;
+                    if (week <= 3) assignment = projectData.phaseAssignments[role][0];
+                    else if (week <= 9) assignment = projectData.phaseAssignments[role][1];
+                    else if (week <= 15) assignment = projectData.phaseAssignments[role][2];
+                    else assignment = projectData.phaseAssignments[role][3];
+                    
+                    const cell = document.createElement('div');
+                    cell.className = `gantt-cell ${
+                        assignment >= 0.9 ? 'high' : 
+                        assignment >= 0.5 ? 'medium' : 
+                        assignment > 0 ? 'low' : 'none'
+                    }`;
+                    
+                    if (assignment > 0) {
+                        cell.textContent = assignment.toFixed(1);
+                    }
+                    
+                    row.appendChild(cell);
+                }
+                
+                ganttChart.appendChild(row);
+            });
+        }
+
+        function initializeModuleView() {
+            const moduleTimeline = document.getElementById('moduleTimeline');
+            moduleTimeline.innerHTML = '';
+            
+            projectData.modules.forEach(module => {
+                const item = document.createElement('div');
+                item.className = 'module-item';
+                
+                const header = document.createElement('div');
+                header.className = 'module-header';
+                
+                const name = document.createElement('div');
+                name.className = 'module-name';
+                name.textContent = module.name;
+                
+                const weeks = document.createElement('div');
+                weeks.className = 'module-weeks';
+                weeks.textContent = `Semanas ${module.weeks[0]}-${module.weeks[1]}`;
+                
+                header.appendChild(name);
+                header.appendChild(weeks);
+                
+                const roles = document.createElement('div');
+                roles.className = 'module-roles';
+                
+                module.roles.forEach(role => {
+                    const tag = document.createElement('span');
+                    tag.className = 'role-tag';
+                    tag.textContent = role;
+                    roles.appendChild(tag);
+                });
+                
+                item.appendChild(header);
+                item.appendChild(roles);
+                moduleTimeline.appendChild(item);
+            });
+        }
+
+        function initializeTeamAnalysis() {
+            const teamAnalysis = document.getElementById('teamAnalysis');
+            teamAnalysis.innerHTML = '';
+            
+            projectData.roles.forEach(role => {
+                const card = document.createElement('div');
+                card.className = 'team-card';
+                
+                const utilization = Math.round((projectData.totalUtilization[role] / 18) * 100);
+                
+                const header = document.createElement('div');
+                header.className = 'team-header';
+                
+                const roleName = document.createElement('div');
+                roleName.className = 'role-name';
+                roleName.textContent = role;
+                
+                const utilizationPercent = document.createElement('div');
+                utilizationPercent.className = 'utilization-percent';
+                utilizationPercent.textContent = utilization + '%';
+                
+                header.appendChild(roleName);
+                header.appendChild(utilizationPercent);
+                
+                const bar = document.createElement('div');
+                bar.className = 'utilization-bar';
+                
+                const fill = document.createElement('div');
+                fill.className = 'utilization-fill';
+                fill.style.width = utilization + '%';
+                fill.style.background = utilization >= 70 ? '#ef4444' : 
+                                      utilization >= 50 ? '#f59e0b' : '#10b981';
+                bar.appendChild(fill);
+                
+                const breakdown = document.createElement('div');
+                breakdown.className = 'phase-breakdown';
+                
+                projectData.phaseAssignments[role].forEach((value, index) => {
+                    const phaseItem = document.createElement('div');
+                    phaseItem.className = 'phase-item';
+                    
+                    const phaseValue = document.createElement('div');
+                    phaseValue.className = 'phase-value';
+                    phaseValue.textContent = value.toFixed(1);
+                    
+                    const phaseLabel = document.createElement('div');
+                    phaseLabel.className = 'phase-label';
+                    phaseLabel.textContent = `F${index + 1}`;
+                    
+                    phaseItem.appendChild(phaseValue);
+                    phaseItem.appendChild(phaseLabel);
+                    breakdown.appendChild(phaseItem);
+                });
+                
+                card.appendChild(header);
+                card.appendChild(bar);
+                card.appendChild(breakdown);
+                teamAnalysis.appendChild(card);
+            });
+        }
+
+        function filterData() {
+            const roleFilter = document.getElementById('roleFilter').value;
+            console.log('Filtering by role:', roleFilter);
+            // Implementation for filtering would go here
+        }
+
+        function resetFilters() {
+            document.getElementById('roleFilter').value = 'all';
+        }
     </script>
 </body>
 </html>
