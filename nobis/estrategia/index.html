@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan de Ejecución - Automatización de Auditoría Médica</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2D1B69 0%, #3D2B79 100%);
+            color: white;
+            line-height: 1.5;
+            overflow-x: auto;
+        }
+
+        .geometric-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+            z-index: -1;
+            background-image: 
+                radial-gradient(circle at 25% 25%, #FF8C42 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, #FF8C42 0%, transparent 50%);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid rgba(255, 140, 66, 0.3);
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            color: white;
+            font-weight: 600;
+        }
+
+        .header .subtitle {
+            font-size: 1rem;
+            opacity: 0.8;
+            color: #FF8C42;
+            font-weight: 500;
+        }
+
+        .overview-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .metric-card {
+            background: rgba(255, 140, 66, 0.1);
+            border: 1px solid rgba(255, 140, 66, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            color: #FF8C42;
+            font-weight: 700;
+            display: block;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 0.5rem;
+        }
+
+        .gantt-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 140, 66, 0.2);
+        }
+
+        .gantt-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .gantt-title {
+            font-size: 1.5rem;
+            color: #FF8C42;
+            font-weight: 600;
+        }
+
+        .timeline-legend {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.85rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        .gantt-chart {
+            overflow-x: auto;
+        }
+
+        .gantt-grid {
+            display: grid;
+            grid-template-columns: 300px repeat(10, 1fr);
+            gap: 1px;
+            background: rgba(255, 140, 66, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            min-width: 1000px;
+        }
+
+        .gantt-header-cell {
+            background: rgba(255, 140, 66, 0.2);
+            padding: 0.8rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-align: center;
+            color: white;
+        }
+
+        .gantt-row-header {
+            background: rgba(45, 27, 105, 0.8);
+            padding: 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+
+        .gantt-cell {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 0.5rem;
+            position: relative;
+            min-height: 60px;
+            border-right: 1px solid rgba(255, 140, 66, 0.1);
+        }
+
+        .gantt-bar {
+            background: linear-gradient(45deg, #FF8C42, #FFB366);
+            height: 8px;
+            border-radius: 4px;
+            margin: 4px 0;
+            position: relative;
+        }
+
+        .gantt-milestone {
+            background: #FFD700;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin: 2px auto;
+        }
+
+        .deliverable-section {
+            margin: 3rem 0;
+        }
+
+        .phase-container {
+            background: linear-gradient(135deg, rgba(255, 140, 66, 0.08), rgba(255, 140, 66, 0.03));
+            border-left: 4px solid #FF8C42;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+
+        .phase-header {
+            background: rgba(255, 140, 66, 0.15);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .phase-header:hover {
+            background: rgba(255, 140, 66, 0.2);
+        }
+
+        .phase-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #FF8C42;
+            margin-bottom: 0.5rem;
+        }
+
+        .phase-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .phase-timeline {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .phase-progress {
+            background: rgba(255, 255, 255, 0.2);
+            height: 6px;
+            border-radius: 3px;
+            width: 120px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FF8C42, #FFB366);
+            transition: width 0.5s ease;
+        }
+
+        .phase-content {
+            padding: 0 1.5rem 1.5rem 1.5rem;
+        }
+
+        .deliverable-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .deliverable-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 140, 66, 0.2);
+            border-radius: 8px;
+            padding: 1.2rem;
+        }
+
+        .deliverable-title {
+            color: #FF8C42;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .deliverable-specs {
+            list-style: none;
+            font-size: 0.85rem;
+        }
+
+        .deliverable-specs li {
+            padding: 0.2rem 0;
+            padding-left: 1rem;
+            position: relative;
+            opacity: 0.9;
+        }
+
+        .deliverable-specs li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #FF8C42;
+        }
+
+        .weekly-rhythm {
+            background: rgba(45, 27, 105, 0.6);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .rhythm-title {
+            color: #FF8C42;
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .rhythm-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .rhythm-day {
+            background: rgba(255, 140, 66, 0.1);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 1.2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .rhythm-day:hover {
+            border-color: #FF8C42;
+            background: rgba(255, 140, 66, 0.15);
+        }
+
+        .day-name {
+            color: #FF8C42;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .day-activity {
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .day-duration {
+            color: #FF8C42;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .kpis-section {
+            background: linear-gradient(135deg, rgba(255, 140, 66, 0.1), rgba(255, 140, 66, 0.05));
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .kpis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .kpi-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 140, 66, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .kpi-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .kpi-title {
+            color: #FF8C42;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .kpi-description {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        .methodology-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #FF8C42, #FFB366);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin: 0.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .gantt-grid {
+                grid-template-columns: 250px repeat(10, 80px);
+            }
+            
+            .phase-meta {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="geometric-bg"></div>
+    
+    <div class="container">
+        <header class="header">
+            <h1>Plan de Ejecución Técnico</h1>
+            <p class="subtitle">Automatización de Auditoría Médica - NOBIS Medical</p>
+            <div style="margin-top: 1rem;">
+                <span class="methodology-badge">CRISP-DM</span>
+                <span class="methodology-badge">Agile Development</span>
+                <span class="methodology-badge">Continuous Delivery</span>
+            </div>
+        </header>
+
+        <div class="overview-metrics">
+            <div class="metric-card">
+                <span class="metric-value">10</span>
+                <div class="metric-label">Semanas de Desarrollo</div>
+            </div>
+            <div class="metric-card">
+                <span class="metric-value">5</span>
+                <div class="metric-label">Paquetes de Entregables</div>
+            </div>
+            <div class="metric-card">
+                <span class="metric-value">15</span>
+                <div class="metric-label">Sesiones de Validación</div>
+            </div>
+            <div class="metric-card">
+                <span class="metric-value">20%+</span>
+                <div class="metric-label">Reducción Tiempo Auditoría</div>
+            </div>
+        </div>
+
+        <section class="gantt-section">
+            <div class="gantt-header">
+                <h2 class="gantt-title">Cronograma de Ejecución</h2>
+                <div class="timeline-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: linear-gradient(45deg, #FF8C42, #FFB366);"></div>
+                        <span>Desarrollo</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #FFD700;"></div>
+                        <span>Hito</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(255, 140, 66, 0.3);"></div>
+                        <span>Validación</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="gantt-chart">
+                <div class="gantt-grid">
+                    <div class="gantt-header-cell">Fases & Entregables</div>
+                    <div class="gantt-header-cell">S1</div>
+                    <div class="gantt-header-cell">S2</div>
+                    <div class="gantt-header-cell">S3</div>
+                    <div class="gantt-header-cell">S4</div>
+                    <div class="gantt-header-cell">S5</div>
+                    <div class="gantt-header-cell">S6</div>
+                    <div class="gantt-header-cell">S7</div>
+                    <div class="gantt-header-cell">S8</div>
+                    <div class="gantt-header-cell">S9</div>
+                    <div class="gantt-header-cell">S10</div>
+
+                    <div class="gantt-row-header">Descubrimiento y Mapeo</div>
+                    <div class="gantt-cell"><div class="gantt-bar"></div></div>
+                    <div class="gantt-cell"><div class="gantt-bar"></div></div>
+                    <div class="gantt-cell"><div class="gantt-bar"></div></div>
+                    <div class="gantt-cell"><div class="gantt-milestone"></div></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+
+                    <div class="gantt-row-header">Modelado Funcional</div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"><div class="gantt-bar"></div></div>
+                    <div class="gantt-cell"><div class="gantt-bar"></div></div>
+                    <div class="gantt-cell"><div class="gantt-milestone"></div></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+
+                    <div class="gantt-row-header">Maquetado Técnico</div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"><div class="gantt-bar"></div></div>
+                    <div class="gantt-cell"><div class="gantt-bar"></div></div>
+                    <div class="gantt-cell"><div class="gantt-milestone"></div></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+
+                    <div class="gantt-row-header">Validación y Ajustes</div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"><div class="gantt-bar"></div></div>
+                    <div class="gantt-cell"><div class="gantt-bar"></div></div>
+                    <div class="gantt-cell"><div class="gantt-milestone"></div></div>
+
+                    <div class="gantt-row-header">Despliegue Progresivo</div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"></div>
+                    <div class="gantt-cell"><div class="gantt-bar"></div></div>
+                    <div class="gantt-cell"><div class="gantt-milestone"></div></div>
+                </div>
+            </div>
+        </section>
+
+        <div class="weekly-rhythm">
+            <h3 class="rhythm-title">Cadencia de Validación Semanal</h3>
+            <div class="rhythm-grid">
+                <div class="rhythm-day">
+                    <div class="day-name">LUNES</div>
+                    <div class="day-activity">Sprint Planning</div>
+                    <div class="day-duration">30 min</div>
+                </div>
+                <div class="rhythm-day">
+                    <div class="day-name">MIÉRCOLES</div>
+                    <div class="day-activity">Progress Review</div>
+                    <div class="day-duration">45 min</div>
+                </div>
+                <div class="rhythm-day">
+                    <div class="day-name">VIERNES</div>
+                    <div class="day-activity">Demo & Feedback</div>
+                    <div class="day-duration">60 min</div>
+                </div>
+            </div>
+        </div>
+
+        <section class="deliverable-section">
+            <div class="phase-container">
+                <div class="phase-header">
+                    <div class="phase-title">📊 Fase 1: Descubrimiento y Mapeo</div>
+                    <div class="phase-meta">
+                        <div class="phase-timeline">Semanas 1-3</div>
+                        <div class="phase-progress">
+                            <div class="progress-fill" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="phase-content">
+                    <div class="deliverable-grid">
+                        <div class="deliverable-card">
+                            <div class="deliverable-title">
+                                🏥 Relevamiento con Equipos Operativos
+                            </div>
+                            <ul class="deliverable-specs">
+                                <li>Entrevistas con equipos médicos de auditoría</li>
+                                <li>Sesiones con equipos administrativos</li>
+                                <li>Relevamiento con auditores especializados</li>
+                                <li>Mapeo de roles y responsabilidades actuales</li>
+                                <li>Identificación de puntos críticos del proceso</li>
+                            </ul>
+                        </div>
+                        <div class="deliverable-card">
+                            <div class="deliverable-title">
+                                📑 Análisis Documental Completo
+                            </div>
+                            <ul class="deliverable-specs">
+                                <li>Análisis de historias clínicas y formatos</li>
+                                <li>Revisión de facturas y campos críticos</li>
+                                <li>Estudio de contratos prestadores existentes</li>
+                                <li>Análisis de grillas arancelarias vigentes</li>
+                                <li>Revisión de nomencladores nacionales y bioquímicos</li>
+                            </ul>
+                        </div>
+                        <div class="deliverable-card">
+                            <div class="deliverable-title">
+                                🔗 Validación Factibilidad Técnica GeCros
+                            </div>
+                            <ul class="deliverable-specs">
+                                <li>Evaluación de conectividad con sistema GeCros</li>
+                                <li>Determinación de tipo de integración viable</li>
+                                <li>Análisis de formatos de datos existentes</li>
+                                <li>Identificación de APIs disponibles</li>
+                                <li>Definición de arquitectura de integración</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="background: rgba(255, 140, 66, 0.1); padding: 1.5rem; border-radius: 10px; margin-top: 1.5rem; text-align: center;">
+                        <strong style="color: #FF8C42;">📋 Entregable Principal:</strong> Informe de Relevamiento y Mapeo de Procesos
+                    </div>
+                </div>
+            </div>
+
+            <div class="phase-container">
+                <div class="phase-header">
+                    <div class="phase-title">🔧 Fase 2: Modelado Funcional</div>
+                    <div class="phase-meta">
+                        <div class="phase-timeline">Semanas 4-5</div>
+                        <div class="phase-progress">
+                            <div class="progress-fill" style="width: 80%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="phase-content">
+                    <div class="deliverable-grid">
+                        <div class="deliverable-card">
+                            <div class="deliverable-title">
+                                🔄 Diseño de Flujo de Auditoría
+                            </div>
+                            <ul class="deliverable-specs">
+                                <li>Modelado completo del flujo de auditoría optimizado</li>
+                                <li>Definición de puntos de validación automática</li>
+                                <li>Secuencias de procesamiento por tipo de prestación</li>
+                                <li>Integración con procesos existentes de NOBIS</li>
+                                <li>Flujo específico para internaciones de alto costo</li>
+                            </ul>
+                        </div>
+                        <div class="deliverable-card">
+                            <div class="deliverable-title">
+                                📚 Documentación de Reglas por Prestador
+                            </div>
+                            <ul class="deliverable-specs">
+                                <li>Reglas específicas por cada prestador principal</li>
+                                <li>Catalogación de excepciones frecuentes</li>
+                                <li>Causales de rechazo por tipo de prestación</li>
+                                <li>Matriz de reglas clínicas vs administrativas</li>
+                                <li>Validaciones cruzadas entre documentos</li>
+                            </ul>
+                        </div>
+                        <div class="deliverable-card">
+                            <div class="deliverable-title">
+                                🎯 Modelado de Reglas de Validación
+                            </div>
+                            <ul class="deliverable-specs">
+                                <li>Reglas de validación clínicas estructuradas</li>
+                                <li>Reglas de validación administrativas</li>
+                                <li>Identificación de excepciones frecuentes</li>
+                                <li>Lógica de procesamiento automático</li>
+                                <li>Configuración de alertas por inconsistencias</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="background: rgba(255, 140, 66, 0.1); padding: 1.5rem; border-radius: 10px; margin-top: 1.5rem; text-align: center;">
+                        <strong style="color: #FF8C42;">📋 Entregable Principal:</strong> Documento Funcional y de Reglas
+                    </div>
+                </div>
+            </div>
+
+            <div class="phase-container">
+                <div class="phase-header">
+                    <div class="phase-title">⚡ Fase 3: Maquetado Técnico</div>
+                    <div class="phase-meta">
+                        <div class="phase-timeline">Semanas 6-7</div>
+                        <div class="phase-progress">
+                            <div class="progress-fill" style="width: 60%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="phase-content">
+                    <div class="deliverable-grid">
+                        <div class="deliverable-card">
+                            <div class="deliverable-title">
+                                🖥️ Desarrollo de Demo en Servidores del Proveedor
+                            </div>
+                            <ul class="deliverable-specs">
+                                <li>Prototipo funcional en servidores Rocbird</li>
+                                <li>Simulación completa del proceso de auditoría</li>
+                                <li>Interfaz funcional para internaciones de alto costo</li>
+                                <li>Configuración inicial sin costo adicional</li>
+                                <li>Entorno de pruebas completamente operativo</li>
+                            </ul>
+                        </div>
+                        <div class="deliverable-card">
+                            <div class="deliverable-title">
+                                ✅ Validación Automatizada de Códigos
+                            </div>
+                            <ul class="deliverable-specs">
+                                <li>Motor de validación automática de códigos</li>
+                                <li>Cruce automático con nomencladores</li>
+                                <li>Validación de coherencia entre documentos</li>
+                                <li>Identificación automática de inconsistencias</li>
+                                <li>Alertas configurables por tipo de error</li>
+                            </ul>
+                        </div>
+                        <div class="deliverable-card">
+                            <div class="deliverable-title">
+                                🏥 Automatización Internaciones Alto Costo
+                            </div>
+                            <ul class="deliverable-specs">
+                                <li>Procesamiento automático de documentos</li>
+                                <li>Captura inteligente de información clave</li>
+                                <li>Registro estructurado de datos extraídos</li>
+                                <li>Cruce de datos para identificar errores</li>
+                                <li>Presentación automatizada de información de salida</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="background: rgba(255, 140, 66, 0.1); padding: 1.5rem; border-radius: 10px; margin-top: 1.5rem; text-align: center;">
+                        <strong style="color: #FF8C42;">📋 Entregable Principal:</strong> Documento de Prototipo Funcional Técnico Inicial
+                    </div>
+                </div>
+            </div>
+
+            <div class="phase-container">
+                <div class="phase-header">
+                    <div class="phase-title">✅ Fase 4: Validación y Ajustes</div>
+                    <div class="phase-meta">
+                        <div class="phase-timeline">Semanas 8-9</div>
+                        <div class="phase-progress">
+                            <div class="progress-fill" style="width: 40%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="phase-content">
+                    <div class="deliverable-grid">
+                        <div class="deliverable-card">
+                            <div class="deliverable-title">
+                                🔧 Ajustes Funcionales y de Reportes
+                            </div>
+                            <ul class="deliverable-specs">
+                                <li>Refinamiento funcional basado en validaciones</li>
+                                <li>Optimización de reportes de auditoría</li>
+                                <li>Ajustes en interfaz y experiencia de usuario</li>
+                                <li>Configuración personalizada por área</li>
+                                <li>Mejoras en performance y usabilidad</li>
+                            </ul>
+                        </div>
+                        <div class="deliverable-card">
+                            <div class="deliverable-title">
+                                📋 Incorporación de Reglas Contractuales Específicas
+                            </div>
+                            <ul class="deliverable-specs">
+                                <li>Reglas contractuales específicas por prestador</li>
+                                <li>Validaciones de cumplimiento contractual</li>
+                                <li>Configuración de alertas por incumplimiento</li>
+                                <li>Integración completa con contratos existentes</li>
+                                <li>Parametrización avanzada por tipo de prestador</li>
+                            </ul>
+                        </div>
+                        <div class="deliverable-card">
+                            <div class="deliverable-title">
+                                🧪 Validación Integral del Sistema
+                            </div>
+                            <ul class="deliverable-specs">
+                                <li>Testing exhaustivo con casos reales</li>
+                                <li>Validación de precisión vs proceso manual</li>
+                                <li>Medición de mejoras en tiempos de auditoría</li>
+                                <li>Ajustes finales basados en feedback</li>
+                                <li>Certificación de funcionalidad completa</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="background: rgba(255, 140, 66, 0.1); padding: 1.5rem; border-radius: 10px; margin-top: 1.5rem; text-align: center;">
+                        <strong style="color: #FF8C42;">📋 Entregable Principal:</strong> Prototipo Funcional Ajustado y Validado
+                    </div>
+                </div>
+            </div>
+
+            <div class="phase-container">
+                <div class="phase-header">
+                    <div class="phase-title">🚀 Fase 5: Despliegue Progresivo</div>
+                    <div class="phase-meta">
+                        <div class="phase-timeline">Semanas 9-10</div>
+                        <div class="phase-progress">
+                            <div class="progress-fill" style="width: 20%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="phase-content">
+                    <div class="deliverable-grid">
+                        <div class="deliverable-card">
+                            <div class="deliverable-title">
+                                🚀 Implementación Inicial
+                            </div>
+                            <ul class="deliverable-specs">
+                                <li>Despliegue progresivo en ambiente productivo</li>
+                                <li>Configuración inicial en producción controlada</li>
+                                <li>Activación gradual de funcionalidades</li>
+                                <li>Validación de funcionamiento en vivo</li>
+                                <li>Monitoreo de performance inicial</li>
+                            </ul>
+                        </div>
+                        <div class="deliverable-card">
+                            <div class="deliverable-title">
+                                📊 Reportes de Auditoría y Alertas Automatizadas
+                            </div>
+                            <ul class="deliverable-specs">
+                                <li>Sistema completo de reportes automatizados</li>
+                                <li>Alertas configuradas por tipo de inconsistencia</li>
+                                <li>Dashboard ejecutivo en tiempo real</li>
+                                <li>Reportes personalizados por prestador</li>
+                                <li>Indicadores de performance y ahorro</li>
+                            </ul>
+                        </div>
+                        <div class="deliverable-card">
+                            <div class="deliverable-title">
+                                🎓 Capacitación y Documentación Final
+                            </div>
+                            <ul class="deliverable-specs">
+                                <li>Capacitación operativa completa del equipo</li>
+                                <li>Manuales funcionales y técnicos finales</li>
+                                <li>Documentación de procedimientos actualizados</li>
+                                <li>Backlog priorizado de mejoras futuras</li>
+                                <li>Transferencia de conocimiento completa</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="background: rgba(255, 140, 66, 0.1); padding: 1.5rem; border-radius: 10px; margin-top: 1.5rem; text-align: center;">
+                        <strong style="color: #FF8C42;">📋 Entregable Principal:</strong> Prototipo Funcional en Producción Controlada y Cierre de Proyecto
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="kpis-section">
+            <h3 style="color: #FF8C42; text-align: center; margin-bottom: 2rem; font-size: 1.4rem;">
+                KPIs de Éxito Medibles
+            </h3>
+            <div class="kpis-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon">⏱️</div>
+                    <div class="kpi-title">Eficiencia Operativa</div>
+                    <div class="kpi-description">Reducción ≥20% en tiempo de auditoría por prestación</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon">🎯</div>
+                    <div class="kpi-title">Precisión de Validaciones</div>
+                    <div class="kpi-description">≥95% de accuracy en detección automática de errores</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon">💰</div>
+                    <div class="kpi-title">Recupero Financiero</div>
+                    <div class="kpi-description">Incremento ≥15% en débitos identificados</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon">📊</div>
+                    <div class="kpi-title">Visibilidad Ejecutiva</div>
+                    <div class="kpi-description">100% de procesos con métricas en tiempo real</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon">🔄</div>
+                    <div class="kpi-title">Reducción de Retrabajos</div>
+                    <div class="kpi-description">≥30% menos errores manuales de carga</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon">✅</div>
+                    <div class="kpi-title">Compliance & Trazabilidad</div>
+                    <div class="kpi-description">100% de auditorías con trazabilidad digital</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Interactive progress bars animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 500);
+            });
+        });
+
+        // Phase containers toggle functionality
+        const phaseHeaders = document.querySelectorAll('.phase-header');
+        phaseHeaders.forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                if (content.style.display === 'none' || !content.style.display) {
+                    content.style.display = 'block';
+                    this.style.backgroundColor = 'rgba(255, 140, 66, 0.25)';
+                } else {
+                    content.style.display = 'none';
+                    this.style.backgroundColor = 'rgba(255, 140, 66, 0.15)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
