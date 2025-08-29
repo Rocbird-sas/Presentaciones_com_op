@@ -20,8 +20,8 @@
             --medium-gray: #718096;
             --light-gray: #F7FAFC;
             --white: #FFFFFF;
-            --gradient-primary: linear-gradient(135deg, #050505 0%, #807d7d 100%);
-            --gradient-secondary: linear-gradient(135deg, #050505 0%, #807d7d 100%);
+            --gradient-primary: linear-gradient(135deg, #000000 0%, #807d7d 100%);
+            --gradient-secondary: linear-gradient(135deg, #000000 0%, #807d7d 100%);
             --shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
             --shadow-hover: 0 30px 80px rgba(185, 28, 124, 0.25);
         }
@@ -569,6 +569,153 @@
             animation-delay: -14s;
         }
 
+        /* Next Steps Section */
+        .next-steps-section {
+            background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .next-steps-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(185, 28, 124, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .next-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .next-step-card {
+            background: var(--white);
+            border-radius: 25px;
+            padding: 3rem;
+            box-shadow: var(--shadow);
+            border: 2px solid transparent;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            border-left: 6px solid var(--primary-magenta);
+        }
+
+        .next-step-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 0%, rgba(185, 28, 124, 0.02) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .next-step-card:hover::before {
+            opacity: 1;
+        }
+
+        .next-step-card:hover {
+            border-color: var(--primary-magenta);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+            border-left-width: 10px;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -10px;
+            right: 2rem;
+            background: var(--gradient-primary);
+            color: var(--white);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(185, 28, 124, 0.3);
+        }
+
+        .step-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, rgba(185, 28, 124, 0.1) 0%, rgba(185, 28, 124, 0.05) 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            transition: transform 0.3s ease;
+        }
+
+        .next-step-card:hover .step-icon {
+            transform: scale(1.1);
+        }
+
+        .step-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--dark-gray);
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .step-description {
+            color: var(--medium-gray);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-timeline {
+            background: var(--gradient-primary);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .next-steps-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .next-step-card {
+                padding: 2.5rem;
+            }
+            
+            .step-number {
+                top: -8px;
+                right: 1.5rem;
+                width: 45px;
+                height: 45px;
+                font-size: 1rem;
+            }
+        }
+
+
+
+
+
+
         @keyframes float {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
             33% { transform: translateY(-30px) rotate(120deg); }
@@ -705,6 +852,37 @@
                     <h3 class="demo-title">Diseño Evolutivo</h3>
                     <p class="demo-description">Próximas iteraciones del diseño. Base sólida para desarrollo futuro con código accesible.</p>
                     <a href=" https://brink-rhythm-77154097.figma.site/" target="_blank" class="demo-button">Explorar Diseño</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Próximos Pasos Section -->
+    <section class="section next-steps-section">
+        <div class="container">
+            <h2 class="section-title reveal">Próximos Pasos</h2>
+            <div class="next-steps-grid">
+                <div class="next-step-card reveal">
+                    <div class="step-number">01</div>
+                    <div class="step-icon">⚡</div>
+                    <h3 class="step-title">Validación de Demos</h3>
+                    <p class="step-description">Se requiere validar si las demos construidas se ajustan para la rpesentacion del evento</p>
+                    <div class="step-timeline">Deadline 03 Septiembre 2025</div>
+                </div>
+                
+                <div class="next-step-card reveal">
+                    <div class="step-number">02</div>
+                    <div class="step-icon">⚡</div>
+                    <h3 class="step-title">Recoleccion de Feedback</h3>
+                    <p class="step-description">Disponer el listado de observaciones/mejoras respectos a las demos presentadas</p>
+                    <div class="step-timeline">Deadline 03 Septiembre 2025</div>
+                </div>
+                
+                <div class="next-step-card reveal">
+                    <div class="step-number">03</div>
+                    <div class="step-icon">⚡</div>
+                    <h3 class="step-title">Diseño visual</h3>
+                    <p class="step-description">Lograr un diseño de prototipo visual afinado para evaluarlo en la siguiente reunio</p>
+                    <div class="step-timeline">Deadline 03 Septiembre 2025</div>
                 </div>
             </div>
         </div>
