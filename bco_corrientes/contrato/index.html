@@ -3,321 +3,419 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contrato de Licencia de Software - Revisión Completa</title>
+    <title>Análisis Interactivo de Contrato</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            line-height: 1.6;
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            background: #f8f9fa;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1B2838, #2C3E50);
+            color: white;
             padding: 20px;
-            background-color: #f5f5f5;
-        }
-        
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        
+
         .legend {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            z-index: 1000;
-            font-size: 12px;
-            max-width: 250px;
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+            flex-wrap: wrap;
         }
-        
-        .legend h4 {
-            margin: 0 0 10px 0;
-            color: #333;
-        }
-        
+
         .legend-item {
             display: flex;
             align-items: center;
-            margin: 5px 0;
+            gap: 8px;
+            font-size: 14px;
         }
-        
+
         .color-box {
-            width: 15px;
+            width: 20px;
             height: 15px;
-            margin-right: 8px;
             border-radius: 3px;
-            border: 1px solid #ccc;
+            border: 1px solid rgba(255,255,255,0.3);
         }
-        
-        /* Código de colores */
-        .product-reference {
-            background-color: #fff59d;
-            padding: 2px 4px;
-            border-radius: 3px;
+
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: calc(100vh - 100px);
         }
-        
-        .terms-restrictions {
-            background-color: #e1f5fe;
-            padding: 2px 4px;
-            border-radius: 3px;
-        }
-        
-        .key-aspects {
-            background-color: #ffcdd2;
-            padding: 2px 4px;
-            border-radius: 3px;
-            font-weight: bold;
-        }
-        
-        .financial-terms {
-            background-color: #e8f5e8;
-            padding: 2px 4px;
-            border-radius: 3px;
-        }
-        
-        .legal-compliance {
-            background-color: #f3e5f5;
-            padding: 2px 4px;
-            border-radius: 3px;
-        }
-        
-        .parties-info {
-            background-color: #fff3e0;
-            padding: 2px 4px;
-            border-radius: 3px;
-        }
-        
-        h1, h2, h3 {
-            color: #2c3e50;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 10px;
-        }
-        
-        .section {
-            margin-bottom: 25px;
-            padding: 15px;
-            background-color: #fafafa;
-            border-left: 4px solid #3498db;
-        }
-        
-        .highlight-section {
-            background-color: #fff9c4;
-            border-left: 4px solid #f39c12;
-        }
-        
-        .critical-section {
-            background-color: #ffebee;
-            border-left: 4px solid #e91e63;
-        }
-        
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-        }
-        
-        .table th, .table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        
-        .table th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-        
-        .annexes {
-            background-color: #f8f9fa;
-            border: 2px solid #6c757d;
-            border-radius: 8px;
+
+        .sidebar {
+            width: 300px;
+            background: white;
             padding: 20px;
-            margin: 30px 0;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 120px;
+            height: fit-content;
         }
-        
-        .annex-title {
-            background-color: #6c757d;
+
+        .annotation-panel {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #007bff;
+        }
+
+        .annotation-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .ceo-note, .client-note {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .ceo-note {
+            background: #e3f2fd;
+            border-left: 3px solid #1976d2;
+        }
+
+        .client-note {
+            background: #f3e5f5;
+            border-left: 3px solid #7b1fa2;
+        }
+
+        .document {
+            flex: 1;
+            background: white;
+            margin: 20px;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            font-size: 14px;
+        }
+
+        /* Colores para diferentes categorías */
+        .product-specific {
+            background-color: #fff3cd;
+            border-radius: 3px;
+            padding: 2px 4px;
+            border-bottom: 2px solid #ffc107;
+        }
+
+        .terms-restrictions {
+            background-color: #d4edda;
+            border-radius: 3px;
+            padding: 2px 4px;
+            border-bottom: 2px solid #28a745;
+        }
+
+        .key-aspects {
+            background-color: #f8d7da;
+            border-radius: 3px;
+            padding: 2px 4px;
+            border-bottom: 2px solid #dc3545;
+            font-weight: bold;
+        }
+
+        .financial {
+            background-color: #cce5ff;
+            border-radius: 3px;
+            padding: 2px 4px;
+            border-bottom: 2px solid #0066cc;
+        }
+
+        .legal-regulatory {
+            background-color: #e6ccff;
+            border-radius: 3px;
+            padding: 2px 4px;
+            border-bottom: 2px solid #8000ff;
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            cursor: help;
+        }
+
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2c3e50;
             color: white;
-            padding: 10px;
-            margin: -20px -20px 20px -20px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .tooltip:hover::before {
+            content: '';
+            position: absolute;
+            bottom: 92%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #2c3e50;
+            z-index: 1000;
+        }
+
+        .section-header {
             font-weight: bold;
             font-size: 16px;
+            margin: 25px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #dee2e6;
+            color: #2c3e50;
         }
-        
+
+        .clause-number {
+            font-weight: bold;
+            color: #007bff;
+            margin-right: 8px;
+        }
+
+        .highlight-note {
+            background: #fffbf0;
+            border: 1px solid #ffc107;
+            border-radius: 4px;
+            padding: 8px;
+            margin: 10px 0;
+            font-style: italic;
+            color: #856404;
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            font-size: 12px;
+        }
+
         @media (max-width: 768px) {
-            .legend {
-                position: relative;
-                top: 0;
-                right: 0;
-                margin-bottom: 20px;
+            .container {
+                flex-direction: column;
             }
             
-            .container {
-                padding: 15px;
+            .sidebar {
+                width: 100%;
+                position: static;
             }
         }
     </style>
 </head>
 <body>
-    <div class="legend">
-        <h4>Código de Colores</h4>
-        <div class="legend-item">
-            <div class="color-box" style="background-color: #fff59d;"></div>
-            <span>Referencias al Producto</span>
-        </div>
-        <div class="legend-item">
-            <div class="color-box" style="background-color: #e1f5fe;"></div>
-            <span>Plazos y Restricciones</span>
-        </div>
-        <div class="legend-item">
-            <div class="color-box" style="background-color: #ffcdd2;"></div>
-            <span>Aspectos Clave</span>
-        </div>
-        <div class="legend-item">
-            <div class="color-box" style="background-color: #e8f5e8;"></div>
-            <span>Términos Financieros</span>
-        </div>
-        <div class="legend-item">
-            <div class="color-box" style="background-color: #f3e5f5;"></div>
-            <span>Cumplimiento Legal</span>
-        </div>
-        <div class="legend-item">
-            <div class="color-box" style="background-color: #fff3e0;"></div>
-            <span>Información de Partes</span>
+    <div class="header">
+        <h1>📋 Análisis Interactivo de Contrato - Staff Augmentation</h1>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="color-box" style="background-color: #fff3cd;"></div>
+                <span>Identificación de Producto</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background-color: #d4edda;"></div>
+                <span>Plazos y Restricciones</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background-color: #f8d7da;"></div>
+                <span>Aspectos Clave</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background-color: #cce5ff;"></div>
+                <span>Aspectos Financieros</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background-color: #e6ccff;"></div>
+                <span>Legal/Regulatorio</span>
+            </div>
         </div>
     </div>
 
     <div class="container">
-        <div class="section">
-            <p style="text-align: center;">Ciudad Autónoma de Buenos Aires, <span class="terms-restrictions">[insertar fecha]</span></p>
+        <div class="sidebar">
+            <div class="annotation-panel">
+                <div class="annotation-title">💼 CEO Prestador (Rocbird)</div>
+                <div class="ceo-note">
+                    <strong>Estrategia:</strong> Contrato defensivo que protege IP y limita responsabilidad mientras genera ingresos recurrentes.
+                </div>
+                <div class="ceo-note">
+                    <strong>Riesgo:</strong> Cláusulas de terminación anticipada podrían afectar proyecciones de ingresos.
+                </div>
+                <div class="ceo-note">
+                    <strong>Oportunidad:</strong> Programa "Embajadores" genera marketing gratuito y referencias.
+                </div>
+            </div>
+
+            <div class="annotation-panel">
+                <div class="annotation-title">🏦 CEO Cliente (Banco)</div>
+                <div class="client-note">
+                    <strong>Preocupación:</strong> Dependencia tecnológica crítica con un solo proveedor.
+                </div>
+                <div class="client-note">
+                    <strong>Regulatorio:</strong> Cumplimiento BCRA es mandatorio - cualquier observación puede terminar el contrato.
+                </div>
+                <div class="client-note">
+                    <strong>Financiero:</strong> Modelo de renovación automática genera compromisos a largo plazo.
+                </div>
+            </div>
+
+            <div class="annotation-panel">
+                <div class="annotation-title">🚨 Alertas Críticas</div>
+                <div style="background: #ffebee; padding: 8px; border-radius: 4px; font-size: 12px;">
+                    <strong>• Continuidad del Negocio:</strong> SLA del 99% con créditos limitados<br>
+                    <strong>• Datos Personales:</strong> Encargado de tratamiento con responsabilidades específicas<br>
+                    <strong>• Regulatorio:</strong> Derecho completo de auditoría del BCRA
+                </div>
+            </div>
+        </div>
+
+        <div class="document">
+            <div class="section-header">CARTA DE OFERTA</div>
+            
+            <p>
+                <span class="tooltip terms-restrictions" data-tooltip="CEO Prestador: Plazo de aceptación corto genera presión de decisión">Ciudad Autónoma de Buenos Aires, [insertar fecha]</span>
+            </p>
             
             <p>Sres.<br>
-            <span class="parties-info">[Banco de Corrientes]<br>
-            [Lavalle N° 415]<br>
-            Via email</span><br>
-            A/A: <span class="parties-info">[nombre apoderado del cliente]</span></p>
+            <span class="tooltip product-specific" data-tooltip="Cliente: Identificar correctamente la entidad contratante">Banco de Corrientes</span><br>
+            Lavalle N° 415<br>
+            Via email</p>
             
-            <p><strong>Ref.: Oferta de Contrato de Licencia de Uso de Software y Prestación de Servicios 01/2024</strong></p>
+            <p>A/A: [nombre apoderado del cliente]</p>
             
-            <p>De nuestra consideración:</p>
-            
-            <p><span class="parties-info">xxxxx S.R.L., una sociedad debidamente constituida y válidamente existente bajo las leyes de la República Argentina, C.U.I.T. xxxxx, con domicilio a los efectos de la presente en xxxxx 1660, piso 2, oficina 201, CP. 1107, Ciudad Autónoma de Buenos Aires</span> (el <span class="key-aspects">"Prestador"</span>), tiene el agrado de dirigirse a <span class="parties-info">Banco de Corrientes, C.U.I.T. [30-50001060-2]</span> (el <span class="key-aspects">"Cliente"</span>, y junto con el Prestador, las "Partes", y cada una de ellas individualmente e indistintamente, una "Parte"), a efectos de formular la presente <span class="key-aspects">oferta de licencia de uso de software y prestación de servicios de hosting y mantenimiento</span> (la "Oferta" y, una vez aceptada, el "Contrato").</p>
-            
-            <p>En caso de aceptación de la presente Oferta por parte del Cliente, antes de su vencimiento y de acuerdo con lo previsto en el párrafo siguiente, el <span class="key-aspects">Contrato de Prestación de Servicios entrará inmediatamente en vigencia</span> y producirá sus efectos de acuerdo con los términos y condiciones establecidos en el Anexo A de la presente Oferta.</p>
-            
-            <p>La presente Oferta se considerará aceptada por el Cliente en caso de que entregue al Prestador una carta en los términos del Anexo B manifestando expresamente su aceptación de la Oferta, <span class="terms-restrictions">dentro del plazo de 15 días corridos a contar desde la fecha de la Oferta</span>.</p>
-            
-            <p>Sin otro particular, saludamos a Uds. atentamente,</p>
-            
-            <p><span class="parties-info">xxxxx S.R.L.<br><br>
-            _______________________<br>
-            xxxxxx<br>
-            D.N.I.: 39.45556<br>
-            Gerente</span></p>
-        </div>
+            <p>Ref.: <span class="tooltip product-specific" data-tooltip="CEO Prestador: Identificación específica del producto ofertado">Oferta de Contrato de Licencia de Uso de Software y Prestación de Servicios 01/2024</span></p>
 
-        <h1>ANEXO A - CONTRATO DE LICENCIA Y PRESTACIÓN DE SERVICIOS</h1>
-        
-        <div class="section">
-            <h2>PARTES</h2>
-            <p><strong>I.</strong> <span class="parties-info">xxxxxxx., una sociedad debidamente constituida y válidamente existente bajo las leyes de la República Argentina, C.U.I.T. 33-444450347-9</span> (el <span class="key-aspects">"Prestador"</span>), por una parte, y</p>
+            <div class="section-header">CONSIDERANDOS</div>
             
-            <p><strong>II.</strong> <span class="parties-info">Banco de Corrientes, C.U.I.T. 30-50001060-2</span> (el <span class="key-aspects">"Cliente"</span>, y junto con el Prestador, las "Partes", y cada una de ellas individual e indistintamente, una "Parte"), por otra parte;</p>
-        </div>
-        
-        <div class="section">
-            <h2>CONSIDERANDO</h2>
-            <p><strong>I.</strong> Que el Prestador es <span class="product-reference">una empresa tecnológica especializada en soluciones de software para xxxxxxxxx para empresas en la industria financiera</span>.</p>
-            
-            <p><strong>II.</strong> Que el Prestador cuenta con <span class="product-reference">una plataforma tipo SaaS cloud que permite, entre otras operaciones, digitalizar y automatizar onboarding digital de personas y confección de legajos digitales</span> (en adelante, la <span class="product-reference">"Plataforma"</span>).</p>
-            
-            <p><strong>III.</strong> Que el Cliente ha manifestado su intención de <span class="key-aspects">utilizar determinados componentes de la Plataforma detallados en Artículo A del Anexo I del presente Contrato y recibir servicios de soporte</span> por parte del Prestador, a los fines de implementarlo en el marco de su actividad comercial.</p>
-        </div>
+            <p><span class="tooltip product-specific" data-tooltip="CEO Prestador: Descripción técnica de la plataforma core">xxxxx S.R.L., una sociedad debidamente constituida y válidamente existente bajo las leyes de la República Argentina, C.U.I.T. xxxxx, con domicilio a los efectos de la presente en xxxxxi 1660, piso 2, oficina 201, CP. 1107, Ciudad Autónoma de Buenos Aires (el "Prestador")</span>, tiene el agrado de dirigirse a <span class="tooltip product-specific" data-tooltip="Cliente: Validar que el CUIT corresponda exactamente">Banco de Corrientes, C.U.I.T. [30-50001060-2] (el "Cliente")</span>, a efectos de formular la presente <span class="tooltip key-aspects" data-tooltip="CEO Prestador: Estructura legal que protege nuestros intereses">oferta de licencia de uso de software y prestación de servicios de hosting y mantenimiento</span>.</p>
 
-        <div class="section">
-            <h2>1. OBJETO</h2>
-            <p><strong>1.a.</strong> El Prestador concede al Cliente <span class="key-aspects">una licencia temporal no exclusiva, no cedible de uso de los servicios de la Plataforma</span> detallados en el Anexo I del presente Contrato, de acuerdo con los términos y condiciones establecidas en el presente (los <span class="product-reference">"Servicios"</span>).</p>
-            
-            <p><strong>1.b.</strong> El Cliente <span class="terms-restrictions">sólo podrá utilizar la Plataforma a los fines del desarrollo de su actividad, todo ello sin poder cederlo o permitir su uso comercial por terceros</span>, más allá de lo permitido por el presente Contrato.</p>
-        </div>
+            <div class="highlight-note">
+                ⚠️ <strong>Punto Crítico:</strong> La aceptación debe realizarse dentro de 15 días corridos - tiempo limitado para análisis legal detallado.
+            </div>
 
-        <div class="section highlight-section">
-            <h2>2. PLAZO</h2>
-            <p><strong>2.a.</strong> El Contrato entrará en vigor a partir de la fecha de su celebración, y tendrá un <span class="key-aspects">plazo de vigencia de treinta y seis (36) meses contados a partir de la fecha de aceptación de la Oferta</span> (el <span class="terms-restrictions">"Plazo Inicial"</span>). El plazo de vigencia del Contrato <span class="terms-restrictions">se renovará automáticamente por períodos de doce (12) meses, a menos que cualquiera de las Partes notifique por escrito a la otra su decisión de no renovar el Contrato con al menos treinta (30) días de anticipación</span> al vencimiento del plazo de vigencia en curso, y sin que tal decisión de no renovar el Contrato genere derecho a reclamo alguno.</p>
-        </div>
+            <p>La presente Oferta se considerará aceptada por el Cliente en caso de que entregue al Prestador una carta en los términos del Anexo B manifestando expresamente su aceptación de la Oferta, <span class="tooltip terms-restrictions key-aspects" data-tooltip="Cliente: Plazo muy corto para análisis legal y de riesgos completo">dentro del plazo de 15 días corridos a contar desde la fecha de la Oferta</span>.</p>
 
-        <div class="section">
-            <h2>3. PRECIO</h2>
-            <p><strong>3.a.</strong> Como contraprestación por los Servicios el Cliente abonará al Prestador <span class="financial-terms">una tarifa conforme lo establecido en el Anexo I del presente (la "Tarifa de Uso")</span>.</p>
-            
-            <p><strong>3.b.</strong> <span class="financial-terms">La Tarifa de Uso sólo podrá ser modificada de común acuerdo entre las Partes luego de los primeros 36 meses de aceptación de la oferta y luego de cada 12 meses de renovación automática</span>. <span class="key-aspects">En ningún caso el aumento de la Tarifa de Uso para el alcance contratado podrá exceder el quince por ciento (15%) anual respecto de la Tarifa de Uso Final acordada con todos los descuentos de U$S xxxxx más IVA</span> descrita en el Anexo I, E.</p>
-        </div>
+            <div class="section-header">1. OBJETO DEL CONTRATO</div>
 
-        <div class="section">
-            <h2>4. USO DE LA PLATAFORMA. MÉTODOS DE ACCESO. SISTEMAS DE TERCERAS PARTES</h2>
-            <p><strong>4.a.</strong> El Cliente tendrá acceso a la <span class="product-reference">Plataforma únicamente mediante una o más claves de acceso provistas por el Prestador, o a través de otro método de acceso que el Prestador pueda habilitar o establecer en el futuro</span> (los <span class="key-aspects">"Métodos de Acceso"</span>). El Cliente será el <span class="key-aspects">exclusivo responsable de asegurar que los Métodos de Acceso sean conocidos y utilizados únicamente por aquellos usuarios que posean autorización expresa y por escrito del Prestador</span> (<span class="key-aspects">"Usuarios Autorizados"</span>).</p>
-            
-            <p><strong>4.b.</strong> <span class="key-aspects">El Cliente será el único responsable por todos los actos u omisiones de cualquier persona que utilice la Plataforma a través de los Métodos de Acceso</span> que el Prestador ha provisto al Cliente. Todas las operaciones generadas por el uso de los Métodos de Acceso que el Prestador ha provisto al Cliente serán consideradas como operaciones generadas por el Cliente.</p>
-            
-            <p><strong>4.c.</strong> Si los Métodos de Acceso llegaren a extraviarse, ser robados o divulgados indebidamente, <span class="terms-restrictions">el Cliente deberá notificar al Prestador inmediatamente</span>. Al recibirse dicha notificación, los Métodos de Acceso del Cliente afectados serán cancelados, sin perjuicio de que el Cliente será responsable por cualquier operación realizada a través del uso de los Métodos de Acceso hasta que sean cancelados.</p>
-        </div>
+            <p><span class="clause-number">1.a.</span> El Prestador concede al Cliente una <span class="tooltip key-aspects" data-tooltip="CEO Prestador: Licencia restrictiva que mantiene control total">licencia temporal no exclusiva, no cedible de uso de los servicios de la Plataforma</span> detallados en el Anexo I del presente Contrato.</p>
 
-        <div class="section">
-            <h2>5. INFORMACIÓN</h2>
-            <p><strong>5.a.</strong> <span class="key-aspects">El Cliente deberá suministrar al Prestador toda la información que el Prestador razonablemente le requiera, concerniente al Cliente y al uso de la Plataforma</span>, para su correcta implementación y funcionamiento.</p>
-            
-            <p><strong>5.b.</strong> Con respecto a cualquier dato sobre un mercado u otra información de otras entidades u organismos, que le sea provista al Cliente por el Prestador o integraciones a otras soluciones, en relación con el acceso a la Plataforma, (i) <span class="key-aspects">el Prestador no incurrirá en responsabilidad alguna si tal dato o información fuere incorrecto o incompleto</span>; (ii) el Prestador no será responsable por cualquier tipo de acción que el Cliente tome o no, basado en tal dato o información.</p>
-        </div>
+            <p><span class="clause-number">1.b.</span> <span class="tooltip product-specific" data-tooltip="Cliente: Restricción importante - no permite uso comercial por terceros">El Cliente sólo podrá utilizar la Plataforma a los fines del desarrollo de su actividad, todo ello sin poder cederlo o permitir su uso comercial por terceros</span>.</p>
 
-        <div class="section critical-section">
-            <h2>6. PROPIEDAD INTELECTUAL</h2>
-            <p><strong>6.a.</strong> <span class="key-aspects">El Prestador es y será el único y exclusivo propietario de los derechos de propiedad intelectual de la Plataforma</span>, incluyendo la creación, desarrollo, mejoramiento y/o modificaciones que el Prestador pueda realizar (y la integración del mismo a cualquier sistema), incluyendo el código fuente y el código objeto, así como todos los datos, materiales, reportes de trabajo, códigos y, en general, cualquier dato e información contenida en las bases de datos o bien en sistemas, programas de cómputo o soluciones utilizados para la consecución de los Servicios, ya sea que: (i) haya sido recibida de parte del Cliente y se conserve, duplique e integre a las bases de datos del Prestador y/o se encuentre hospedada en los aludidos sistemas, programas de computación o soluciones, o (ii) sea creada, generada, adaptada, mejorada o modificada por los Prestadores con motivo de la prestación de los Servicios objeto del presente Contrato (en lo sucesivo, conjuntamente todo lo anterior y la Plataforma se definirá como la <span class="key-aspects">"Propiedad Intelectual del Prestador"</span>). <span class="legal-compliance">Las Partes declaran y garantizan mantendrán indemne a la otra Parte de cualquier reclamo, responsabilidad, daño, perjuicio, gasto y costo que le pudiere ocasionar, relacionado con cualquier presunta violación de derechos de terceros</span>, con motivo de las obligaciones de este Contrato.</p>
-            
-            <p><strong>6.b.</strong> <span class="key-aspects">El Prestador, sus entidades afiliadas, controladas o controlantes, retendrán todos los derechos de propiedad intelectual sobre sus programas, aplicaciones, documentación y otros materiales de su propiedad</span> que utilice para ejecutar el presente Contrato.</p>
-            
-            <p><strong>6.c.</strong> El Prestador podrá, en cualquier momento y sin necesidad de notificación previa, <span class="product-reference">realizar modificaciones técnicas de la Plataforma, sus componentes, servidores, sistema de soporte, entre otras características</span>, siempre y cuando los alcances, funcionalidades y servicios prestados y declarados en el Anexo I no se vean afectados negativamente para el Cliente. La realización de tales modificaciones no generará obligación ni responsabilidad alguna a cargo del Prestador, siempre que tales modificaciones no impidan el uso de la Plataforma.</p>
-            
-            <p><strong>6.d.</strong> <span class="terms-restrictions">El Cliente se obliga a notificar en forma fehaciente cualquier tipo de violación o amenaza de violación a los derechos de propiedad intelectual de la Plataforma al Prestador, dentro de las cuarenta y ocho (48) horas hábiles</span> de haber tomado conocimiento del suceso y a prestarle toda su colaboración para la mejor defensa de los derechos afectados.</p>
-        </div>
+            <div class="section-header">2. PLAZO</div>
 
-        <div class="section highlight-section">
-            <h2>7. CONTINUIDAD DE LOS SERVICIOS Y USO DE LA PLATAFORMA</h2>
-            <p><strong>7.a.</strong> El Prestador dará al Cliente <span class="product-reference">asistencia técnica en caso de mal funcionamiento de la Plataforma, la cual podrá ser provista vía telefónica/teleconferencia/correo electrónico y/o cualquier otro canal de comunicación digital, o personalmente</span>, en caso de que las circunstancias del caso lo requieran. Asimismo, el Prestador se compromete a brindar asistencia técnica inmediata en caso de que situaciones de urgencia que pusieran en riesgo operaciones del Cliente a través de la Plataforma así lo requieran.</p>
-            
-            <p><strong>7.b.</strong> El Cliente entiende y acepta que, si por cualquier causa vinculada a factores materiales y/o técnicos y/o humanos ajenos al Prestador y, en todos los supuestos de caso fortuito o de fuerza mayor, <span class="terms-restrictions">el acceso a la Plataforma o a alguno de los Servicios se vieran interrumpidos, o si en razón de la necesidad de realizar tareas de reparación y/o mantenimiento de todo o parte de los elementos que lo integran, éste deba ser discontinuado</span>, el Prestador no tendrá que abonar por ello indemnización de ninguna especie, excepto en el caso de que la interrupción o discontinuidad haya tenido como causa una falla en la Plataforma o en los Servicios imputable a la acción culposa o dolosa del Prestador. A los efectos del presente Contrato, se entenderá por acción culposa toda acción del Prestador y/o de su personal que se aparte: (i) de lo prescripto en los manuales de operación de la Plataforma de los que se sirva el Prestador y/o su personal; y/o (ii) de los deberes de cuidado razonable que una persona prudente y diligente en circunstancias similares habría observado.</p>
-            
-            <p><strong>7.c.</strong> En cualquier supuesto que el acceso a la Plataforma o a alguno de los Servicios deba ser interrumpido con carácter de urgencia, no será necesaria notificación alguna al Cliente por parte del Prestador. Caso contrario, <span class="terms-restrictions">el Prestador deberá notificar la interrupción del acceso a la Plataforma o a los Servicios con la anticipación razonable exigida por los usos y prácticas de la industria</span>.</p>
-            
-            <p><strong>7.d.</strong> <span class="product-reference">Mantenimiento programado: El proveedor deberá limitar al mínimo el tiempo de interrupción del servicio durante la realización de tareas de mantenimiento</span>.</p>
-            
-            <p><strong>7.e.</strong> <span class="terms-restrictions">Interrupciones por urgencias: En caso de una interrupción del servicio por una situación de urgencia, la notificación al cliente deberá incluir una descripción clara del incidente, su alcance y las medidas adoptadas para su resolución</span>.</p>
-            
-            <p><strong>7.f.</strong> Plan de continuidad: <span class="product-reference">El proveedor cuenta con un plan de continuidad y el mismo se encuentra disponible en el sitio web: xxxxxxxxxxx. Adicionalmente se adjunta como anexo IV en el presente contrato</span>. El Prestador tiene y tendrá en todo momento todos los medios de conformidad con los estándares técnicos o mejores prácticas de la República Argentina, para asegurar la continuidad de la prestación de los Servicios y el uso de la Plataforma, conforme lo detallado en el presente Contrato, en caso de presentarse situaciones o eventos que podrían generar la interrupción en la prestación de los Servicios y el uso de la Plataforma. Asimismo, el Prestador se compromete a realizar sus mejores esfuerzos para el restablecimiento del Servicios y el uso de la Plataforma en caso de que se vean eventualmente afectados.</p>
-            
-            <p><strong>7.g.</strong> <span class="key-aspects">Regirá entre las Partes el sistema de Créditos de Servicio (según dicho término se define más adelante) establecido en el Anexo II durante la vigencia de este Contrato</span>.</p>
-        </div>
+            <p><span class="clause-number">2.a.</span> El Contrato entrará en vigor a partir de la fecha de su celebración, y tendrá un <span class="tooltip terms-restrictions key-aspects" data-tooltip="CEO Prestador: Plazo inicial largo asegura ingresos predecibles. Cliente: Compromiso financiero significativo">plazo de vigencia de treinta y seis (36) meses contados a partir de la fecha de aceptación de la Oferta (el "Plazo Inicial")</span>. El plazo de vigencia del Contrato <span class="tooltip terms-restrictions" data-tooltip="Cliente: Renovación automática puede generar compromisos no deseados">se renovará automáticamente por períodos de doce (12) meses</span>, a menos que cualquiera de las Partes notifique por escrito a la otra su decisión de no renovar el Contrato con <span class="tooltip terms-restrictions" data-tooltip="CEO Prestador: Preaviso de 30 días nos permite retener clientes y planificar">al menos treinta (30) días de anticipación al vencimiento del plazo de vigencia en curso</span>.</p>
 
-        <div class="section critical-section">
-            <h2>8. DERECHOS COMPLETOS E ILIMITADOS DE AUDITORÍA POR PARTE DEL REGULADOR</h2>
-            <p><strong>8.a.</strong> En el caso de que <span class="legal-compliance">el Regulador – entiéndase como el regulador de conducta con derechos de supervisión según lo dispuesto en la normativa aplicable al Banco –</span> (el <span class="legal-compliance">"Regulador"</span>) solicite valorar las operaciones de los Servicios y los controles para cumplir con las obligaciones de supervisión que el Regulador exige al Prestador como proveedor de servicios directos del Cliente, <span class="key-aspects">el Prestador proporcionará al Regulador un derecho completo e ilimitado para valorar o auditar los Servicios en Línea</span>. Esto incluye proporcionar acceso completo a todas las instalaciones comerciales correspondientes (por ejemplo, oficinas centrales y centros de operaciones), lo que incluye la gama completa de dispositivos, sistemas, redes, información y datos correspondientes que se utilizan para proporcionar la función de subcontratación, incluida la información financiera relacionada, el personal y los auditores externos del Prestador. El acceso a las instalaciones está sujeto a garantizar la salud, la seguridad y la protección de todas las personas implicadas en un examen. En la medida en que se pueda acceder a dicha información de manera virtual, las partes trabajarán para atender dichas solicitudes a través de comunicaciones virtuales en línea y el intercambio de documentación, a través de protocolos seguros. <span class="legal-compliance">Esto puede incluir, según sea necesario, la auditoría de los subcontratistas que realizan y procesan las operaciones del Servicio</span>. Tales actividades se realizarán bajo la coordinación y supervisión del Prestador y están sujetas a todas las disposiciones de esta Oferta.</p>
-            
-            <p><strong>8.b.</strong> <span class="legal-compliance">El Regulador podrá exigir al Cliente que proporcione al Regulador acceso directo a los Datos del Cliente siempre que el Cliente subcontrate servicios a proveedores de servicios independientes</span>. Para cumplir este requisito, el Cliente podrá (i) conceder directamente derechos administrativos a las personas designadas por el Regulador, o bien (ii) designar a un proveedor de servicios independiente que pueda responder directamente a esta solicitud del Regulador. Si el Prestador recibe una solicitud de este tipo del Regulador, el Prestador se la redirigirá al Cliente. El Cliente o el proveedor independiente designado serán responsables de cumplir con la solicitud y no eludirán sus obligaciones derivando tales asuntos al Prestador. <span class="key-aspects">El Regulador no podrá obtener acceso a datos que pertenezcan a ningún otro cliente del Prestador</span>.</p>
-            
-            <p><strong>8.c.</strong> Para mayor claridad, <span class="legal-compliance">el Prestador y el Cliente trabajarán juntos para resolver cada solicitud del Regulador mediante conversaciones e interacción entre el Cliente, el Prestador y el Regulador</span>. (y los clientes del Cliente cuando fuere aplicable). El Prestador y el Cliente reconocen que las disposiciones relacionadas con el derecho a valorar de un Regulador no tienen la intención de contravenir o interferir con las leyes o reglamentos aplicables, y ninguna parte de esta sección se interpretará como un impedimento para la capacidad del Regulador para valorar los Servicios.</p>
-        </div>
+            <div class="section-header">3. PRECIO</div>
 
-        <div class="section">
-            <h2>9. GESTIÓN DE CIBERINCIDENTES</h2>
-            <p><span class="legal-compliance">El Proveedor deberá contar con un proceso definido, documentado e implementado para la gestión de Incidentes de Seguridad de la Información</span>, así como establecer y comunicar al Cliente la estructura y mecanismos definidos por su Organización para dar respuesta a los Incidentes de Seguridad de la Información. <span class="terms-restrictions">En caso de que ocurra un Incidente de Seguridad de la Información sobre la infraestructura tecnológica utilizada para dar servicio al Cliente, se deberá notificar lo antes posible al área de Seguridad de la Información del Cliente</span> con el fin de establecer una estrategia adecuada de respuesta.</p>
-        </div>
+            <p><span class="clause-number">3.a.</span> Como contraprestación por los Servicios el Cliente abonará al Prestador una <span class="tooltip financial" data-tooltip="CEO Prestador: Tarifa establecida en Anexo I permite flexibilidad de precios">tarifa conforme lo establecido en el Anexo I del presente (la "Tarifa de Uso")</span>.</p>
 
-        <div class="section">
-            <h2>10. CONFIDENCIALIDAD</h2>
-            <p><strong>10.a.</strong> <span class="key-aspects">Las Partes se comprometen a tratar con absoluta y estricta confidencialidad toda información vinculada directa o indirectamente a la otra Parte</span>, la información obtenida a través de integraciones de servicios de prestadores externos y/o las operaciones a las que tenga acceso con motivo o por ocasión de los derechos y las obligaciones previstas en el presente Contrato, incluyendo en especial toda información y/o documentación técnica de la Plataforma (la <span class="key-aspects">"Información Confidencial"</span>) y no podrá revelar la Información Confidencial a persona alguna, sin el consentimiento expreso y por escrito de la otra Parte. Las Partes convienen además que el manejo y archivo de la Información Confidencial se hará empleando como mínimo el control, medidas de protección y precauciones que cualquiera de ellas hubiera empleado en el manejo y archivo de datos e información de su propiedad. <span class="terms-restrictions">Las Partes permanecerán obligadas a tenor de lo prescripto por esta cláusula indefinidamente, aún después de concluida la presente relación contractual</span>.</p>
-            
-            <p><strong>10.b.</strong> <span class="legal-compliance">Las Partes se obligan a impartir instrucciones escritas a su personal y a todo aquel que pudiera entrar en contacto con la Información Confidencial, y a hacer que suscriban un compromiso de confidencialidad en términos análogos al que aquí asumen las Partes
+            <p><span class="clause-number">3.b.</span> <span class="tooltip financial key-aspects" data-tooltip="Cliente: Incrementos limitados al 15% anual es protección importante">La Tarifa de Uso sólo podrá ser modificada de común acuerdo entre las Partes luego de los primeros 36 meses de aceptación de la oferta y luego de cada 12 meses de renovación automática. En ningún caso el aumento de la Tarifa de Uso para el alcance contratado podrá exceder el quince por ciento (15%) anual</span>.</p>
+
+            <div class="section-header">6. PROPIEDAD INTELECTUAL</div>
+
+            <p><span class="clause-number">6.a.</span> <span class="tooltip key-aspects product-specific" data-tooltip="CEO Prestador: Cláusula fundamental - mantenemos propiedad total de la IP">El Prestador es y será el único y exclusivo propietario de los derechos de propiedad intelectual de la Plataforma, incluyendo la creación, desarrollo, mejoramiento y/o modificaciones que el Prestador pueda realizar</span>, incluyendo el código fuente y el código objeto, así como todos los datos, materiales, reportes de trabajo, códigos y, en general, cualquier dato e información contenida en las bases de datos.</p>
+
+            <div class="section-header">8. DERECHOS COMPLETOS DE AUDITORÍA DEL REGULADOR</div>
+
+            <p><span class="clause-number">8.a.</span> En el caso de que <span class="tooltip legal-regulatory key-aspects" data-tooltip="Cliente: Requisito regulatorio no negociable - BCRA tiene acceso total">el Regulador – entiéndase como el regulador de conducta con derechos de supervisión según lo dispuesto en la normativa aplicable al Banco – (el "Regulador") solicite valorar las operaciones de los Servicios</span>, <span class="tooltip legal-regulatory" data-tooltip="CEO Prestador: Exposición significativa - debemos permitir acceso completo a nuestras operaciones">el Prestador proporcionará al Regulador un derecho completo e ilimitado para valorar o auditar los Servicios en Línea. Esto incluye proporcionar acceso completo a todas las instalaciones comerciales correspondientes</span>.</p>
+
+            <div class="section-header">10. CONFIDENCIALIDAD</div>
+
+            <p><span class="clause-number">10.a.</span> <span class="tooltip key-aspects" data-tooltip="CEO Prestador: Protección mutua de información confidencial crítica para ambas partes">Las Partes se comprometen a tratar con absoluta y estricta confidencialidad toda información vinculada directa o indirectamente a la otra Parte</span>, la información obtenida a través de integraciones de servicios de prestadores externos y/o las operaciones a las que tenga acceso con motivo o por ocasión de los derechos y las obligaciones previstas en el presente Contrato.</p>
+
+            <div class="section-header">13. RESPONSABILIDAD</div>
+
+            <p><span class="clause-number">13.d.</span> <span class="tooltip key-aspects financial" data-tooltip="CEO Prestador: Limitación crucial de responsabilidad. Cliente: Exposición limitada pero debe evaluarse si es suficiente">El Prestador no será responsable por daños indirectos, lucro cesante, pérdida de chance, pérdida de oportunidades comerciales o cualquier otro tipo de perjuicio indirecto que pudiera sufrir el Cliente en relación con el uso de la Plataforma. La responsabilidad total del Prestador por cualquier causa relacionada con el presente Contrato se limitará al monto efectivamente pagado por el Cliente al Prestador durante los últimos tres (3) meses anteriores a la ocurrencia del evento</span>.</p>
+
+            <div class="section-header">14. TERMINACIÓN ANTICIPADA</div>
+
+            <p><span class="clause-number">14.a.</span> <span class="tooltip terms-restrictions key-aspects" data-tooltip="Cliente: Flexibilidad importante - pueden terminar sin causa con 90 días de preaviso">Las Partes tendrán la facultad de rescindir el Contrato sin necesidad de expresar causa alguna y en cualquier momento durante el plazo de vigencia del Contrato, mediante la notificación por escrito a la otra parte con una anticipación de noventa (90) días corridos</span>.</p>
+
+            <div class="section-header">17. PROTECCIÓN DE DATOS PERSONALES</div>
+
+            <p><span class="clause-number">17.a.</span> <span class="tooltip legal-regulatory key-aspects" data-tooltip="CEO Prestador: Asumimos rol de encargado de tratamiento con obligaciones específicas. Cliente: Debe verificar cumplimiento GDPR local">Respecto de los datos personales que el Prestador reciba del Cliente (ya sean propios o de terceros) y trate a los efectos de facilitar el uso de la Plataforma por el Cliente y proveer los Servicios, el Prestador declara y garantiza que, en su carácter de encargado de tratamiento bajo los términos del artículo 25 de la Ley de Protección de Datos Personales 25.326</span>.</p>
+
+            <div class="section-header">18.f. PROGRAMA EMBAJADORES</div>
+
+            <p><span class="tooltip product-specific key-aspects" data-tooltip="CEO Prestador: Marketing gratuito valioso. Cliente: Comprometerse a actividades promocionales puede ser sensible">El Cliente participará del programa "Clientes Embajadores de Complif" del Prestador que involucra las siguientes actividades: Anunció en redes sociales, sitio web, y/u otros medios por parte del Prestador al momento de la celebración del acuerdo para afirmar que el Cliente es usuario de los servicios. Participación del Cliente en la generación de contenido multimedia para la publicación en redes sociales, sitio web, y/u otros medios con su testimonio</span>.</p>
+
+            <div class="highlight-note">
+                💡 <strong>Análisis Estratégico:</strong> Este contrato favorece significativamente al prestador con cláusulas defensivas, limitación de responsabilidad y compromisos de marketing del cliente. El banco debe negociar mayor equilibrio en SLAs, responsabilidades y flexibilidad contractual.
+            </div>
+
+        </div>
+    </div>
+
+    <div class="scroll-indicator">
+        <div>📍 Navegación</div>
+        <div style="font-size: 10px; margin-top: 5px;">Pasa el mouse sobre texto resaltado para ver análisis detallado</div>
+    </div>
+
+    <script>
+        // Smooth scrolling and highlighting functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add scroll progress indicator
+            window.addEventListener('scroll', function() {
+                const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+                const indicator = document.querySelector('.scroll-indicator');
+                if (indicator) {
+                    indicator.style.background = `linear-gradient(to top, #007bff ${scrolled}%, white ${scrolled}%)`;
+                }
+            });
+
+            // Enhanced tooltip positioning for mobile
+            const tooltips = document.querySelectorAll('.tooltip');
+            tooltips.forEach(tooltip => {
+                tooltip.addEventListener('mouseenter', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    if (rect.top < 60) {
+                        this.style.setProperty('--tooltip-position', 'bottom');
+                    }
+                });
+            });
+
+            // Add click to highlight functionality
+            tooltips.forEach(tooltip => {
+                tooltip.addEventListener('click', function() {
+                    this.style.animation = 'pulse 0.5s ease-in-out';
+                    setTimeout(() => {
+                        this.style.animation = '';
+                    }, 500);
+                });
+            });
+        });
+
+        // Add pulse animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+                100% { transform: scale(1); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
