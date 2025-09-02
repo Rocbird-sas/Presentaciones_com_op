@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propuesta Aplicación Inmersiva Multipantallas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            background: #f8f9fa;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1B2838, #2C3E50);
+            color: white;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .legend {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .color-box {
+            width: 20px;
+            height: 15px;
+            border-radius: 3px;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: calc(100vh - 100px);
+        }
+
+        .sidebar {
+            width: 300px;
+            background: white;
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 120px;
+            height: fit-content;
+        }
+
+        .annotation-panel {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #007bff;
+        }
+
+        .annotation-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .ceo-note, .client-note {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .ceo-note {
+            background: #e3f2fd;
+            border-left: 3px solid #1976d2;
+        }
+
+        .client-note {
+            background: #f3e5f5;
+            border-left: 3px solid #7b1fa2;
+        }
+
+        .document {
+            flex: 1;
+            background: white;
+            margin: 20px;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            font-size: 14px;
+        }
+
+        /* Colores para diferentes categorías - Mayor contraste */
+        .product-specific {
+            background-color: #ffeb3b;
+            border-radius: 3px;
+            padding: 2px 4px;
+            border-bottom: 3px solid #f57f17;
+            color: #1a1a1a;
+            font-weight: 500;
+        }
+
+        .terms-restrictions {
+            background-color: #4caf50;
+            border-radius: 3px;
+            padding: 2px 4px;
+            border-bottom: 3px solid #1b5e20;
+            color: white;
+            font-weight: 500;
+        }
+
+        .key-aspects {
+            background-color: #f44336;
+            border-radius: 3px;
+            padding: 2px 4px;
+            border-bottom: 3px solid #b71c1c;
+            font-weight: bold;
+            color: white;
+        }
+
+        .financial {
+            background-color: #2196f3;
+            border-radius: 3px;
+            padding: 2px 4px;
+            border-bottom: 3px solid #0d47a1;
+            color: white;
+            font-weight: 500;
+        }
+
+        .legal-regulatory {
+            background-color: #9c27b0;
+            border-radius: 3px;
+            padding: 2px 4px;
+            border-bottom: 3px solid #4a148c;
+            color: white;
+            font-weight: 500;
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            cursor: help;
+        }
+
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2c3e50;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .tooltip:hover::before {
+            content: '';
+            position: absolute;
+            bottom: 92%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #2c3e50;
+            z-index: 1000;
+        }
+
+        .section-header {
+            font-weight: bold;
+            font-size: 16px;
+            margin: 25px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #dee2e6;
+            color: #2c3e50;
+        }
+
+        .clause-number {
+            font-weight: bold;
+            color: #007bff;
+            margin-right: 8px;
+        }
+
+        .highlight-note {
+            background: #fffbf0;
+            border: 1px solid #ffc107;
+            border-radius: 4px;
+            padding: 8px;
+            margin: 10px 0;
+            font-style: italic;
+            color: #856404;
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            font-size: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📱 Propuesta Aplicación Inmersiva Multipantallas - Rocbird</h1>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="color-box" style="background-color: #ffeb3b;"></div>
+                <span>Producto/Tecnología Inmersiva</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background-color: #4caf50;"></div>
+                <span>Plazos y Restricciones</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background-color: #f44336;"></div>
+                <span>Aspectos Críticos</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background-color: #2196f3;"></div>
+                <span>Aspectos Financieros</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background-color: #9c27b0;"></div>
+                <span>Legal/Regulatorio</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <div class="annotation-panel">
+                <div class="annotation-title">💼 CEO Rocbird (Prestador)</div>
+                <div class="ceo-note">
+                    <strong>Estrategia:</strong> Propuesta de valor única - experiencia inmersiva diferenciada que justifica premium pricing.
+                </div>
+                <div class="ceo-note">
+                    <strong>Riesgo:</strong> Cliente sin definiciones claras puede generar scope creep y sobrecostos en fase de implementación.
+                </div>
+                <div class="ceo-note">
+                    <strong>Oportunidad:</strong> Primera instalación en sector bancario - caso de éxito para expansión comercial.
+                </div>
+            </div>
+
+            <div class="annotation-panel">
+                <div class="annotation-title">🏦 CEO Cliente (Banco)</div>
+                <div class="client-note">
+                    <strong>Innovación:</strong> Solución disruptiva puede generar ventaja competitiva significativa en experiencia cliente.
+                </div>
+                <div class="client-note">
+                    <strong>Preocupación:</strong> Falta de definiciones internas puede llevar a sobrecostos no presupuestados.
+                </div>
+                <div class="client-note">
+                    <strong>Operativo:</strong> Necesidad de equipo interno especializado y definición de infraestructura.
+                </div>
+            </div>
+
+            <div class="annotation-panel">
+                <div class="annotation-title">🚨 Alertas Críticas</div>
+                <div style="background: #ffebee; padding: 8px; border-radius: 4px; font-size: 12px;">
+                    <strong>• Fase Definitoria:</strong> Sin especificaciones claras hay riesgo de expectativas no alineadas<br>
+                    <strong>• Infraestructura:</strong> Red, WiFi y equipos adicionales excluidos - requiere presupuesto separado<br>
+                    <strong>• Biométrica:</strong> Integración con sistemas existentes puede ser compleja
+                </div>
+            </div>
+        </div>
+
+        <div class="document">
+            <div class="section-header">CARTA DE OFERTA</div>
+            
+            <p>
+                <span class="tooltip terms-restrictions" data-tooltip="CEO Rocbird: Plazo de aceptación corto genera presión de decisión favorable">Ciudad Autónoma de Buenos Aires, [insertar fecha]</span>
+            </p>
+            
+            <p>Sres.<br>
+            <span class="tooltip product-specific" data-tooltip="Cliente: Rocbird como empresa tecnológica especializada en experiencias inmersivas">Rocbird S.R.L.</span><br>
+            [Dirección de Rocbird]<br>
+            Via email</p>
+            
+            <p>A/A: [nombre apoderado del cliente]</p>
+            
+            <p>Ref.: <span class="tooltip product-specific" data-tooltip="CEO Rocbird: Propuesta específica de aplicación inmersiva multipantallas - producto único en el mercado">Propuesta de Aplicación Inmersiva Multipantallas con Narrativa de IA para Experiencia Bancaria 01/2024</span></p>
+
+            <div class="section-header">CONSIDERANDOS</div>
+            
+            <p><span class="tooltip product-specific" data-tooltip="CEO Rocbird: Empresa especializada en soluciones inmersivas de datos con IA">Rocbird S.R.L., una sociedad debidamente constituida y válidamente existente bajo las leyes de la República Argentina, C.U.I.T. [CUIT de Rocbird], con domicilio en [dirección], especializada en desarrollo de plataformas de experiencia inmersiva de datos (el "Prestador")</span>, tiene el agrado de dirigirse a <span class="tooltip product-specific" data-tooltip="Cliente: Banco que necesita diferenciación en experiencia de cliente">[Nombre del Banco], C.U.I.T. [CUIT del Banco] (el "Cliente")</span>, a efectos de formular la presente <span class="tooltip key-aspects" data-tooltip="CEO Rocbird: Propuesta integral que incluye definición, desarrollo e implementación">propuesta de licencia de uso y desarrollo de aplicación inmersiva multipantallas con narrativa automatizada por IA</span>.</p>
+
+            <div class="highlight-note">
+                ⚠️ <strong>Advertencia Crítica:</strong> El Cliente aún no tiene definido el equipo necesario ni especificaciones concretas de la solución. Esta propuesta incluye una FASE DE DEFINICIÓN obligatoria.
+            </div>
+
+            <div class="section-header">DESCRIPCIÓN DEL PRODUCTO</div>
+            
+            <p><span class="tooltip product-specific key-aspects" data-tooltip="CEO Rocbird: Diferenciador clave - experiencia inmersiva única en el mercado bancario">El producto central es una plataforma de experiencia inmersiva de datos que permitirá a los clientes bancarios visualizar y comprender su información financiera en un entorno completamente nuevo - una sala con proyección inmersiva donde pueden ingresar hasta 5 personas simultáneamente</span>.</p>
+
+            <div class="section-header">COMPONENTES PRINCIPALES</div>
+            
+            <p><strong>1. <span class="tooltip product-specific" data-tooltip="CEO Rocbird: IA narrativa es nuestro principal diferenciador tecnológico">Narrativa Automática con IA:</span></strong> El diferenciador más importante. En lugar de simplemente mostrar datos, <span class="tooltip product-specific" data-tooltip="Cliente: Capacidad de educar clientes financieramente genera valor agregado">el sistema 'cuenta una historia' sobre la situación financiera del cliente, explicando tendencias y contextualizando la información de manera comprensible para usuarios sin expertise en análisis financiero</span>.</p>
+
+            <p><strong>2. <span class="tooltip product-specific" data-tooltip="CEO Rocbird: Arquitectura híbrida reduce riesgos de seguridad y complejidad">Arquitectura de Datos Híbrida:</span></strong> <span class="tooltip product-specific" data-tooltip="Cliente: Importante - no se conecta al core bancario, reduce riesgos operativos">Combina información histórica transaccional del cliente con datos de mercado en tiempo real, pero sin conectarse directamente al core bancario</span>, decisión arquitectónica que reduce complejidad y riesgos de seguridad.</p>
+
+            <p><strong>3. <span class="tooltip product-specific" data-tooltip="CEO Rocbird: Enfoque consultivo vs transaccional - nuevo paradigma de banca">Enfoque en Experiencia vs Transacciones:</span></strong> <span class="tooltip product-specific" data-tooltip="Cliente: Sistema educativo y consultivo, no transaccional - diferenciación clara">No es un sistema para realizar operaciones, sino para educar y consultar, representando un cambio paradigmático en la banca hacia servicios más consultivos</span>.</p>
+
+            <p><strong>4. <span class="tooltip legal-regulatory" data-tooltip="Cliente: Sistema biométrico completo debe integrarse con políticas existentes">Sistema de Autenticación Biométrica:</span></strong> Incluye autenticación biométrica completa y <span class="tooltip legal-regulatory" data-tooltip="CEO Rocbird: Cumplimiento regulatorio es mandatorio para contratos bancarios">cumple con todas las regulaciones del BCRA</span>.</p>
+
+            <div class="section-header">FASE 1: DEFINICIÓN Y ARQUITECTURA DE SOLUCIÓN</div>
+            
+            <div class="highlight-note">
+                🔍 <strong>FASE OBLIGATORIA:</strong> Dado que el Cliente no tiene definiciones concretas, se requiere fase inicial de 60-90 días para definir solución completa.
+            </div>
+
+            <p><span class="tooltip key-aspects" data-tooltip="CEO Rocbird: Fase de definición protege contra scope creep y expectativas no realistas">Rocbird realizará una primera fase de definición de solución que incluirá:</span></p>
+
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li><span class="tooltip product-specific" data-tooltip="Cliente: Análisis de necesidades específicas del banco y sus clientes">• Análisis detallado de requerimientos y casos de uso específicos</span></li>
+                <li><span class="tooltip product-specific" data-tooltip="CEO Rocbird: Revisión técnica evita incompatibilidades futuras">• Revisión de integraciones necesarias con herramientas existentes</span></li>
+                <li><span class="tooltip product-specific" data-tooltip="Cliente: Especificaciones técnicas detalladas para presupuestación">• Definición de dispositivos, hardware y sistemas requeridos</span></li>
+                <li><span class="tooltip product-specific" data-tooltip="CEO Rocbird: Arquitectura de datos debe definirse previamente">• Arquitectura de conectividad y flujos de datos</span></li>
+                <li><span class="tooltip product-specific" data-tooltip="Cliente: Desarrollos adicionales pueden impactar presupuesto">• Identificación de desarrollos específicos adicionales</span></li>
+                <li><span class="tooltip terms-restrictions" data-tooltip="CEO Rocbird: Timeline realista con hitos específicos">• Timeline detallado de implementación por fases</span></li>
+            </ul>
+
+            <div class="section-header">EXCLUSIONES IMPORTANTES</div>
+            
+            <div class="highlight-note">
+                ❌ <strong>NO INCLUIDO en esta propuesta:</strong> El Cliente debe presupuestar por separado los siguientes elementos críticos.
+            </div>
+
+            <p><span class="tooltip financial key-aspects" data-tooltip="Cliente: Costos adicionales significativos que deben ser presupuestados">Los siguientes elementos quedan FUERA de esta propuesta y requieren presupuesto adicional del Cliente:</span></p>
+
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li><span class="tooltip financial" data-tooltip="Cliente: Infraestructura de red puede requerir inversión significativa">• <strong>Infraestructura de red y conectividad</strong> - cableado, switches, routers</span></li>
+                <li><span class="tooltip financial" data-tooltip="Cliente: WiFi empresarial de alta velocidad es crítico para la experiencia">• <strong>Sistemas WiFi</strong> - Access Points, controladores, certificación de cobertura</span></li>
+                <li><span class="tooltip financial" data-tooltip="Cliente: Hardware adicional puede incluir servidores, storage, UPS">• <strong>Equipos de infraestructura adicionales</strong> - servidores, storage, UPS, aires acondicionados</span></li>
+                <li><span class="tooltip financial" data-tooltip="Cliente: Adecuaciones de espacio físico para sala inmersiva">• <strong>Adecuaciones de espacio físico</strong> - obra civil, instalaciones eléctricas</span></li>
+                <li><span class="tooltip financial" data-tooltip="Cliente: Mobiliario especializado para experiencia inmersiva">• <strong>Mobiliario especializado</strong> - asientos, mesas interactivas, iluminación</span></li>
+            </ul>
+
+            <p><span class="tooltip key-aspects" data-tooltip="CEO Rocbird: Colaboración en planificación genera valor agregado sin comprometer márgenes">Rocbird colaborará en la planificación y especificación de estos elementos para facilitar la gestión presupuestaria del Cliente, pero su adquisición e instalación queda fuera del alcance de esta propuesta</span>.</p>
+
+            <div class="section-header">1. OBJETO DEL CONTRATO</div>
+
+            <p><span class="clause-number">1.a.</span> El Prestador concede al Cliente una <span class="tooltip key-aspects" data-tooltip="CEO Prestador: Licencia restrictiva que mantiene control total">licencia temporal no exclusiva, no cedible de uso de los servicios de la Plataforma</span> detallados en el Anexo I del presente Contrato.</p>
+
+            <p><span class="clause-number">1.b.</span> <span class="tooltip product-specific" data-tooltip="Cliente: Restricción importante - no permite uso comercial por terceros">El Cliente sólo podrá utilizar la Plataforma a los fines del desarrollo de su actividad, todo ello sin poder cederlo o permitir su uso comercial por terceros</span>.</p>
+
+            <div class="section-header">2. PLAZO</div>
+
+            <p><span class="clause-number">2.a.</span> El Contrato entrará en vigor a partir de la fecha de su celebración, y tendrá un <span class="tooltip terms-restrictions key-aspects" data-tooltip="CEO Prestador: Plazo inicial largo asegura ingresos predecibles. Cliente: Compromiso financiero significativo">plazo de vigencia de treinta y seis (36) meses contados a partir de la fecha de aceptación de la Oferta (el "Plazo Inicial")</span>. El plazo de vigencia del Contrato <span class="tooltip terms-restrictions" data-tooltip="Cliente: Renovación automática puede generar compromisos no deseados">se renovará automáticamente por períodos de doce (12) meses</span>, a menos que cualquiera de las Partes notifique por escrito a la otra su decisión de no renovar el Contrato con <span class="tooltip terms-restrictions" data-tooltip="CEO Prestador: Preaviso de 30 días nos permite retener clientes y planificar">al menos treinta (30) días de anticipación al vencimiento del plazo de vigencia en curso</span>.</p>
+
+            <div class="section-header">3. PRECIO</div>
+
+            <p><span class="clause-number">3.a.</span> Como contraprestación por los Servicios el Cliente abonará al Prestador una <span class="tooltip financial" data-tooltip="CEO Prestador: Tarifa establecida en Anexo I permite flexibilidad de precios">tarifa conforme lo establecido en el Anexo I del presente (la "Tarifa de Uso")</span>.</p>
+
+            <p><span class="clause-number">3.b.</span> <span class="tooltip financial key-aspects" data-tooltip="Cliente: Incrementos limitados al 15% anual es protección importante">La Tarifa de Uso sólo podrá ser modificada de común acuerdo entre las Partes luego de los primeros 36 meses de aceptación de la oferta y luego de cada 12 meses de renovación automática. En ningún caso el aumento de la Tarifa de Uso para el alcance contratado podrá exceder el quince por ciento (15%) anual</span>.</p>
+
+            <div class="section-header">6. PROPIEDAD INTELECTUAL</div>
+
+            <p><span class="clause-number">6.a.</span> <span class="tooltip key-aspects product-specific" data-tooltip="CEO Prestador: Cláusula fundamental - mantenemos propiedad total de la IP">El Prestador es y será el único y exclusivo propietario de los derechos de propiedad intelectual de la Plataforma, incluyendo la creación, desarrollo, mejoramiento y/o modificaciones que el Prestador pueda realizar</span>, incluyendo el código fuente y el código objeto, así como todos los datos, materiales, reportes de trabajo, códigos y, en general, cualquier dato e información contenida en las bases de datos.</p>
+
+            <div class="section-header">8. DERECHOS COMPLETOS DE AUDITORÍA DEL REGULADOR</div>
+
+            <p><span class="clause-number">8.a.</span> En el caso de que <span class="tooltip legal-regulatory key-aspects" data-tooltip="Cliente: Requisito regulatorio no negociable - BCRA tiene acceso total">el Regulador – entiéndase como el regulador de conducta con derechos de supervisión según lo dispuesto en la normativa aplicable al Banco – (el "Regulador") solicite valorar las operaciones de los Servicios</span>, <span class="tooltip legal-regulatory" data-tooltip="CEO Prestador: Exposición significativa - debemos permitir acceso completo a nuestras operaciones">el Prestador proporcionará al Regulador un derecho completo e ilimitado para valorar o auditar los Servicios en Línea. Esto incluye proporcionar acceso completo a todas las instalaciones comerciales correspondientes</span>.</p>
+
+            <div class="section-header">10. CONFIDENCIALIDAD</div>
+
+            <p><span class="clause-number">10.a.</span> <span class="tooltip key-aspects" data-tooltip="CEO Prestador: Protección mutua de información confidencial crítica para ambas partes">Las Partes se comprometen a tratar con absoluta y estricta confidencialidad toda información vinculada directa o indirectamente a la otra Parte</span>, la información obtenida a través de integraciones de servicios de prestadores externos y/o las operaciones a las que tenga acceso con motivo o por ocasión de los derechos y las obligaciones previstas en el presente Contrato.</p>
+
+            <div class="section-header">13. RESPONSABILIDAD</div>
+
+            <p><span class="clause-number">13.d.</span> <span class="tooltip key-aspects financial" data-tooltip="CEO Prestador: Limitación crucial de responsabilidad. Cliente: Exposición limitada pero debe evaluarse si es suficiente">El Prestador no será responsable por daños indirectos, lucro cesante, pérdida de chance, pérdida de oportunidades comerciales o cualquier otro tipo de perjuicio indirecto que pudiera sufrir el Cliente en relación con el uso de la Plataforma. La responsabilidad total del Prestador por cualquier causa relacionada con el presente Contrato se limitará al monto efectivamente pagado por el Cliente al Prestador durante los últimos tres (3) meses anteriores a la ocurrencia del evento</span>.</p>
+
+            <div class="section-header">14. TERMINACIÓN ANTICIPADA</div>
+
+            <p><span class="clause-number">14.a.</span> <span class="tooltip terms-restrictions key-aspects" data-tooltip="Cliente: Flexibilidad importante - pueden terminar sin causa con 90 días de preaviso">Las Partes tendrán la facultad de rescindir el Contrato sin necesidad de expresar causa alguna y en cualquier momento durante el plazo de vigencia del Contrato, mediante la notificación por escrito a la otra parte con una anticipación de noventa (90) días corridos</span>.</p>
+
+            <div class="section-header">17. PROTECCIÓN DE DATOS PERSONALES</div>
+
+            <p><span class="clause-number">17.a.</span> <span class="tooltip legal-regulatory key-aspects" data-tooltip="CEO Prestador: Asumimos rol de encargado de tratamiento con obligaciones específicas. Cliente: Debe verificar cumplimiento GDPR local">Respecto de los datos personales que el Prestador reciba del Cliente (ya sean propios o de terceros) y trate a los efectos de facilitar el uso de la Plataforma por el Cliente y proveer los Servicios, el Prestador declara y garantiza que, en su carácter de encargado de tratamiento bajo los términos del artículo 25 de la Ley de Protección de Datos Personales 25.326</span>.</p>
+
+            <div class="section-header">18.f. PROGRAMA EMBAJADORES</div>
+
+            <p><span class="tooltip product-specific key-aspects" data-tooltip="CEO Prestador: Marketing gratuito valioso. Cliente: Comprometerse a actividades promocionales puede ser sensible">El Cliente participará del programa "Clientes Embajadores de Complif" del Prestador que involucra las siguientes actividades: Anunció en redes sociales, sitio web, y/u otros medios por parte del Prestador al momento de la celebración del acuerdo para afirmar que el Cliente es usuario de los servicios. Participación del Cliente en la generación de contenido multimedia para la publicación en redes sociales, sitio web, y/u otros medios con su testimonio</span>.</p>
+
+            <div class="highlight-note">
+                💡 <strong>Análisis Estratégico:</strong> Rocbird presenta propuesta innovadora con producto diferenciado, pero la falta de definiciones del cliente genera riesgos de scope creep. La fase de definición es crítica para alinear expectativas y evitar sobrecostos. El modelo de exclusiones protege márgenes pero requiere comunicación clara sobre costos adicionales significativos.
+            </div>
+
+        </div>
+    </div>
+
+    <div class="scroll-indicator">
+        <div>📍 Navegación</div>
+        <div style="font-size: 10px; margin-top: 5px;">Pasa el mouse sobre texto resaltado para ver análisis detallado</div>
+    </div>
+
+    <script>
+        // Smooth scrolling and highlighting functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add scroll progress indicator
+            window.addEventListener('scroll', function() {
+                const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+                const indicator = document.querySelector('.scroll-indicator');
+                if (indicator) {
+                    indicator.style.background = `linear-gradient(to top, #007bff ${scrolled}%, white ${scrolled}%)`;
+                }
+            });
+
+            // Enhanced tooltip positioning for mobile
+            const tooltips = document.querySelectorAll('.tooltip');
+            tooltips.forEach(tooltip => {
+                tooltip.addEventListener('mouseenter', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    if (rect.top < 60) {
+                        this.style.setProperty('--tooltip-position', 'bottom');
+                    }
+                });
+            });
+
+            // Add click to highlight functionality
+            tooltips.forEach(tooltip => {
+                tooltip.addEventListener('click', function() {
+                    this.style.animation = 'pulse 0.5s ease-in-out';
+                    setTimeout(() => {
+                        this.style.animation = '';
+                    }, 500);
+                });
+            });
+        });
+
+        // Add pulse animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+                100% { transform: scale(1); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
