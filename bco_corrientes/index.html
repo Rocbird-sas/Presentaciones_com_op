@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro Ejecutivo de Presentaciones</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 25%, #1d4ed8 50%, #2563eb 75%, #3b82f6 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1f2937;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Patrón geométrico sutil de fondo */
+        .background-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.08;
+            background-image: 
+                linear-gradient(30deg, transparent 40%, rgba(255,255,255,0.1) 42%, rgba(255,255,255,0.1) 44%, transparent 46%),
+                linear-gradient(-30deg, transparent 40%, rgba(255,255,255,0.05) 42%, rgba(255,255,255,0.05) 44%, transparent 46%);
+            background-size: 100px 100px;
+            pointer-events: none;
+        }
+
+        .container {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 70px 60px;
+            max-width: 650px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 
+                0 32px 64px rgba(0, 0, 0, 0.12),
+                0 16px 32px rgba(0, 0, 0, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #d4af37 0%, #ffd700 50%, #d4af37 100%);
+            background-size: 200% 100%;
+            animation: golden-flow 4s ease-in-out infinite;
+        }
+
+        @keyframes golden-flow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .header {
+            margin-bottom: 45px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            position: relative;
+        }
+
+        .subtitle {
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.85rem;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 500;
+            margin-bottom: 25px;
+        }
+
+        .description {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.15rem;
+            line-height: 1.7;
+            color: #4b5563;
+            margin-bottom: 50px;
+            font-weight: 400;
+            max-width: 520px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .highlight {
+            color: #d4af37;
+            font-weight: 600;
+        }
+
+        .buttons-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .btn {
+            display: block;
+            padding: 24px 28px;
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            color: #374151;
+            text-decoration: none;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            border: 1.5px solid #e5e7eb;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 0.08),
+                0 2px 4px rgba(0, 0, 0, 0.04);
+            text-transform: capitalize;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(145deg, rgba(212, 175, 55, 0.03) 0%, rgba(255, 215, 0, 0.05) 100%);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+
+        .btn:hover::before {
+            transform: translateX(0);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 12px 24px rgba(0, 0, 0, 0.15),
+                0 6px 12px rgba(0, 0, 0, 0.08);
+            border-color: #d4af37;
+            color: #1f2937;
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 
+                0 6px 12px rgba(0, 0, 0, 0.12),
+                0 3px 6px rgba(0, 0, 0, 0.06);
+        }
+
+        .btn-number {
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .btn-label {
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* Elementos decorativos corporativos */
+        .corporate-accent {
+            position: absolute;
+            width: 120px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, #d4af37 50%, transparent 100%);
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.3;
+        }
+
+        .corporate-accent.left {
+            left: -60px;
+        }
+
+        .corporate-accent.right {
+            right: -60px;
+        }
+
+        /* Indicadores de status premium */
+        .premium-indicators {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+            animation: pulse-indicator 2s ease-in-out infinite;
+        }
+
+        .indicator:nth-child(2) {
+            background: #d4af37;
+            animation-delay: 0.5s;
+        }
+
+        .indicator:nth-child(3) {
+            background: #3b82f6;
+            animation-delay: 1s;
+        }
+
+        @keyframes pulse-indicator {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Responsive */
+        @media (max-width: 700px) {
+            .container {
+                padding: 50px 35px;
+                margin: 20px;
+            }
+            
+            h1 {
+                font-size: 2.3rem;
+                margin-bottom: 10px;
+            }
+
+            .description {
+                font-size: 1.05rem;
+                margin-bottom: 40px;
+            }
+            
+            .buttons-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .btn {
+                padding: 20px 24px;
+            }
+
+            .corporate-accent {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 40px 25px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Patrón de fondo -->
+    <div class="background-pattern"></div>
+
+    <div class="container">
+        <!-- Indicadores premium -->
+        <div class="premium-indicators">
+            <div class="indicator"></div>
+            <div class="indicator"></div>
+            <div class="indicator"></div>
+        </div>
+
+        <!-- Acentos corporativos -->
+        <div class="corporate-accent left"></div>
+        <div class="corporate-accent right"></div>
+
+        <div class="header">
+            <h1>Centro Ejecutivo</h1>
+            <div class="subtitle">Presentaciones Corporativas</div>
+        </div>
+        
+        <p class="description">
+            <p><span class="highlight">Recursos Estratégicos</span></p> 
+            Cada presentación del proyecto Banco de Corrientes
+        </p>
+        
+        <div class="buttons-grid">
+            <a href="https://presentaciones-com-op.vercel.app/bco_corrientes/comercial" class="btn" target="_blank">
+                <span class="btn-number">EXEC.01</span>
+                <span class="btn-label">Descripcion Comercial</span>
+            </a>
+            
+            <a href="https://presentaciones-com-op.vercel.app/bco_corrientes/funcional" class="btn" target="_blank">
+                <span class="btn-number">EXEC.02</span>
+                <span class="btn-label">Descripcion Funcional</span>
+            </a>
+            
+            <a href="https://presentaciones-com-op.vercel.app/bco_corrientes/contratoModelo" class="btn" target="_blank">
+                <span class="btn-number">EXEC.03</span>
+                <span class="btn-label">Acuerdo Marco Modelo</span>
+            </a>
+            
+            <a href="https://presentaciones-com-op.vercel.app/bco_corrientes/contratoPropuesta" class="btn" target="_blank">
+                <span class="btn-number">EXEC.04</span>
+                <span class="btn-label">Analisis de Acuerdo Propuesta</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Efecto de entrada elegante
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.querySelector('.container');
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(30px) scale(0.98)';
+            
+            setTimeout(() => {
+                container.style.transition = 'all 1s cubic-bezier(0.23, 1, 0.32, 1)';
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0) scale(1)';
+            }, 150);
+        });
+
+        // Efecto sutil de hover corporativo
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.background = 'linear-gradient(145deg, #ffffff 0%, #fafbfc 100%)';
+            });
+            
+            button.addEventListener('mouseleave', function() {
+                this.style.background = 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)';
+            });
+
+            // Efecto de clic elegante
+            button.addEventListener('click', function(e) {
+                const rect = this.getBoundingClientRect();
+                const ripple = document.createElement('div');
+                
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(212, 175, 55, 0.2)';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'corporate-ripple 0.6s ease-out';
+                ripple.style.left = (e.clientX - rect.left) + 'px';
+                ripple.style.top = (e.clientY - rect.top) + 'px';
+                ripple.style.width = ripple.style.height = '20px';
+                ripple.style.pointerEvents = 'none';
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // Estilos para el efecto ripple
+        const corporateStyles = document.createElement('style');
+        corporateStyles.textContent = `
+            @keyframes corporate-ripple {
+                to {
+                    transform: scale(6);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(corporateStyles);
+
+        // Efecto de carga progresiva para elementos
+        setTimeout(() => {
+            document.querySelectorAll('.btn').forEach((btn, index) => {
+                btn.style.opacity = '0';
+                btn.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    btn.style.transition = 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
+                    btn.style.opacity = '1';
+                    btn.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        }, 500);
+    </script>
+</body>
+</html>
