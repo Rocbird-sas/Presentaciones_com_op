@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documento Rocbird</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: default !important;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #2c3e50;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            padding: 60px;
+            transform: scale(1.05);
+        }
+
+        .header {
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #e0e6ed;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 300;
+            color: #27ae60;
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+        }
+
+        .date {
+            font-size: 18px;
+            color: #95a5a6;
+            font-weight: 300;
+        }
+
+        .section {
+            margin-bottom: 60px;
+        }
+
+        h2 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-weight: 400;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .icon {
+            color: #27ae60;
+            font-size: 24px;
+        }
+
+        .subsection {
+            background: #ffffff;
+            padding: 30px;
+            margin-bottom: 25px;
+            border-left: 3px solid #27ae60;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+        }
+
+        h3 {
+            font-size: 22px;
+            color: #34495e;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            font-size: 19px;
+            line-height: 1.8;
+            color: #5a6c7d;
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            font-weight: 300;
+        }
+
+        li:before {
+            content: "•";
+            position: absolute;
+            left: 10px;
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .highlight {
+            background: #e8f8f5;
+            color: #27ae60;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        .metric {
+            background: #f0f3f4;
+            color: #2c3e50;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-weight: 500;
+            display: inline-block;
+            margin: 5px;
+            font-size: 17px;
+            border: 1px solid #e0e6ed;
+        }
+
+        .metric.success {
+            background: #e8f8f5;
+            color: #27ae60;
+            border-color: #27ae60;
+        }
+
+        .important {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 6px;
+            margin: 20px 0;
+            border: 1px solid #e0e6ed;
+        }
+
+        .important p {
+            font-size: 19px;
+            line-height: 1.8;
+            color: #34495e;
+            font-weight: 300;
+            margin: 10px 0;
+        }
+
+        strong {
+            color: #27ae60;
+            font-weight: 600;
+            font-size: 20px;
+        }
+
+        .process-box {
+            background: #fafbfc;
+            padding: 22px;
+            border-radius: 4px;
+            border: 1px solid #e8ecef;
+            margin: 20px 0;
+        }
+
+        .process-box p {
+            font-size: 19px;
+            line-height: 1.8;
+            color: #5a6c7d;
+            font-weight: 300;
+        }
+
+        .divider {
+            height: 1px;
+            background: #e0e6ed;
+            margin: 40px 0;
+        }
+
+        .alert-icon {
+            color: #f39c12;
+            font-size: 20px;
+            margin-right: 8px;
+        }
+
+        .check-icon {
+            color: #27ae60;
+            font-size: 20px;
+            margin-right: 8px;
+        }
+
+        .arrow {
+            color: #27ae60;
+            font-weight: bold;
+            margin: 0 10px;
+            font-size: 22px;
+        }
+
+        .tag {
+            background: transparent;
+            color: #27ae60;
+            padding: 4px 10px;
+            border: 1px solid #27ae60;
+            border-radius: 3px;
+            font-size: 16px;
+            display: inline-block;
+            margin-right: 10px;
+            font-weight: 400;
+        }
+
+        .focus-area {
+            background: #e8f8f5;
+            padding: 20px;
+            border-radius: 4px;
+            margin: 20px 0;
+            border-left: 4px solid #27ae60;
+        }
+
+        .focus-area p {
+            font-size: 19px;
+            color: #2c3e50;
+            margin: 8px 0;
+            font-weight: 300;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">ROCBIRD</div>
+            <div class="date">Relevamiento Inicial — 02/09/2025</div>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">◆</span> Detalles de los Procesos</h2>
+            
+            <div class="subsection">
+                <h3>Validación de Facturas y Medicamentos</h3>
+                <div class="process-box">
+                    <p>Proceso de <strong>reevaluación</strong> de lo facturado contra contratos. Control específico de medicamentos y laboratorios con diferentes pesos y condiciones. Clasificado como <span class="highlight">trabajo de atención fina</span>.</p>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Carga Manual de Datos</h3>
+                <div class="important">
+                    <p><span class="alert-icon">⚠</span>Proceso <strong>altamente artesanal</strong>: descarga de emails y carga manual campo por campo</p>
+                    <p>Tiempo actual: <span class="metric">4-5 días/semana </span> <span class="arrow">→</span> Con automatización: se espera que sean  <span class="metric success">20 minutos</span></p>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Carga de Informes de Auditoría</h3>
+                <ul>
+                    <li>Verificación manual de respaldos documentales</li>
+                    <li>Carga del informe en el sistema post-auditoría</li>
+                    <li>Objetivo: <span class="highlight">simplificar la carga manaul de datos</span></li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>Validación Maestro vs Digital</h3>
+                <ul>
+                    <li>Validación sistema maestro contra información digital</li>
+                    <li>Comparación días declarados vs días facturados</li>
+                    <li><strong>Digitalización máxima</strong> para automatizacion de cargas manuales en sus sistemas</li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>Prestadores Claves para iniciar</h3>
+                <p style="margin-top: 10px;">
+                    <span class="tag">Sanatorio Allende</span>
+                    <span class="tag">Modelo</span>
+                    <span class="tag">Reina Fabiola</span>
+                </p>
+                <p style="font-size: 18px; margin-top: 20px; color: #7f8c8d;">Identificados 3-4 prestadores con patrones similares y procesos estructurados</p>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="section">
+            <h2><span class="icon">◆</span> Próximos Pasos Importantes</h2>
+            
+            <div class="subsection">
+                <h3>Hit Win — Victoria Rápida</h3>
+                <div class="focus-area">
+                    <p><strong>Objetivo:</strong> Lograr impacto significativo en 10 semanas</p>
+                    <p>Seleccionar procesos con mayor dolor operativo:</p>
+                    <p><span class="check-icon">✓</span>Manuales <span class="check-icon">✓</span>Complejos <span class="check-icon">✓</span>Alto impacto en KPIs</p>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Métricas Base</h3>
+                <ul>
+                    <li>Conversión facturación/débito: <span class="metric">3.50</span> <span class="arrow">→</span> <span class="metric success">pasar a 5.00 (Deseable)</span></li>
+                    <li>Horas operativas manuales: <span class="metric">6 horas diarias</span> <span class="arrow">→</span> <span class="metric success"> REDUCIR ESTE TIEMPO</span></li></li> 
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>Fase de Análisis Inicial</h3>
+                <div class="process-box">
+                    <p><strong>Semanas 1-3:</strong> Identificación de puntos CLAVES de alto impacto</p>
+                    <p><strong>Evaluación:</strong> Viabilidad de digitalización y escaneo documental</p>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>KPIs Identificados</h3>
+                <ul>
+                    <li>Cantidad de días para auditoría específica</li>
+                    <li>Rapidez de procesamiento de auditoría</li>
+                    <li>Proporción manual vs automatizable
+                    <li>Volumen de trabajo por prestador</li>
+                    <li>Impacto en métricas globales</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
