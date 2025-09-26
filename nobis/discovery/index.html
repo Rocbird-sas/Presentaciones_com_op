@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nobis Medical - Automatización Auditoría</title>
+    <style>
+        :root {
+            --nobis-green: #2ECC71;
+            --nobis-dark-green: #27AE60;
+            --nobis-light-green: #A8E6CF;
+            --dark-blue: #2C3E50;
+            --light-blue: #3498DB;
+            --orange: #F39C12;
+            --red: #E74C3C;
+            --light-gray: #ECF0F1;
+            --dark-gray: #7F8C8D;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--light-gray) 0%, #fff 100%);
+            color: var(--dark-blue);
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: linear-gradient(90deg, var(--nobis-green) 0%, var(--nobis-dark-green) 100%);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 300;
+        }
+
+        .nav-container {
+            position: fixed;
+            left: 0;
+            top: 80px;
+            height: calc(100vh - 80px);
+            width: 280px;
+            background: white;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+            padding: 2rem 0;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-item {
+            padding: 1rem 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-item:hover {
+            background: var(--light-gray);
+            border-left-color: var(--nobis-green);
+        }
+
+        .nav-item.active {
+            background: var(--nobis-light-green);
+            border-left-color: var(--nobis-green);
+            color: var(--nobis-dark-green);
+            font-weight: 600;
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            background: var(--nobis-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+
+        .main-content {
+            margin-left: 280px;
+            margin-top: 80px;
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
+        }
+
+        .section {
+            display: none;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, var(--nobis-green) 0%, var(--light-blue) 100%);
+            color: white;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .hero-section h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+
+        .hero-section p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--nobis-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline {
+            position: relative;
+            margin: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--nobis-green);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            margin: 2rem 0;
+            align-items: center;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            flex: 1;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin: 0 2rem;
+            position: relative;
+        }
+
+        .timeline-date {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--nobis-green);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .process-flow {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .process-step {
+            flex: 1;
+            min-width: 200px;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            position: relative;
+            text-align: center;
+        }
+
+        .process-step::after {
+            content: '→';
+            position: absolute;
+            right: -2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            color: var(--nobis-green);
+        }
+
+        .process-step:last-child::after {
+            display: none;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--nobis-green);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .opportunities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .opportunity-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border-left: 5px solid var(--orange);
+        }
+
+        .risk-matrix {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .risk-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .risk-high {
+            border-left: 5px solid var(--red);
+        }
+
+        .risk-medium {
+            border-left: 5px solid var(--orange);
+        }
+
+        .risk-low {
+            border-left: 5px solid var(--nobis-green);
+        }
+
+        .kpi-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .kpi-card {
+            background: linear-gradient(135deg, var(--nobis-green) 0%, var(--nobis-dark-green) 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .kpi-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .toggle-nav {
+            display: none;
+            position: fixed;
+            top: 90px;
+            left: 20px;
+            z-index: 200;
+            background: var(--nobis-green);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                transform: translateX(-100%);
+            }
+
+            .nav-container.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .toggle-nav {
+                display: block;
+            }
+
+            .timeline::before {
+                left: 30px;
+            }
+
+            .timeline-item {
+                flex-direction: row !important;
+            }
+
+            .timeline-content {
+                margin-left: 60px;
+                margin-right: 0;
+            }
+
+            .timeline-date {
+                left: 30px;
+            }
+        }
+
+        .section-header {
+            background: linear-gradient(90deg, var(--nobis-green) 0%, var(--light-blue) 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 300;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Nobis Medical - Automatización Proceso Auditoría Prestadores</h1>
+    </header>
+
+    <button class="toggle-nav" onclick="toggleNav()">☰</button>
+
+    <nav class="nav-container" id="navContainer">
+        <div class="nav-item active" onclick="showSection('overview')">
+            <div class="nav-icon">🏠</div>
+            <span>Overview</span>
+        </div>
+        <div class="nav-item" onclick="showSection('proceso')">
+            <div class="nav-icon">⚙️</div>
+            <span>Proceso Actual</span>
+        </div>
+        <div class="nav-item" onclick="showSection('oportunidades')">
+            <div class="nav-icon">💡</div>
+            <span>Oportunidades</span>
+        </div>
+        <div class="nav-item" onclick="showSection('roadmap')">
+            <div class="nav-icon">🗺️</div>
+            <span>Roadmap</span>
+        </div>
+        <div class="nav-item" onclick="showSection('riesgos')">
+            <div class="nav-icon">⚠️</div>
+            <span>Riesgos & KPIs</span>
+        </div>
+        <div class="nav-item" onclick="showSection('proximos')">
+            <div class="nav-icon">🚀</div>
+            <span>Próximos Pasos</span>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <!-- Overview Section -->
+        <section id="overview" class="section active">
+            <div class="hero-section">
+                <h2>Automatización Auditoría Médica</h2>
+                <h3>Cierre de Discovery</h3>
+            </div>
+
+            <div class="opportunities-grid">
+                <div class="opportunity-card">
+                    <h3>🎯 Presentación</h3>
+                    <p>Documentar el estado actual (AS IS), identificar problemas y oportunidades de mejora, y definir lineamientos iniciales para la automatización del proceso de auditoría médica.</p>
+                </div>
+                <div class="opportunity-card">
+                    <h3>🔍 Alcance</h3>
+                    <p>Documentar el flujo completo de facturación y auditoría médica.</p>
+                    <p>Identificar diferencias entre prestadores digitalizados (ej. Sanatorio Allende) y prestadores más manuales (ej. NOA).</p>
+                    <p>Detectar puntos críticos y riesgos (documentación incompleta, verificaciones manuales, homologación de códigos).</p>
+                    <p>Explorar oportunidades de automatización y estandarización.</p>
+                </div>
+            </div>
+
+            <div class="section-header" style="margin-top: 3rem;">
+                <h2>📚 Documentación del Proyecto</h2>
+                <p>Enlaces a documentos y recursos clave</p>
+            </div>
+
+            <div class="opportunities-grid">
+                <div class="opportunity-card">
+                    <h3>📄 Documentos Principales</h3>
+                    <ul style="text-align: left; line-height: 1.8;">
+                        <li><a href="#" style="color: var(--nobis-green); text-decoration: none;">📊 Informe de Relevamiento y Mapeo de Procesos (AS IS) - v002</a></li>
+                        <li><a href="#" style="color: var(--nobis-green); text-decoration: none;">📋 Nobis Medical - Project Charter_ Automatización de Auditoría Médica - v002.docx</a></li>
+                        <li><a href="#" style="color: var(--nobis-green); text-decoration: none;">🔍 Relevamiento inicial - Reunión 02/09</a></li>
+                    </ul>
+                </div>
+
+                <div class="opportunity-card">
+                    <h3>📝 Minutas y Análisis</h3>
+                    <ul style="text-align: left; line-height: 1.8;">
+                        <li><a href="#" style="color: var(--nobis-green); text-decoration: none;">📅 Minuta 11/08 - Análisis del Proceso de Auditoría de Facturas</a></li>
+                        <li><a href="#" style="color: var(--nobis-green); text-decoration: none;">💬 Minuta 18/9- Discusión sobre el Proceso de Facturación y Autorización Médica</a></li>
+                    </ul>
+                </div>
+
+                <div class="opportunity-card">
+                    <h3>🎨 Recursos Visuales</h3>
+                    <ul style="text-align: left; line-height: 1.8;">
+                        <li><a href="#" style="color: var(--nobis-green); text-decoration: none;">🔄 Diagrama de Flujo _ Nobis.png</a></li>
+                        <li><a href="#" style="color: var(--nobis-green); text-decoration: none;">🗺️ Miro</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Roadmap Section -->
+        <section id="roadmap" class="section">
+            <div class="section-header">
+                <h2>Roadmap del Proyecto</h2>
+                <p>6 Fases estratégicas de septiembre a noviembre 2024</p>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">02/09 - 13/09</div>
+                    <div class="timeline-content">
+                        <h3>Fase 1: Descubrimiento y Mapeo</h3>
+                        <p><strong>Entregable:</strong> Informe de relevamiento y mapeo de procesos</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">16/09 - 26/09</div>
+                    <div class="timeline-content">
+                        <h3>Fase 2: Modelado Funcional</h3>
+                        <p><strong>Entregable:</strong> Documento funcional y de reglas</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">30/09 - 11/10</div>
+                    <div class="timeline-content">
+                        <h3>Fase 3: Maquetado Técnico</h3>
+                        <p><strong>Entregable:</strong> Documento de prototipo funcional técnico inicial</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">14/10 - 25/10</div>
+                    <div class="timeline-content">
+                        <h3>Fase 4: Validación y Ajustes</h3>
+                        <p><strong>Entregable:</strong> Prototipo funcional ajustado y validado</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">28/10 - 08/11</div>
+                    <div class="timeline-content">
+                        <h3>Fase 5: Despliegue Progresivo</h3>
+                        <p><strong>Entregable:</strong> Prototipo operativo inicial</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">11/11</div>
+                    <div class="timeline-content">
+                        <h3>Fase 6: Cierre Técnico y Operativo</h3>
+                        <p><strong>Entregable:</strong> Prototipo funcional en producción y cierre de proyecto</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Proceso Actual Section -->
+        <section id="proceso" class="section">
+            <div class="section-header">
+                <h2>Proceso Actual (AS IS)</h2>
+                <p>Flujo detallado del proceso de auditoría médica</p>
+            </div>
+
+            <div class="process-flow">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <h3>Recepción</h3>
+                    <p>Facturas del 1 al 10 de cada mes</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <h3>Expediente</h3>
+                    <p>Asociación en GECROS</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <h3>Homologación</h3>
+                    <p>Conversión de códigos prestador → Nobis</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <h3>Validación</h3>
+                    <p>Estados: Autorizado, Débito, Crédito, Rechazado</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">5</div>
+                    <h3>Liquidación</h3>
+                    <p>Cierre en cero para procesamiento</p>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>🏥 Prestadores Digitalizados</h3>
+                    <p><strong>Ejemplo:</strong> Sanatorio Allende</p>
+                    <ul style="text-align: left; margin-top: 1rem;">
+                        <li>Documentación en cloud</li>
+                        <li>Estructura organizada</li>
+                        <li>Proceso estandarizado</li>
+                    </ul>
+                </div>
+                <div class="stat-card">
+                    <h3>📋 Prestadores Manuales</h3>
+                    <p><strong>Ejemplo:</strong> NOA</p>
+                    <ul style="text-align: left; margin-top: 1rem;">
+                        <li>Documentación física/Excel</li>
+                        <li>Mayor trabajo manual</li>
+                        <li>Procesos heterogéneos</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Oportunidades Section -->
+        <section id="oportunidades" class="section">
+            <div class="section-header">
+                <h2>Oportunidades Identificadas</h2>
+                <p>Áreas clave de mejora y automatización</p>
+            </div>
+
+            <div class="opportunities-grid">
+                <div class="opportunity-card">
+                    <h3>🔍 Búsqueda Manual</h3>
+                    <p><strong>Oportunidad:</strong> Búsqueda manual de carpetas por número de cuenta</p>
+                    <p><strong>Riesgo:</strong> Alto potencial de errores</p>
+                    <p><strong>Solución:</strong> Automatización de búsqueda y indexación</p>
+                </div>
+
+                <div class="opportunity-card">
+                    <h3>🔗 Homologación Heterogénea</h3>
+                    <p><strong>Oportunidad:</strong> Códigos heterogéneos entre prestadores</p>
+                    <p><strong>Impacto:</strong> Procesos inconsistentes</p>
+                    <p><strong>Solución:</strong> Homologación centralizada de códigos</p>
+                </div>
+
+                <div class="opportunity-card">
+                    <h3>💊 Control Manual</h3>
+                    <p><strong>Oportunidad:</strong> Procesos altamente manuales en medicamentos</p>
+                    <p><strong>Impacto:</strong> Baja productividad</p>
+                    <p><strong>Solución:</strong> Verificación automática de dosis</p>
+                </div>
+
+                <div class="opportunity-card">
+                    <h3>📋 Sistematización</h3>
+                    <p><strong>Oportunidad:</strong> Falta registro de intervención médica</p>
+                    <p><strong>Impacto:</strong> Pérdida de trazabilidad</p>
+                    <p><strong>Solución:</strong> Sistema de registro automático</p>
+                </div>
+
+                <div class="opportunity-card">
+                    <h3>📄 Documentación Dispersa</h3>
+                    <p><strong>Oportunidad:</strong> Documentación incompleta (FM6/FM7)</p>
+                    <p><strong>Impacto:</strong> Retrasos en validación</p>
+                    <p><strong>Solución:</strong> Alertas automáticas de documentos faltantes</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Riesgos & KPIs Section -->
+        <section id="riesgos" class="section">
+            <div class="section-header">
+                <h2>Riesgos & KPIs</h2>
+                <p>Análisis de riesgos e indicadores clave de rendimiento</p>
+            </div>
+
+            <h3 style="margin: 2rem 0 1rem 0; color: var(--nobis-green);">🚨 Matriz de Riesgos</h3>
+            <div class="risk-matrix">
+                <div class="risk-card risk-high">
+                    <h4>🔴 Riesgo Alto</h4>
+                    <p><strong>Limitada disponibilidad de médicos auditores</strong></p>
+                    <p>Impacto: Retraso en validaciones críticas</p>
+                    <p>Tratamiento: Asegurar agendas bloqueadas y suplentes</p>
+                </div>
+
+                <div class="risk-card risk-medium">
+                    <h4>🟡 Riesgo Medio</h4>
+                    <p><strong>Carga manual excesiva</strong></p>
+                    <p>Impacto: Productividad baja, riesgo de errores</p>
+                    <p>Tratamiento: Automatizar controles y reducir carga repetitiva</p>
+                </div>
+
+                <div class="risk-card risk-medium">
+                    <h4>🟡 Riesgo Medio</h4>
+                    <p><strong>Complejidad de reglas variables</strong></p>
+                    <p>Impacto: Extensión en tiempos de desarrollo</p>
+                    <p>Tratamiento: Priorizar reglas frecuentes en prototipo</p>
+                </div>
+
+                <div class="risk-card risk-low">
+                    <h4>🟢 Riesgo Bajo</h4>
+                    <p><strong>Errores en formatos TXT/Excel</strong></p>
+                    <p>Impacto: Fallos en importación a GECROS</p>
+                    <p>Tratamiento: Controles automáticos previos</p>
+                </div>
+            </div>
+
+            <h3 style="margin: 2rem 0 1rem 0; color: var(--nobis-green);">📊 KPIs Principales</h3>
+            <div class="kpi-dashboard">
+                <div class="kpi-card">
+                    <div class="kpi-value">4-5</div>
+                    <h4>Días/Semana</h4>
+                    <p>Tiempo actual en tareas manuales</p>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-value">6h</div>
+                    <h4>Horas Semanales</h4>
+                    <p>Objetivo de reducción en 6 semanas</p>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-value">100%</div>
+                    <h4>Automatización</h4>
+                    <p>Meta de procesos automatizables</p>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-value">Real-time</div>
+                    <h4>Alertas</h4>
+                    <p>Notificaciones automáticas</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Próximos Pasos Section -->
+        <section id="proximos" class="section">
+            <div class="section-header">
+                <h2>Próximos Pasos</h2>
+                <p>Hoja de ruta para la implementación exitosa</p>
+            </div>
+
+            <div class="process-flow">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <h3>Validación AS IS</h3>
+                    <p>Confirmar relevamiento con stakeholders</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <h3>Relevar Prestadores</h3>
+                    <p>Ampliar análisis a nuevos prestadores</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <h3>Quick Wins</h3>
+                    <p>Priorizar alertas de autorizaciones</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <h3>Prototipo TO BE</h3>
+                    <p>Diseñar automatización parcial</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">5</div>
+                    <h3>Piloto Allende</h3>
+                    <p>Implementar con prestador digitalizado</p>
+                </div>
+            </div>
+
+            <div class="opportunities-grid">
+                <div class="opportunity-card">
+                    <h3>🎯 Objetivos Inmediatos</h3>
+                    <ul style="text-align: left;">
+                        <li>Validar documento AS IS con equipo Nobis</li>
+                        <li>Definir criterios de selección de prestadores</li>
+                        <li>Establecer métricas de éxito del piloto</li>
+                        <li>Planificar recursos y cronograma detallado</li>
+                    </ul>
+                </div>
+
+                <div class="opportunity-card">
+                    <h3>🚀 Entregables Clave</h3>
+                    <ul style="text-align: left;">
+                        <li>Manual de Proceso Automatización Sanatorio Allende</li>
+                        <li>Prototipo funcional de alertas automáticas</li>
+                        <li>Sistema de homologación centralizada</li>
+                        <li>Dashboard de KPIs en tiempo real</li>
+                    </ul>
+                </div>
+
+                <div class="opportunity-card">
+                    <h3>🎉 Beneficios Esperados</h3>
+                    <ul style="text-align: left;">
+                        <li>Reducción 60% en tiempo de procesamiento</li>
+                        <li>Disminución significativa de errores manuales</li>
+                        <li>Mejora en trazabilidad y auditoría</li>
+                        <li>Estandarización de procesos</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Update navigation
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.closest('.nav-item').classList.add('active');
+
+            // Close mobile nav if open
+            if (window.innerWidth <= 768) {
+                document.getElementById('navContainer').classList.remove('open');
+            }
+        }
+
+        function toggleNav() {
+            document.getElementById('navContainer').classList.toggle('open');
+        }
+
+        // Close mobile nav when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('navContainer');
+            const toggleBtn = document.querySelector('.toggle-nav');
+            
+            if (window.innerWidth <= 768 && 
+                !nav.contains(event.target) && 
+                !toggleBtn.contains(event.target)) {
+                nav.classList.remove('open');
+            }
+        });
+
+        // Add smooth scrolling and animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate stats on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationDelay = Math.random() * 0.5 + 's';
+                        entry.target.classList.add('animate-in');
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all cards
+            document.querySelectorAll('.stat-card, .opportunity-card, .risk-card, .process-step').forEach(card => {
+                observer.observe(card);
+            });
+        });
+    </script>
+
+    <style>
+        .animate-in {
+            animation: slideInUp 0.8s ease forwards;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</body>
+</html>
