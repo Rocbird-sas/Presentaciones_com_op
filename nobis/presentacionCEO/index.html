@@ -14,7 +14,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0066CC 0%, #5BA3D9 100%);
             overflow: hidden;
             color: #333;
         }
@@ -142,6 +142,11 @@
             color: #333;
         }
 
+        .stat-card.orange {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            color: #333;
+        }
+
         .stat-number {
             font-size: 3em;
             font-weight: bold;
@@ -258,6 +263,78 @@
             margin-top: 10px;
             font-size: 0.9em;
             color: #666;
+        }
+
+        /* Formula Cards */
+        .formula-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .formula-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .formula-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            margin-right: 15px;
+        }
+
+        .formula-title {
+            font-size: 1.4em;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .formula-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            margin: 15px 0;
+        }
+
+        .formula-line {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+
+        .formula-var {
+            background: #fff;
+            padding: 8px 15px;
+            border-radius: 5px;
+            border: 2px dashed #667eea;
+            margin: 0 10px;
+            min-width: 150px;
+            text-align: center;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .formula-result {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
         }
 
         /* Process Flow */
@@ -684,6 +761,13 @@
             color: white;
         }
 
+        .two-column-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -714,10 +798,10 @@
         <!-- Slide 1: Portada -->
         <div class="slide slide-cover active">
             <h1>Sistema de Auditoría Automatizada</h1>
-            <div class="subtitle"> ASPECTOS EVOLUTIVOS</div>
+            <div class="subtitle">ASPECTOS EVOLUTIVOS</div>
             <div style="margin-top: 50px; font-size: 1.8em;">
                 <div>✓ ROI de Tiempo</div>
-                <div style="margin-top: 15px;">✓ ROI de Dinero</div>
+                <div style="margin-top: 15px;">✓ ROI Económico</div>
                 <div style="margin-top: 15px;">✓ Integración Gcross</div>
             </div>
             <div class="date">Octubre 2025</div>
@@ -725,7 +809,7 @@
 
         <!-- Slide 2: Situación Actual -->
         <div class="slide">
-            <div class="slide-number">2/14</div>
+            <div class="slide-number">2/15</div>
             <div class="slide-header">
                 <h2>Situación Actual</h2>
                 <div class="subtitle">Proceso de auditoría manual</div>
@@ -740,7 +824,7 @@
                     <div class="stat-card">
                         <div class="stat-label">Personal Dedicado</div>
                         <div class="stat-number">15</div>
-                        <div class="stat-label">personas máximo</div>
+                        <div class="stat-label">personas máximo (+ externos)</div>
                     </div>
                     <div class="stat-card green">
                         <div class="stat-label">Horas Diarias</div>
@@ -750,7 +834,7 @@
                 </div>
 
                 <div class="highlight-box warning" style="margin-top: 30px;">
-                    <strong>⚠️ Problema Crítico:</strong> Por falta de tiempo, no se audita el 100% de las internaciones. Solo se procesan las que superan cierto monto, dejando dinero sin recuperar.
+                    <strong>⚠️ Problema Crítico:</strong> Por falta de tiempo, es imposible auditar el 100% de las internaciones. Solo se procesan las que superan cierto monto, dejando dinero sin recuperar.
                 </div>
 
                 <div class="benefits-grid" style="margin-top: 30px;">
@@ -762,7 +846,7 @@
                     <div class="benefit-card">
                         <div class="benefit-icon">⏱️</div>
                         <h4>Cuellos de Botella</h4>
-                        <p>Cuando no alcanzan los tiempos, aprueban sin auditar, generando pérdida de ingresos.</p>
+                        <p>Las restricciones de tiempo ocasionalmente requieren priorización, lo que puede resultar en oportunidades de recuperación no capturadas.</p>
                     </div>
                 </div>
             </div>
@@ -770,7 +854,7 @@
 
         <!-- Slide 3: El Desafío -->
         <div class="slide">
-            <div class="slide-number">3/14</div>
+            <div class="slide-number">3/15</div>
             <div class="slide-header">
                 <h2>El Desafío</h2>
                 <div class="subtitle">Limitaciones del proceso actual</div>
@@ -808,14 +892,14 @@
                 </div>
 
                 <div class="highlight-box warning" style="margin-top: 30px;">
-                    <strong>Resultado:</strong> Proceso lento, propenso a errores, incompleto por falta de tiempo, y con alto costo operativo.
+                    <strong>Resultado:</strong> Proceso intensivo en tiempo y recursos, con cobertura limitada por capacidad operativa disponible..
                 </div>
             </div>
         </div>
 
         <!-- Slide 4: Propuesta de Valor -->
         <div class="slide">
-            <div class="slide-number">4/14</div>
+            <div class="slide-number">4/15</div>
             <div class="slide-header">
                 <h2>Nuestra Propuesta</h2>
                 <div class="subtitle">Sistema automatizado e inteligente</div>
@@ -825,34 +909,35 @@
                     <div class="benefit-card">
                         <div class="benefit-icon">🚀</div>
                         <h4>Velocidad Exponencial</h4>
-                        <p>De 10-15 días a 3-6 horas. Procesamiento masivo y paralelo de archivos.</p>
+                        <p>De 10-15 días a 3-6 (horas aproximadamente).</p> 
+                        <p>Procesamiento masivo y paralelo de archivos.</p>
                     </div>
                     <div class="benefit-card">
                         <div class="benefit-icon">🎯</div>
                         <h4>Precisión 100%</h4>
-                        <p>Sistema incorruptible que audita todos los casos sin excepciones por tiempo.</p>
+                        <p>Sistema que audita todos los casos sin excepciones por tiempo.</p>
                     </div>
                     <div class="benefit-card">
                         <div class="benefit-icon">💰</div>
                         <h4>Máxima Recuperación</h4>
-                        <p>Auditoría del 100% de internaciones vs porcentaje parcial actual.</p>
+                        <p>Auditoría del 100% de internaciones solicitadas (Sanatorio Allende).</p>
                     </div>
                     <div class="benefit-card">
                         <div class="benefit-icon">🔄</div>
                         <h4>Integración Directa</h4>
-                        <p>Carga automática en Gcross mediante archivo TXT, sin trabajo manual.</p>
+                        <p>Carga en Gcross mediante archivo TXT generado en el procesamiento de auditoria.</p>
                     </div>
                 </div>
 
                 <div class="highlight-box success" style="margin-top: 30px;">
-                    <strong>✓ Impacto Directo:</strong> Liberación de 15 personas del trabajo repetitivo, reducción de costos operativos, y aumento significativo en débitos detectados.
+                    <strong>✓ Impacto Directo:</strong> Liberación de  personas del trabajo repetitivo, reducción de costos operativos, y aumento significativo en débitos detectados.
                 </div>
             </div>
         </div>
 
         <!-- Slide 5: ROI Tiempo - Detalle -->
         <div class="slide">
-            <div class="slide-number">5/14</div>
+            <div class="slide-number">5/15</div>
             <div class="slide-header">
                 <h2>ROI de Tiempo - Análisis Detallado</h2>
                 <div class="subtitle">Comparativa exhaustiva</div>
@@ -866,8 +951,7 @@
                             <strong>Días completos</strong><br>
                             6 horas/día<br>
                             15 personas<br>
-                            Proceso manual<br>
-                            Auditoría parcial
+                            Proceso manual
                         </div>
                     </div>
                     <div class="arrow-container">
@@ -875,13 +959,13 @@
                         <div class="arrow-label">REDUCCIÓN<br>97%</div>
                     </div>
                     <div class="time-card new">
-                        <h3>🚀 Con Sistema</h3>
+                        <h3>🚀 Con Automate</h3>
                         <div class="time-value">3-6h</div>
                         <div class="time-details">
-                            <strong>Horas totales</strong><br>
+                            <strong>Horas Aproximadas</strong><br>
                             Automatizado<br>
                             Paralelo<br>
-                            Optimizable a 1h<br>
+                            Optimizable<br>
                             Auditoría completa
                         </div>
                     </div>
@@ -893,24 +977,24 @@
                             <tr>
                                 <th>Métrica</th>
                                 <th>Actual</th>
-                                <th>Con Sistema</th>
+                                <th>Con Automate</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td class="metric">Tiempo Total</td>
-                                <td class="value-old">240-360 horas-persona</td>
-                                <td class="value-new">3-6 horas</td>
+                                <td class="value-old">900-1,350 horas-personas</td>
+                                <td class="value-new">3-6 horas aprox</td>
                             </tr>
                             <tr>
                                 <td class="metric">Cobertura</td>
-                                <td class="value-old">Parcial (~20%)</td>
+                                <td class="value-old">Posiblemente parcial</td>
                                 <td class="value-new">100%</td>
                             </tr>
                             <tr>
                                 <td class="metric">Personal Necesario</td>
-                                <td class="value-old">15 personas</td>
-                                <td class="value-new">1 supervisor</td>
+                                <td class="value-old">15 personas (con externos)</td>
+                                <td class="value-new">1 supervisor analista</td>
                             </tr>
                             <tr>
                                 <td class="metric">Procesamiento</td>
@@ -925,7 +1009,7 @@
 
         <!-- Slide 6: ROI Dinero - Situación Actual -->
         <div class="slide">
-            <div class="slide-number">6/14</div>
+            <div class="slide-number">6/15</div>
             <div class="slide-header">
                 <h2>ROI de Dinero - Estado Actual</h2>
                 <div class="subtitle">Análisis de débitos</div>
@@ -950,14 +1034,14 @@
                 </div>
 
                 <div class="highlight-box info" style="margin-top: 30px;">
-                    <strong>💡 Contexto:</strong> Novis ya aumentó de 3.2% a 3.5% en débitos. El objetivo es llegar a 5% y potencialmente superarlo con auditoría completa.
+                    <strong>💡 Contexto:</strong> Nobis cuenta con 3.2% a 3.5% en débitos. El objetivo es llegar a 5% y potencialmente superarlo ampliamente con auditoría completa.
                 </div>
             </div>
         </div>
 
         <!-- Slide 7: ROI Dinero - Potencial -->
         <div class="slide">
-            <div class="slide-number">7/14</div>
+            <div class="slide-number">7/15</div>
             <div class="slide-header">
                 <h2>ROI de Dinero - Potencial Real</h2>
                 <div class="subtitle">Oportunidad de crecimiento</div>
@@ -985,17 +1069,17 @@
                     <div class="benefit-card">
                         <div class="benefit-icon">✅</div>
                         <h4>Ventaja Clave #1</h4>
-                        <p><strong>Auditoría 100% de internaciones:</strong> Hoy solo se auditan las que superan cierto monto. El sistema procesará todas.</p>
+                        <p><strong>Auditoría 100% de internaciones:</strong> El sistema procesará todas las auditorías de internaciones de Sanatorio Allende.</p>
                     </div>
                     <div class="benefit-card">
                         <div class="benefit-icon">🤖</div>
                         <h4>Ventaja Clave #2</h4>
-                        <p><strong>Sistema incorruptible:</strong> Procesará 100/100 casos, no 60/100 por falta de tiempo. Sin excepciones.</p>
+                        <p><strong>Sistema incorruptible:</strong> Procesará 100/100 casos.  El sistema potenciará el proceso, aumentando la capacidad de procesamiento.</p>
                     </div>
                     <div class="benefit-card">
                         <div class="benefit-icon">📈</div>
                         <h4>Ventaja Clave #3</h4>
-                        <p><strong>Recuperación de pérdidas:</strong> Los casos que antes se aprobaban sin auditar ahora serán procesados.</p>
+                        <p><strong>Optimización de recursos:</strong> Reducción del 97% en tiempo de auditoría, liberando personal para tareas de mayor valor agregado.</p>
                     </div>
                     <div class="benefit-card">
                         <div class="benefit-icon">🎯</div>
@@ -1010,9 +1094,162 @@
             </div>
         </div>
 
-        <!-- Slide 8: Consideraciones Estratégicas -->
+        <!-- Slide 8: ROI ECONÓMICO COMPLETO - NUEVA -->
         <div class="slide">
-            <div class="slide-number">8/14</div>
+            <div class="slide-number">8/15</div>
+            <div class="slide-header">
+                <h2>ROI Económico Completo</h2>
+                <div class="subtitle">Dos componentes principales de ahorro</div>
+            </div>
+            <div class="slide-content">
+                <div class="stats-grid" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="stat-card orange">
+                        <div class="stat-label">Componente 1</div>
+                        <div class="stat-number">💼</div>
+                        <div class="stat-label">Ahorro en Horas de Personal</div>
+                    </div>
+                    <div class="stat-card green">
+                        <div class="stat-label">Componente 2</div>
+                        <div class="stat-number">💰</div>
+                        <div class="stat-label">Aumento en Débitos Detectados</div>
+                    </div>
+                </div>
+
+                <div class="formula-container">
+                    <div class="formula-header">
+                        <div class="formula-icon">📊</div>
+                        <div class="formula-title">Fórmula de ROI Total</div>
+                    </div>
+                    <div class="formula-box">
+                        <div class="formula-line">
+                            <strong>ROI Total =</strong>
+                            <span style="margin: 0 10px;">Ahorro en Horas</span>
+                            <strong>+</strong>
+                            <span style="margin: 0 10px;">Aumento en Débitos</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="highlight-box info" style="margin-top: 30px;">
+                    <strong>📌 Nota:</strong> El ahorro en personal queda en manos de Nobis decidir cómo gestionarlo (reasignación, reducción de costos, etc.). Sin embargo, el ahorro cuantificable existe y debe considerarse en el cálculo total del ROI.
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Fórmula Ahorro Horas - NUEVA -->
+        <div class="slide">
+            <div class="slide-number">9/15</div>
+            <div class="slide-header">
+                <h2>Componente 1: Ahorro en Horas</h2>
+                <div class="subtitle">Cuantificación del tiempo liberado</div>
+            </div>
+            <div class="slide-content">
+                <div class="formula-container">
+                    <div class="formula-header">
+                        <div class="formula-icon">⏱️</div>
+                        <div class="formula-title">Cálculo de Ahorro en Horas</div>
+                    </div>
+                    
+                    <div class="formula-box">
+                        <div class="formula-line">
+                            <strong>Horas Actuales:</strong>
+                            <span class="formula-var">900-1,350 h</span>
+                        </div>
+                        <div class="formula-line">
+                            <strong>Horas Con Automate:</strong>
+                            <span class="formula-var">3-6 h aprox</span>
+                        </div>
+                        <div style="text-align: center; margin: 15px 0; font-size: 1.5em; color: #667eea;">
+                            <strong>⬇</strong>
+                        </div>
+                        <div class="formula-line">
+                            <strong>Ahorro en Horas =</strong>
+                            <span class="formula-var">~1000 h</span>
+                        </div>
+                    </div>
+
+                    <div class="formula-box" style="margin-top: 20px;">
+                        <div class="formula-line" style="justify-content: center;">
+                            <strong style="font-size: 1.2em;">Valor Económico del Ahorro =</strong>
+                        </div>
+                        <div class="formula-line" style="justify-content: center; margin-top: 10px;">
+                            <strong>1000 horas</strong>
+                            <strong style="margin: 0 10px;">×</strong>
+                            <span class="formula-var" style="background: #fff3cd; border-color: #ffc107; color: #856404;">
+                                Valor $/hora de Nobis
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="highlight-box warning" style="margin-top: 30px;">
+                    <strong>🔍 Acción Requerida:</strong> Nobis debe proporcionar el costo promedio por hora de personal de auditoría para cuantificar este ahorro en pesos.
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Fórmula Aumento Débitos - NUEVA 
+        <div class="slide">
+            <div class="slide-number">10/16</div>
+            <div class="slide-header">
+                <h2>Componente 2: Aumento en Débitos</h2>
+                <div class="subtitle">Dos métodos de cálculo</div>
+            </div>
+            <div class="slide-content">
+                <div class="two-column-grid">
+                    <div class="formula-container" style="margin-top: 0;">
+                        <div class="formula-header">
+                            <div class="formula-icon">1️⃣</div>
+                            <div class="formula-title" style="font-size: 1.2em;">Método 1: Incremento por Cobertura Total</div>
+                        </div>
+                        <div class="formula-box">
+                            <p style="margin-bottom: 15px; color: #666;">Aplicar auditoría al 100% de la población vs población parcial actual</p>
+                            <div class="formula-line" style="flex-direction: column; align-items: flex-start;">
+                                <strong style="margin-bottom: 10px;">Necesitamos conocer:</strong>
+                                <div style="margin-left: 20px;">
+                                    • Tasa de débitos actual (%)<br>
+                                    • Total que se audita hoy<br>
+                                    • Total de población completa
+                                </div>
+                            </div>
+                        </div>
+                        <div class="formula-box" style="margin-top: 15px; background: #e3f2fd; border-left-color: #2196F3;">
+                            <strong style="color: #1976D2;">% Incremento = </strong>
+                            <span style="color: #1976D2;">(Población Total / Población Auditada) - 1</span>
+                        </div>
+                    </div>
+
+                    <div class="formula-container" style="margin-top: 0;">
+                        <div class="formula-header">
+                            <div class="formula-icon">2️⃣</div>
+                            <div class="formula-title" style="font-size: 1.2em;">Método 2: Mejora de Asertividad</div>
+                        </div>
+                        <div class="formula-box">
+                            <p style="margin-bottom: 15px; color: #666;">Medición post-piloto comparando precisión manual vs automatizada</p>
+                            <div class="formula-line" style="flex-direction: column; align-items: flex-start;">
+                                <strong style="margin-bottom: 10px;">Se calculará después del piloto:</strong>
+                                <div style="margin-left: 20px;">
+                                    • Débitos detectados manualmente<br>
+                                    • Débitos detectados por sistema<br>
+                                    • % de mejora en precisión
+                                </div>
+                            </div>
+                        </div>
+                        <div class="formula-box" style="margin-top: 15px; background: #fff3e0; border-left-color: #FF9800;">
+                            <strong style="color: #F57C00;">Disponible tras piloto ✓</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="highlight-box info" style="margin-top: 30px;">
+                    <strong>💡 Recomendación:</strong> Usar Método 1 para proyección inicial (más fácil de calcular ahora). Método 2 validará y refinará estos números después del piloto.
+                </div>
+            </div>
+        </div> -->
+
+        <!-- Slide 11: Consideraciones Estratégicas -->
+        <div class="slide">
+            <div class="slide-number">10/15</div>
             <div class="slide-header">
                 <h2>Consideraciones Estratégicas</h2>
                 <div class="subtitle">Gestión del cambio con prestadores</div>
@@ -1051,9 +1288,9 @@
             </div>
         </div>
 
-        <!-- Slide 9: Arquitectura del Sistema -->
+        <!-- Slide 12: Arquitectura del Sistema -->
         <div class="slide">
-            <div class="slide-number">9/14</div>
+            <div class="slide-number">11/15</div>
             <div class="slide-header">
                 <h2>Arquitectura del Sistema</h2>
                 <div class="subtitle">Flujo técnico de procesamiento</div>
@@ -1084,15 +1321,15 @@
                     <div class="process-step">
                         <div class="step-icon">👨‍⚕️</div>
                         <div class="step-content">
-                            <h4>Human in the Middle (opcional)</h4>
-                            <p>Médico auditor revisa casos específicos mientras el proceso continúa</p>
+                            <h4>Human in the Middle</h4>
+                            <p>El auditor dispara el proceso y valida los resultados: el sistema propone, el humano decide.</p>
                         </div>
                     </div>
                     <div class="process-step">
                         <div class="step-icon">📤</div>
                         <div class="step-content">
-                            <h4>Output: TXT + Visualización</h4>
-                            <p>Archivo para carga en Gcross + Dashboard con resultados detallados</p>
+                            <h4>Output: TXT + Integracion Gcross</h4>
+                            <p>Archivo para carga en Gcross mediante TXT generado</p>
                         </div>
                     </div>
                 </div>
@@ -1103,9 +1340,9 @@
             </div>
         </div>
 
-        <!-- Slide 10: Integración Gcross - Lectura -->
+        <!-- Slide 13: Integración Gcross - Lectura -->
         <div class="slide">
-            <div class="slide-number">10/14</div>
+            <div class="slide-number">12/15</div>
             <div class="slide-header">
                 <h2>Integración Gcross - Parte 1</h2>
                 <div class="subtitle">Lectura de datos</div>
@@ -1127,7 +1364,7 @@
                     <div class="flow-step highlight">
                         <div class="flow-icon">🤖</div>
                         <h4>Sistema Auditoría</h4>
-                        <p>Lee y procesa<br>en tiempo real</p>
+                        <p>Lee y procesa<br></p>
                     </div>
                 </div>
 
@@ -1147,9 +1384,9 @@
             </div>
         </div>
 
-        <!-- Slide 11: Integración Gcross - Escritura -->
+        <!-- Slide 14: Integración Gcross - Escritura -->
         <div class="slide">
-            <div class="slide-number">11/14</div>
+            <div class="slide-number">14/15</div>
             <div class="slide-header">
                 <h2>Integración Gcross - Parte 2</h2>
                 <div class="subtitle">Escritura de resultados</div>
@@ -1201,9 +1438,9 @@
             </div>
         </div>
 
-        <!-- Slide 12: Requerimientos Críticos -->
+        <!-- Slide 15: Requerimientos Críticos -->
         <div class="slide">
-            <div class="slide-number">12/14</div>
+            <div class="slide-number">14/15</div>
             <div class="slide-header">
                 <h2>Requerimientos Críticos</h2>
                 <div class="subtitle">Necesarios para avanzar</div>
@@ -1222,79 +1459,23 @@
                     </div>
                     <div class="step-card">
                         <div class="step-number">3</div>
-                        <h4>Estructura TXT Gcross <span class="risk-badge medium">ALTO</span></h4>
-                        <p>Especificación técnica del formato de archivo para carga automática en Gcross.</p>
+                        <h4>Datos para ROI Económico <span class="risk-badge medium">ALTO</span></h4>
+                        <p>Costo por hora de personal y tasa de débitos actual sobre población auditada para cuantificar ahorros.</p>
                     </div>
                     <div class="step-card">
                         <div class="step-number">4</div>
-                        <h4>Parámetros de Auditoría <span class="risk-badge medium">MEDIO</span></h4>
-                        <p>Definir umbrales de montos mínimos y estrategia de cobertura según necesidades comerciales.</p>
+                        <h4>Estructura TXT Gcross <span class="risk-badge medium">ALTO</span></h4>
+                        <p>Especificación técnica del formato de archivo para carga automática en Gcross.</p>
                     </div>
-                </div>
-
-                <div class="highlight-box warning" style="margin-top: 30px;">
-                    <strong>⏱️ Urgencia:</strong> Las respuestas son críticas en este momento. Sin estos accesos, el desarrollo está bloqueado y no podemos garantizar tiempos de entrega.
                 </div>
             </div>
         </div>
 
-        <!-- Slide 13: Timeline de Implementación -->
+        <!-- Slide 16: Resumen Ejecutivo -->
         <div class="slide">
-            <div class="slide-number">13/14</div>
+            <div class="slide-number">15/15</div>
             <div class="slide-header">
-                <h2>Timeline de Implementación</h2>
-                <div class="subtitle">Roadmap de desarrollo</div>
-            </div>
-            <div class="slide-content">
-                <div class="timeline">
-                    <div class="timeline-item done">
-                        <div class="timeline-content">
-                            <div class="timeline-date">Semanas 1-3</div>
-                            <h4>✅ Fase de Análisis y Prototipo</h4>
-                            <p>Relevamiento completado, arquitectura definida, procesamiento de archivos al 60-70%</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item pending">
-                        <div class="timeline-content">
-                            <div class="timeline-date">Viernes 17 Oct</div>
-                            <h4>🎯 Demo Funcional</h4>
-                            <p>Prototipo ajustado con interfaz visual de 3 pasos. Sujeto a recepción de accesos y vistas.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <div class="timeline-date">Semanas 4-5</div>
-                            <h4>⚙️ Integración Completa</h4>
-                            <p>Conexión con vistas de Gcross, procesamiento de nomencladores, cálculo de débitos real</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <div class="timeline-date">Semana 6</div>
-                            <h4>🧪 Pruebas de Estrés</h4>
-                            <p>Procesamiento de 67+ pacientes reales, optimización de tiempos, ajustes de paralelización</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <div class="timeline-date">Semana 7-8</div>
-                            <h4>🚀 Validación y Ajuste Final</h4>
-                            <p>Sistema completo validado, generación de TXT para Gcross, capacitación de usuarios</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="highlight-box info" style="margin-top: 30px;">
-                    <strong>📍 Estamos aquí:</strong> Semana 4 de desarrollo. Bloqueados en integración por falta de accesos críticos.
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 14: Resumen Ejecutivo -->
-        <div class="slide">
-            <div class="slide-number">14/14</div>
-            <div class="slide-header">
-                <h2>Resumen Ejecutivo</h2>
+                <h2>Resumen de solución</h2>
                 <div class="subtitle">Puntos clave para decisión</div>
             </div>
             <div class="slide-content">
@@ -1302,17 +1483,17 @@
                     <div class="stat-card blue">
                         <div class="stat-label">Ahorro de Tiempo</div>
                         <div class="stat-number">97%</div>
-                        <div class="stat-label">De 10-15 días a 3-6h</div>
+                        <div class="stat-label">De 10-15 días a 3-6h aprox</div>
+                    </div>
+                    <div class="stat-card orange">
+                        <div class="stat-label">ROI Económico</div>
+                        <div class="stat-number">2x+</div>
+                        <div class="stat-label">Horas + Débitos</div>
                     </div>
                     <div class="stat-card green">
-                        <div class="stat-label">ROI Financiero</div>
+                        <div class="stat-label">Aumento Débitos</div>
                         <div class="stat-number">5%+</div>
                         <div class="stat-label">Superable con 100%</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Cobertura</div>
-                        <div class="stat-number">100%</div>
-                        <div class="stat-label">De todos los casos</div>
                     </div>
                 </div>
 
@@ -1322,7 +1503,7 @@
                         <h4>Lo Que Tenemos</h4>
                         <p>• Procesamiento masivo de archivos funcional<br>
                         • Arquitectura completa diseñada<br>
-                        • 60-70% del flujo implementado<br>
+                        • 30-50% del flujo desarrollado <br>
                         • Capacidad de generar TXT para Gcross</p>
                     </div>
                     <div class="benefit-card">
@@ -1330,17 +1511,35 @@
                         <h4>Lo Que Necesitamos</h4>
                         <p>• Acceso a vistas de Gcross (CRÍTICO)<br>
                         • Acceso a repositorio de archivos (CRÍTICO)<br>
-                        • Estructura TXT para Gcross<br>
-                        • Definición de parámetros de auditoría</p>
+                        • Datos para calcular ROI económico (opcional)<br>
+                        • Estructura TXT para Gcross</p>
                     </div>
                 </div>
 
                 <div class="highlight-box success" style="margin-top: 30px;">
-                    <strong>✓ Próximo Hito:</strong> Demo funcional el viernes 17 de octubre con interfaz visual completa.
+                    <strong>✓ Próximo Hito:</strong> Demo el viernes 17 de octubre de proceso realizado.
                 </div>
 
-                <div class="highlight-box warning">
-                    <strong>⚠️ Consideración Estratégica:</strong> El aumento en débitos detectados requerirá gestión comercial con prestadores.
+                <div class="highlight-box info">
+                    <strong>💡 Fórmula de Valor:</strong> ROI Total = (Ahorro Horas × $/hora Nobis) + (Incremento % Débitos × Facturación Mensual)
+                </div>
+            </div>
+        </div>
+        <!-- Slide Final: Cierre -->
+        <div class="slide slide-cover">
+            <div style="text-align: center;">
+                <h1 style="font-size: 4em; margin-bottom: 30px;">Muchas Gracias</h1>
+                
+                <div style="font-size: 1.8em; font-style: italic; opacity: 0.9; margin: 50px auto; max-width: 800px; line-height: 1.6;">
+                    "La automatización no reemplaza el talento humano,<br>
+                    lo libera para enfocarse en lo que realmente importa:<br>
+                    la estrategia, la innovación y el crecimiento."
+                </div>
+
+                <div style="margin-top: 80px; font-size: 1.3em; opacity: 0.85;">
+                    <div style="font-size: 1em; margin-top: 30px;">
+                        🚀 Próximos pasos: Demo 17 de octubre de proceso realizado
+                    </div>
                 </div>
             </div>
         </div>
@@ -1427,7 +1626,7 @@
                     labels: ['Actual', 'Objetivo', 'Potencial'],
                     datasets: [{
                         label: 'Porcentaje de Débitos',
-                        data: [3.2, 5, 7.5],
+                        data: [3.2, 5, 8],
                         backgroundColor: [
                             'rgba(220, 53, 69, 0.7)',
                             'rgba(255, 193, 7, 0.7)',
