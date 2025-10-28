@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transformación Digital DICON | Rocbird</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --dicon-red: #E30613;
+            --dicon-dark: #1a1a1a;
+            --dicon-gray: #4a4a4a;
+            --dicon-light: #f5f5f5;
+            --rocbird-blue: #0891B2;
+            --bg-white: #ffffff;
+            --bg-light-gray: #f8f9fa;
+            --text-dark: #1a1a1a;
+            --text-gray: #4a4a4a;
+            --border-light: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            background: var(--bg-white);
+            color: var(--text-dark);
+        }
+
+        .presentation {
+            width: 100%;
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem 2rem;
+            scroll-snap-align: start;
+            position: relative;
+            opacity: 0;
+            animation: fadeInSlide 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeInSlide {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .slide-1 {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        }
+
+        .slide-2 {
+            background: var(--bg-white);
+        }
+
+        .slide-3 {
+            background: linear-gradient(to bottom, #ffffff 0%, #fff5f5 100%);
+        }
+
+        .slide-4 {
+            background: linear-gradient(135deg, #f0fff4 0%, #ffffff 100%);
+        }
+
+        .slide-5, .slide-6, .slide-7, .slide-8, .slide-9 {
+            background: var(--bg-white);
+        }
+
+        /* Logo Container */
+        .logo-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 3rem;
+        }
+
+        .logo-rocbird {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--rocbird-blue);
+            letter-spacing: 2px;
+        }
+
+        .logo-dicon {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--dicon-red);
+            letter-spacing: 3px;
+        }
+
+        /* Title Styles */
+        .main-title {
+            font-size: 4rem;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #720101 0%, var(--dicon-red) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: titlePulse 3s ease-in-out infinite;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .subtitle {
+            font-size: 1.8rem;
+            text-align: center;
+            color: var(--text-gray);
+            margin-bottom: 3rem;
+            max-width: 800px;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            color: var(--dicon-red);
+            text-align: center;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--dicon-red);
+            animation: expandLine 1s ease-out;
+        }
+
+        @keyframes expandLine {
+            from { width: 0; }
+            to { width: 100px; }
+        }
+
+        /* Content Container */
+        .content-container {
+            max-width: 1200px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-light-gray);
+            border: 2px solid var(--border-light);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 900px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--dicon-red);
+            box-shadow: 0 20px 40px rgba(227, 6, 19, 0.15);
+            background: white;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            color: var(--dicon-red);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--dicon-red);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            animation: iconBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes iconBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .card-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-gray);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 2px solid var(--dicon-red);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(227, 6, 19, 0.08) 0%, transparent 70%);
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            to { transform: rotate(360deg); }
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--dicon-red);
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-label {
+            font-size: 1.2rem;
+            color: var(--text-dark);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Pillars Grid */
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 2rem;
+        }
+
+        .pillar-card {
+            background: white;
+            border: 2px solid var(--border-light);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .pillar-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(227, 6, 19, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .pillar-card:hover::before {
+            left: 100%;
+        }
+
+        .pillar-card:hover {
+            transform: scale(1.05);
+            border-color: var(--dicon-red);
+            background: #fff5f5;
+            box-shadow: 0 10px 30px rgba(227, 6, 19, 0.15);
+        }
+
+        .pillar-number {
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--dicon-red);
+            opacity: 0.3;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+
+        .pillar-title {
+            font-size: 1.8rem;
+            color: var(--dicon-red);
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .pillar-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-gray);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Comparison */
+        .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 2rem;
+        }
+
+        .comparison-side {
+            position: relative;
+        }
+
+        .comparison-label {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border-radius: 15px;
+        }
+
+        .label-before {
+            background: rgba(255, 100, 100, 0.2);
+            color: #ff6464;
+            border: 2px solid #ff6464;
+        }
+
+        .label-after {
+            background: rgba(100, 255, 100, 0.2);
+            color: #067c06;
+            border: 2px solid #64ff64;
+        }
+
+        .comparison-list {
+            list-style: none;
+        }
+
+        .comparison-item {
+            background: white;
+            border-left: 4px solid;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            color: var(--text-dark);
+        }
+
+        .before-item {
+            border-color: #ff6464;
+        }
+
+        .after-item {
+            border-color: #64ff64;
+        }
+
+        .comparison-item:hover {
+            transform: translateX(10px);
+            background: var(--bg-light-gray);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--dicon-red);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            width: 45%;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            background: white;
+            border: 2px solid var(--border-light);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 55%;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 20px;
+            height: 20px;
+            background: var(--dicon-red);
+            border: 4px solid white;
+            border-radius: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 0 0 4px var(--border-light);
+        }
+
+        .timeline-item:nth-child(odd)::before {
+            right: -60px;
+        }
+
+        .timeline-item:nth-child(even)::before {
+            left: -60px;
+        }
+
+        .timeline-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(227, 6, 19, 0.15);
+            border-color: var(--dicon-red);
+        }
+
+        .phase-number {
+            font-size: 1.5rem;
+            color: var(--dicon-red);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .phase-title {
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .phase-description {
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 2rem;
+        }
+
+        .team-card {
+            background: white;
+            border: 2px solid var(--border-light);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(227, 6, 19, 0.15);
+            border-color: var(--dicon-red);
+        }
+
+        .team-role {
+            font-size: 1.8rem;
+            color: var(--dicon-red);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .team-description {
+            color: var(--text-gray);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .team-allocation {
+            font-size: 1.2rem;
+            color: var(--rocbird-blue);
+            font-weight: 600;
+        }
+
+        /* ROI Grid */
+        .roi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 2rem;
+        }
+
+        .roi-card {
+            background: white;
+            border: 2px solid var(--border-light);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .roi-card::after {
+            content: '✓';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            color: #64ff64;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s ease;
+        }
+
+        .roi-card:hover::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .roi-card:hover {
+            transform: translateY(-5px);
+            background: #f0fff4;
+            border-color: #64ff64;
+            box-shadow: 0 10px 30px rgba(100, 255, 100, 0.15);
+        }
+
+        .roi-title {
+            font-size: 1.5rem;
+            color: var(--dicon-red);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .roi-description {
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        /* Investment Box */
+        .investment-box {
+            background: linear-gradient(135deg, rgba(227, 6, 19, 0.2) 0%, rgba(227, 6, 19, 0.05) 100%);
+            border: 3px solid var(--dicon-red);
+            border-radius: 25px;
+            padding: 3rem;
+            text-align: center;
+            max-width: 600px;
+            margin: 2rem auto;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(227, 6, 19, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(227, 6, 19, 0.6); }
+        }
+
+        .investment-label {
+            font-size: 1.5rem;
+            color: rgb(7, 7, 7);
+            margin-bottom: 1rem;
+        }
+
+        .investment-amount {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--dicon-red);
+            margin-bottom: 1rem;
+        }
+
+        .investment-details {
+            font-size: 1.2rem;
+            color: rgb(7, 7, 7)
+        }
+
+        /* Navigation */
+        .nav-container {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.2);
+            margin: 1rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-dot:hover, .nav-dot.active {
+            background: var(--dicon-red);
+            transform: scale(1.5);
+            border-color: var(--dicon-red);
+        }
+
+        /* CTA Button */
+        .cta-button {
+            background: var(--dicon-red);
+            color: white;
+            border: none;
+            padding: 1.5rem 3rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+            box-shadow: 0 10px 30px rgba(227, 6, 19, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(227, 6, 19, 0.5);
+            background: #ff0717;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 5px;
+            background: var(--dicon-red);
+            z-index: 9999;
+            transition: width 0.3s ease;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        /* Interactive Features */
+        .interactive-number {
+            font-size: 5rem;
+            font-weight: 900;
+            color: var(--dicon-red);
+            text-align: center;
+            margin: 2rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .interactive-number:hover {
+            transform: scale(1.2) rotate(5deg);
+            text-shadow: 0 0 30px rgba(227, 6, 19, 0.5);
+        }
+
+        /* Contact Info */
+        .contact-info {
+            background: white;
+            border: 2px solid var(--rocbird-blue);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            max-width: 500px;
+            margin: 2rem auto;
+            box-shadow: 0 4px 12px rgba(8, 145, 178, 0.15);
+        }
+
+        .contact-name {
+            font-size: 2rem;
+            color: var(--rocbird-blue);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-title {
+            font-size: 1.3rem;
+            color: var(--text-gray);
+            margin-bottom: 1rem;
+        }
+
+        .contact-detail {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            margin: 0.5rem 0;
+        }
+
+        /* Demo Button */
+        .demo-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, var(--dicon-red) 0%, #ff0717 100%);
+            color: white;
+            border: none;
+            padding: 1.2rem 2.5rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10000;
+            box-shadow: 0 10px 30px rgba(227, 6, 19, 0.4);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: demoPulse 2s ease-in-out infinite;
+        }
+
+        .demo-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(227, 6, 19, 0.6);
+        }
+
+        .demo-button:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        @keyframes demoPulse {
+            0%, 100% {
+                box-shadow: 0 10px 30px rgba(227, 6, 19, 0.4);
+            }
+            50% {
+                box-shadow: 0 10px 40px rgba(227, 6, 19, 0.7);
+            }
+        }
+
+        .demo-icon {
+            font-size: 1.5rem;
+            animation: demoIconSpin 3s linear infinite;
+        }
+
+        @keyframes demoIconSpin {
+            0%, 90% {
+                transform: rotate(0deg);
+            }
+            95%, 100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .pillars-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-container {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-item {
+                width: 100%;
+                left: 0 !important;
+            }
+
+            .timeline-item::before {
+                left: -10px !important;
+            }
+
+            .timeline::before {
+                left: 0;
+            }
+
+            .demo-button {
+                bottom: 1rem;
+                right: 1rem;
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(227, 6, 19, 0.3);
+            border-top-color: var(--dicon-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    
+    <!-- Demo Button -->
+    <a href="https://rocbird-dicon-demo.figma.site/" target="_blank" rel="noopener noreferrer" class="demo-button">
+        <span class="demo-icon">🚀</span>
+        <span>Demo</span>
+    </a>
+    
+    <div class="nav-container" id="navContainer">
+        <!-- Navigation dots will be generated by JS -->
+    </div>
+
+    <div class="presentation" id="presentation">
+        <!-- Slide 1: Portada -->
+        <section class="slide slide-1">
+            <div class="content-container">
+                <div class="logo-container">
+                    <div class="logo-rocbird">ROCBIRD</div>
+                    <div class="logo-dicon">DICON</div>
+                </div>
+                <h1 class="main-title">Transformación Digital y Gestión Inteligente de Proyectos</h1>
+                <p class="subtitle">Una evolución controlada hacia la excelencia operativa</p>
+                <div class="interactive-number" onclick="this.style.transform='scale(1.5) rotate(360deg)'">2025</div>
+            </div>
+        </section>
+
+        <!-- Slide 2: Contexto -->
+        <section class="slide slide-2">
+            <div class="content-container">
+                <h2 class="section-title">Contexto DICON</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">32</div>
+                        <div class="stat-label">Años de Excelencia</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">228</div>
+                        <div class="stat-label">Obras Realizadas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">1.33</div>
+                        <div class="stat-label">Mts. de Obras Construidas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">4</div>
+                        <div class="stat-label">Sedes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">50</div>
+                        <div class="stat-label">+ Clientes</div>
+                    </div>
+                </div>
+                <div class="card fade-in" style="margin-top: 3rem;">
+                    <div class="card-title">
+                        <div class="card-icon">🎯</div>
+                        <span>Nuestro Entendimiento</span>
+                    </div>
+                    <div class="card-content">
+                        La excelencia de DICON se ha forjado a través de la ejecución impecable de proyectos de alta complejidad. Sin embargo, el crecimiento sostenido presenta desafíos operativos que las herramientas tradicionales ya no pueden resolver.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: Escenario Actual -->
+        <section class="slide slide-3">
+            <div class="content-container">
+                <h2 class="section-title">Escenario Actual: Los Costos Ocultos</h2>
+                <div class="comparison-container">
+                    <div class="comparison-side">
+                        <div class="comparison-label label-before">PROBLEMÁTICAS</div>
+                        <ul class="comparison-list">
+                            <li class="comparison-item before-item">
+                                <strong>🔥 El Caos de las 6 PM</strong><br>
+                                Cientos de mensajes de WhatsApp con información crítica atrapada y no auditable
+                            </li>
+                            <li class="comparison-item before-item">
+                                <strong>👁️ Decisiones a Ciegas</strong><br>
+                                "¿Quién es el responsable?" requiere múltiples llamadas para responder
+                            </li>
+                            <li class="comparison-item before-item">
+                                <strong>🚨 Incendios como Norma</strong><br>
+                                Estado de urgencia constante, sobreesfuerzos de último momento
+                            </li>
+                            <li class="comparison-item before-item">
+                                <strong>💔 Fuga de Talento</strong><br>
+                                Alta rotación por falta de herramientas, no por falta de personas
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="comparison-side">
+                        <div class="comparison-label label-after">IMPACTOS</div>
+                        <ul class="comparison-list">
+                            <li class="comparison-item after-item">
+                                <strong>📊 Eficiencia Operativa</strong><br>
+                                Costos ocultos erosionan márgenes y limitan escalamiento
+                            </li>
+                            <li class="comparison-item after-item">
+                                <strong>🏢 Riesgo de Marca</strong><br>
+                                Errores pueden generar daños irreparables en la reputación
+                            </li>
+                            <li class="comparison-item after-item">
+                                <strong>⏱️ Pérdida de Tiempo</strong><br>
+                                Horas dedicadas a buscar información en lugar de crear valor
+                            </li>
+                            <li class="comparison-item after-item">
+                                <strong>📉 Limitación de Crecimiento</strong><br>
+                                Imposibilidad de tomar más proyectos en paralelo
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Escenario Ideal -->
+        <section class="slide slide-4">
+            <div class="content-container">
+                <h2 class="section-title">Escenario Ideal: Gestión Proactiva</h2>
+                <div class="comparison-container">
+                    <div class="comparison-side">
+                        <div class="comparison-label label-after">TRANSFORMACIÓN</div>
+                        <ul class="comparison-list">
+                            <li class="comparison-item after-item">
+                                <strong>✅ Información Instantánea</strong><br>
+                                "¿Quién y Cuándo?" se responde en un dashboard en segundos
+                            </li>
+                            <li class="comparison-item after-item">
+                                <strong>🛡️ El Plan se Protege</strong><br>
+                                Alertas inteligentes para asignar recursos y mantener fechas
+                            </li>
+                            <li class="comparison-item after-item">
+                                <strong>🤖 Equipo Autónomo</strong><br>
+                                El Copilot responde consultas y proporciona información crítica
+                            </li>
+                            <li class="comparison-item after-item">
+                                <strong>📈 Crecimiento Sostenible</strong><br>
+                                Capacidad de escalar y tomar más proyectos simultáneos
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="comparison-side">
+                        <div class="comparison-label label-after">BENEFICIOS</div>
+                        <ul class="comparison-list">
+                            <li class="comparison-item after-item">
+                                <strong>💎 Retención de Talento</strong><br>
+                                Sistema claro reduce frustración y mejora el ambiente laboral
+                            </li>
+                            <li class="comparison-item after-item">
+                                <strong>⚡ Eficiencia Máxima</strong><br>
+                                Recursos optimizados, menos sobrecostos, mejores márgenes
+                            </li>
+                            <li class="comparison-item after-item">
+                                <strong>🎯 Predictibilidad</strong><br>
+                                De reactivo a proactivo: anticipar en lugar de apagar incendios
+                            </li>
+                            <li class="comparison-item after-item">
+                                <strong>🏆 Competitividad</strong><br>
+                                Fortalece la posición como líder del sector
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Los 4 Pilares -->
+        <section class="slide slide-5">
+            <div class="content-container">
+                <h2 class="section-title">Ecosistema de Productividad Inteligente</h2>
+                <p class="subtitle">4 Pilares Integrados para la Transformación</p>
+                <div class="pillars-grid">
+                    <div class="pillar-card">
+                        <div class="pillar-number">1</div>
+                        <div class="pillar-title">📱 Comunicación Estructurada</div>
+                        <div class="pillar-description">
+                            Canales organizados por obra y equipo. Roles y permisos definidos. Información ordenada, accesible y auditable.
+                        </div>
+                    </div>
+                    <div class="pillar-card">
+                        <div class="pillar-number">2</div>
+                        <div class="pillar-title">🧠 Gestión Centralizada</div>
+                        <div class="pillar-description">
+                            ClickUp como cerebro digital. Plantillas estandarizadas. Foco en FECHA y RESPONSABLE. Una única fuente de verdad.
+                        </div>
+                    </div>
+                    <div class="pillar-card">
+                        <div class="pillar-number">3</div>
+                        <div class="pillar-title">📊 Visibilidad en Tiempo Real</div>
+                        <div class="pillar-description">
+                            Dashboards ejecutivos en Power BI. Conexión nativa con ClickUp. Respuestas instantáneas a "¿Quién debe hacer qué y cuándo?"
+                        </div>
+                    </div>
+                    <div class="pillar-card">
+                        <div class="pillar-number">4</div>
+                        <div class="pillar-title">🤖 Asistencia Inteligente (IA)</div>
+                        <div class="pillar-description">
+                            Copilot conversacional. Consultas en lenguaje natural. Automatización de reportes. Generación de insights a demanda.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: Fases de Implementación -->
+        <section class="slide slide-6">
+            <div class="content-container">
+                <h2 class="section-title">Roadmap de Implementación</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="phase-number">FASE I</div>
+                        <div class="phase-title">Inmersión y Arquitectura</div>
+                        <div class="phase-description">
+                            Talleres con equipos clave para mapear procesos actuales y diseñar la configuración óptima del ecosistema.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="phase-number">FASE II</div>
+                        <div class="phase-title">Implementación Piloto</div>
+                        <div class="phase-description">
+                            Despliegue de ClickUp + Comunicación + Power BI en una obra piloto. Validación temprana y ajustes.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="phase-number">FASE III</div>
+                        <div class="phase-title">Despliegue Corporativo</div>
+                        <div class="phase-description">
+                            Extensión de la solución a toda la organización. Capacitación integral de equipos.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="phase-number">FASE IV</div>
+                        <div class="phase-title">Copilot IA (Opcional)</div>
+                        <div class="phase-description">
+                            Desarrollo e integración del asistente conversacional. Automatización avanzada y consultas en lenguaje natural.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: Equipo y Propuesta -->
+        <section class="slide slide-7">
+            <div class="content-container">
+                <h2 class="section-title">Célula Dedicada de Expertos</h2>
+                <div class="team-grid">
+                    <div class="team-card">
+                        <div class="team-role">🚀 AI Automation Engineer</div>
+                        <div class="team-description">
+                            Construcción end-to-end de la solución: conectores, lógica de negocio, panel y aseguramiento de calidad técnica.
+                        </div>
+                        <div class="team-allocation">1 FTE (≈ 160h)</div>
+                    </div>
+                    <div class="team-card">
+                        <div class="team-role">👨‍💼 Project Manager</div>
+                        <div class="team-description">
+                            Relevamiento, diseño funcional, pruebas UAT y gestión de backlog. Coordinación con equipos de DICON.
+                        </div>
+                        <div class="team-allocation">1 FTE (≈ 160h)</div>
+                    </div>
+                </div>
+                <div class="investment-box">
+                    <div class="investment-label">Inversión por Mes</div>
+                    <div class="investment-amount">USD XXX</div>
+                    <div class="investment-details">+ Impuestos | Modalidad Time & Materials</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 8: ROI -->
+        <section class="slide slide-8">
+            <div class="content-container">
+                <h2 class="section-title">Retorno de la Inversión</h2>
+                <p class="subtitle">6 Ejes de Beneficios Medibles</p>
+                <div class="roi-grid">
+                    <div class="roi-card">
+                        <div class="roi-title">⚡ Eficiencia Operativa</div>
+                        <div class="roi-description">
+                            Reducción del tiempo total del ciclo de gestión de proyectos
+                        </div>
+                    </div>
+                    <div class="roi-card">
+                        <div class="roi-title">📊 Calidad de Datos</div>
+                        <div class="roi-description">
+                            Disminución de retrabajos y errores de carga de información
+                        </div>
+                    </div>
+                    <div class="roi-card">
+                        <div class="roi-title">🎯 Cumplimiento</div>
+                        <div class="roi-description">
+                            Aumento en el porcentaje de proyectos entregados en tiempo y forma
+                        </div>
+                    </div>
+                    <div class="roi-card">
+                        <div class="roi-title">💰 Ahorro de Recursos</div>
+                        <div class="roi-description">
+                            Reducción de sobrecostos y optimización de recursos asignados
+                        </div>
+                    </div>
+                    <div class="roi-card">
+                        <div class="roi-title">👥 Retención de Talento</div>
+                        <div class="roi-description">
+                            Disminución de rotación y costos asociados (8 meses por jefe de obra)
+                        </div>
+                    </div>
+                    <div class="roi-card">
+                        <div class="roi-title">✅ Compliance</div>
+                        <div class="roi-description">
+                            Trazabilidad completa y proceso digital estandarizado
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 9: Cronograma y Cierre -->
+        <section class="slide slide-9">
+            <div class="content-container">
+                <h2 class="section-title">Cronograma del Proyecto</h2>
+                <div class="card fade-in">
+                    <div class="card-content" style="text-align: center; font-size: 1.3rem;">
+                        <p><strong>📅 Fecha de Inicio Estimada:</strong> A CONFIRMAR</p>
+                        <p><strong>⏱️ Duración:</strong> 2.5 meses (Prueba de Concepto)</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 4rem;">
+                    <h3 class="section-title" style="font-size: 2rem;">Próximos Pasos</h3>
+                    <div class="card fade-in">
+                        <div class="card-content" style="font-size: 1.2rem; line-height: 2;">
+                            ✓ Validez de la oferta: <strong>10 días corridos</strong><br>
+                            ✓ Modalidad: <strong>Time & Materials</strong><br>
+                            ✓ Facturación: <strong>Mensual con anticipo</strong><br>
+                            ✓ Plazo de pago: <strong>5 días corridos</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-info">
+                    <div class="contact-name">Bruno Magnano Marinelli</div>
+                    <div class="contact-title">CEO ROCBIRD</div>
+                    <div class="contact-detail">📱 +54 9 3513491935</div>
+                    <div class="contact-detail">✉️ bruno.magnano@rocbird.io</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Progress bar
+        const presentation = document.getElementById('presentation');
+        const progressBar = document.getElementById('progressBar');
+
+        presentation.addEventListener('scroll', () => {
+            const scrollHeight = presentation.scrollHeight - presentation.clientHeight;
+            const scrolled = (presentation.scrollTop / scrollHeight) * 100;
+            progressBar.style.width = scrolled + '%';
+        });
+
+        // Navigation dots
+        const slides = document.querySelectorAll('.slide');
+        const navContainer = document.getElementById('navContainer');
+
+        slides.forEach((slide, index) => {
+            const dot = document.createElement('div');
+            dot.className = 'nav-dot';
+            dot.addEventListener('click', () => {
+                slide.scrollIntoView({ behavior: 'smooth' });
+            });
+            navContainer.appendChild(dot);
+        });
+
+        // Update active dot on scroll
+        const observerOptions = {
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const index = Array.from(slides).indexOf(entry.target);
+                    document.querySelectorAll('.nav-dot').forEach((dot, i) => {
+                        dot.classList.toggle('active', i === index);
+                    });
+                }
+            });
+        }, observerOptions);
+
+        slides.forEach(slide => observer.observe(slide));
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            const currentScroll = presentation.scrollTop;
+            const slideHeight = window.innerHeight;
+
+            if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+                presentation.scrollTo({
+                    top: currentScroll + slideHeight,
+                    behavior: 'smooth'
+                });
+            } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+                presentation.scrollTo({
+                    top: currentScroll - slideHeight,
+                    behavior: 'smooth'
+                });
+            }
+        });
+
+        // Interactive numbers animation
+        document.querySelectorAll('.stat-number').forEach(el => {
+            el.addEventListener('mouseenter', function() {
+                const originalText = this.textContent;
+                let counter = 0;
+                const target = originalText === '∞' ? 999 : parseInt(originalText);
+                
+                if (originalText !== '∞') {
+                    const interval = setInterval(() => {
+                        if (counter <= target) {
+                            this.textContent = counter;
+                            counter += Math.ceil(target / 20);
+                        } else {
+                            this.textContent = originalText;
+                            clearInterval(interval);
+                        }
+                    }, 50);
+                }
+            });
+        });
+
+        // Add fade-in animation to cards on scroll
+        const fadeElems = document.querySelectorAll('.card, .pillar-card, .roi-card');
+        
+        const fadeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '0';
+                    entry.target.style.transform = 'translateY(30px)';
+                    
+                    setTimeout(() => {
+                        entry.target.style.transition = 'all 0.8s ease-out';
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, 100);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        fadeElems.forEach(elem => fadeObserver.observe(elem));
+
+        // Prevent default scroll behavior on space bar
+        window.addEventListener('keydown', (e) => {
+            if (e.key === ' ') {
+                e.preventDefault();
+                const currentScroll = presentation.scrollTop;
+                const slideHeight = window.innerHeight;
+                presentation.scrollTo({
+                    top: currentScroll + slideHeight,
+                    behavior: 'smooth'
+                });
+            }
+        });
+
+        console.log('🚀 Presentación DICON cargada correctamente');
+        console.log('💡 Usa las flechas del teclado o la rueda del mouse para navegar');
+        console.log('📊 Los puntos de la derecha permiten saltar a secciones específicas');
+    </script>
+</body>
+</html>
