@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propuesta DICON - Rocbird | Transformación Digital</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0891b2;
+            --secondary: #0e7490;
+            --accent: #06b6d4;
+            --dark: #164e63;
+            --light: #ecfeff;
+            --white: #ffffff;
+            --gray: #64748b;
+            --red: #ef4444;
+            --green: #10b981;
+            --yellow: #f59e0b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #f0fdfa 0%, #ecfeff 100%);
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 1rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            padding: 0.5rem 1rem;
+            color: var(--gray);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease 0.2s backwards;
+        }
+
+        .cta-button {
+            padding: 1rem 2.5rem;
+            font-size: 1.2rem;
+            background: white;
+            color: var(--primary);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            animation: fadeInUp 1s ease 0.4s backwards;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Section Base */
+        .section {
+            min-height: 100vh;
+            padding: 6rem 2rem 4rem;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: var(--primary);
+            margin: 1rem auto;
+            border-radius: 2px;
+        }
+
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .card-description {
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        /* Problem-Solution Cards */
+        .problem-solution {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .problem-card {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            padding: 2rem;
+            border-radius: 16px;
+            border-left: 4px solid var(--red);
+        }
+
+        .solution-card {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            padding: 2rem;
+            border-radius: 16px;
+            border-left: 4px solid var(--green);
+        }
+
+        .ps-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .ps-list {
+            list-style: none;
+        }
+
+        .ps-list li {
+            margin-bottom: 0.8rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .ps-list li::before {
+            content: '●';
+            position: absolute;
+            left: 0;
+            font-size: 1.5rem;
+        }
+
+        .problem-card .ps-list li::before {
+            color: var(--red);
+        }
+
+        .solution-card .ps-list li::before {
+            color: var(--green);
+        }
+
+        /* Pillars */
+        .pillar {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-left: 6px solid var(--primary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .pillar:hover {
+            transform: translateX(10px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .pillar-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .pillar-number {
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .pillar-title {
+            font-size: 1.8rem;
+            color: var(--dark);
+        }
+
+        .pillar-content {
+            color: var(--gray);
+            line-height: 1.8;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: var(--primary);
+        }
+
+        .timeline-item {
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .timeline-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 45%;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: 0;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: auto;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, 50%);
+            width: 30px;
+            height: 30px;
+            background: var(--primary);
+            border: 4px solid white;
+            border-radius: 50%;
+            top: 0;
+        }
+
+        .phase-title {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        /* Pricing */
+        .pricing-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .price {
+            font-size: 4rem;
+            color: var(--primary);
+            font-weight: bold;
+            margin: 2rem 0;
+        }
+
+        .price-detail {
+            color: var(--gray);
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .features-list {
+            text-align: left;
+            margin: 2rem 0;
+        }
+
+        .feature-item {
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            background: var(--light);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .feature-icon {
+            color: var(--green);
+            font-size: 1.5rem;
+        }
+
+        /* Team */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .team-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .team-icon {
+            width: 100px;
+            height: 100px;
+            background: var(--primary);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .team-role {
+            font-size: 1.3rem;
+            color: var(--dark);
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .team-hours {
+            color: var(--primary);
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        /* Conditions */
+        .conditions-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .condition-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--primary);
+        }
+
+        .condition-title {
+            font-size: 1.2rem;
+            color: var(--dark);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+/* Demo Button */
+        .demo-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, var(--dicon-red) 0%, #ff0717 100%);
+            color: white;
+            border: none;
+            padding: 1.2rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10000;
+            box-shadow: 0 10px 40px rgba(227, 6, 19, 0.4);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .demo-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(227, 6, 19, 0.6);
+        }
+
+
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+
+            .problem-solution {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline::before {
+                left: 30px;
+            }
+
+            .timeline-content {
+                width: calc(100% - 80px);
+                margin-left: 80px !important;
+            }
+
+            .timeline-marker {
+                left: 30px;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+            .demo-button {
+                bottom: 1rem;
+                right: 1rem;
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+        }
+
+        /* Interactive Elements */
+        .interactive-demo {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 2rem 0;
+        }
+
+        .demo-screen {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 2rem;
+            color: white;
+            font-family: 'Courier New', monospace;
+            min-height: 300px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .demo-header {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .demo-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .demo-dot.red { background: #ef4444; }
+        .demo-dot.yellow { background: #f59e0b; }
+        .demo-dot.green { background: #10b981; }
+
+        .demo-controls {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .demo-button {
+            padding: 0.8rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .demo-button:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(8, 145, 178, 0.1);
+            z-index: 999;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        /* Alert Box */
+        .alert-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--yellow);
+            margin: 2rem 0;
+        }
+
+        .alert-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #92400e;
+        }
+
+        .alert-content {
+            color: #78350f;
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Button -->
+    <a href="https://rocbird-dicon-demo.figma.site/" target="_blank" rel="noopener noreferrer" class="demo-button">
+        <span>🚀</span>
+        <span>Ver Demo</span>
+    </a>
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">ROCBIRD</div>
+        <ul class="nav-menu" id="navMenu">
+            <li><a class="nav-link active" data-section="hero">Inicio</a></li>
+            <li><a class="nav-link" data-section="intro">Introducción</a></li>
+            <li><a class="nav-link" data-section="problema">Problema</a></li>
+            <li><a class="nav-link" data-section="solucion">Solución</a></li>
+            <li><a class="nav-link" data-section="alcance">Alcance</a></li>
+            <li><a class="nav-link" data-section="fases">Fases</a></li>
+            <li><a class="nav-link" data-section="equipo">Equipo</a></li>
+            <li><a class="nav-link" data-section="propuesta">Propuesta</a></li>
+            <li><a class="nav-link" data-section="condiciones">Condiciones</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero active" id="hero" data-section="hero">
+        <div class="hero-content">
+            <h1>Transformación Digital para DICON</h1>
+            <p>De la Gestión Reactiva a la Inteligencia Operativa</p>
+            <a class="cta-button" onclick="navigateToSection('intro')">Explorar Propuesta</a>
+        </div>
+    </section>
+
+    <!-- Introducción -->
+    <section class="section" id="intro" data-section="intro">
+        <div class="container">
+            <h2 class="section-title">Un Ecosistema de Productividad Inteligente</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">12-14</div>
+                    <div class="stat-label">Obras Simultáneas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">10-12</div>
+                    <div class="stat-label">Meses por Obra</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Pilares Integrados</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">Potencial de Crecimiento</div>
+                </div>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-icon">💬</div>
+                    <h3 class="card-title">Comunicación Estructurada</h3>
+                    <p class="card-description">Centralizar y ordenar toda la comunicación del equipo en canales específicos por obra y área.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🧠</div>
+                    <h3 class="card-title">Gestión Centralizada</h3>
+                    <p class="card-description">ClickUp como cerebro digital de las operaciones, con un Project Manager dedicado liderando la ejecución.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📊</div>
+                    <h3 class="card-title">Visualización en Tiempo Real</h3>
+                    <p class="card-description">Dashboards ejecutivos en Power BI para control total y toma de decisiones basada en datos.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🤖</div>
+                    <h3 class="card-title">Asistencia Inteligente</h3>
+                    <p class="card-description">Copilot de IA (opcional) para automatizar reportes, guiar equipos y optimizar recursos.</p>
+                </div>
+            </div>
+
+            <div class="alert-box">
+                <div class="alert-title">🎯 Resultado Esperado</div>
+                <div class="alert-content">
+                    Transformación de DICON de una organización reactiva a una proactiva y predictiva, 
+                    identificando desvíos al instante y asignando recursos para garantizar el cumplimiento del plan original.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problema Actual -->
+    <section class="section" id="problema" data-section="problema">
+        <div class="container">
+            <h2 class="section-title">Escenario Actual: La Gestión Reactiva</h2>
+            
+            <div class="problem-solution">
+                <div class="problem-card">
+                    <h3 class="ps-title">🔥 Los Problemas de Hoy</h3>
+                    <ul class="ps-list">
+                        <li><strong>El Caos de las 6 PM:</strong> Cientos de mensajes de WhatsApp con información crítica imposible de auditar</li>
+                        <li><strong>Decisiones a Ciegas:</strong> Sin dashboard centralizado, cada consulta requiere múltiples llamadas</li>
+                        <li><strong>"Incendios" como Norma:</strong> Retrasos no detectados obligan a sobreesfuerzos de último momento</li>
+                        <li><strong>Fuga de Talento:</strong> Alta rotación causada por falta de claridad y herramientas adecuadas</li>
+                        <li><strong>Costos Ocultos:</strong> Ineficiencias que erosionan márgenes y limitan el crecimiento</li>
+                        <li><strong>Riesgo de Marca:</strong> Errores que pueden generar daños irreparables a la reputación</li>
+                    </ul>
+                </div>
+
+                <div class="solution-card">
+                    <h3 class="ps-title">✨ La Visión Transformada</h3>
+                    <ul class="ps-list">
+                        <li><strong>Información al Instante:</strong> Dashboard con tareas, fechas y responsables visibles en tiempo real</li>
+                        <li><strong>Plan Fijo Protegido:</strong> Alertas inteligentes ante desvíos del 20% con recomendaciones de acción</li>
+                        <li><strong>Equipo Autónomo:</strong> Copilot responde consultas y muestra tareas críticas al instante</li>
+                        <li><strong>Gestión Proactiva:</strong> Identificación de problemas 7-15 días antes de impactar el proyecto</li>
+                        <li><strong>Eficiencia Operativa:</strong> Automatización que libera tiempo para decisiones estratégicas</li>
+                        <li><strong>Retención de Talento:</strong> Ambiente de trabajo claro, predecible y profesional</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!--
+            <div class="interactive-demo">
+                <h3 style="margin-bottom: 1rem; color: var(--dark);">📱 Demo Interactiva: Del Caos al Control</h3>
+                <div class="demo-screen" id="demoScreen">
+                    <div class="demo-header">
+                        <div class="demo-dot red"></div>
+                        <div class="demo-dot yellow"></div>
+                        <div class="demo-dot green"></div>
+                    </div>
+                    <div id="demoContent">
+                        <p>→ Selecciona un escenario para ver la diferencia...</p>
+                    </div>
+                </div>
+                <div class="demo-controls">
+                    <button class="demo-button" onclick="showScenario('before')">❌ Escenario Actual (Caos)</button>
+                    <button class="demo-button" onclick="showScenario('after')">✅ Con Sistema ROCBIRD</button>
+                    <button class="demo-button" onclick="showScenario('reset')">🔄 Reiniciar</button>
+                </div>
+            </div> -->
+        </div>
+    </section>
+
+
+    <!-- Solución: Escenario Ideal -->
+    <section class="section" id="solucion" data-section="solucion">
+        <div class="container">
+            <h2 class="section-title">Escenario Ideal: Gestión Proactiva</h2>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-icon">🎯</div>
+                    <h3 class="card-title">Pregunta Respondida al Instante</h3>
+                    <p class="card-description">"¿Quién y Cuándo?" se resuelve con un vistazo al dashboard de Power BI. Información clara, única y accesible para toda la gerencia.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🛡️</div>
+                    <h3 class="card-title">Plan Fijo que se Protege</h3>
+                    <p class="card-description">Ante un desvío del 20% en "Ejecución de Pilotes", el sistema alerta: "Se requiere aceleración del 25% en los próximos 10 días" - No cambiamos fechas, asignamos recursos.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">👥</div>
+                    <h3 class="card-title">Equipo Informado y Autónomo</h3>
+                    <p class="card-description">El jefe de obra pregunta: "Las tareas críticas esta semana en Droguería del Sud" y recibe la visualización del estado de proyecto.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Alcance: Los 4 Pilares -->
+    <section class="section" id="alcance" data-section="alcance">
+        <div class="container">
+            <h2 class="section-title">Alcance: Arquitectura de Soluciones Integradas</h2>
+            
+            <div class="pillar">
+                <div class="pillar-header">
+                    <div class="pillar-number">1</div>
+                    <h3 class="pillar-title">Comunicación Estructurada</h3>
+                </div>
+                <div class="pillar-content">
+                    <p><strong>Canales por Obra y Equipo:</strong> Crearemos canales específicos (#obra-drogueria-general, #equipo-hormigon, #reportes-diarios)</p>
+                    <p><strong>Roles y Permisos:</strong> Control detallado de quién puede ver y escribir en cada canal, ordenando el flujo de información</p>
+                </div>
+            </div>
+
+            <div class="pillar">
+                <div class="pillar-header">
+                    <div class="pillar-number">2</div>
+                    <h3 class="pillar-title">El Cerebro de la Operación (ClickUp)</h3>
+                </div>
+                <div class="pillar-content">
+                    <p><strong>Única Fuente de Verdad:</strong> Toda la planificación y ejecución en un solo lugar</p>
+                    <p><strong>Plantillas Estandarizadas:</strong> Basadas en "Drogueria del Sud", replicables para cada nueva obra</p>
+                    <p><strong>Foco en "Fecha y Responsable":</strong> Cada tarea DEBE tener dueño y plazo - sin excepciones</p>
+                    <p><strong>Roles y Permisos Detallados:</strong> Director, Jefe de Obra, Contratista - cada uno ve solo lo que le corresponde</p>
+                </div>
+            </div>
+
+            <div class="pillar">
+                <div class="pillar-header">
+                    <div class="pillar-number">3</div>
+                    <h3 class="pillar-title">Visibilidad en Tiempo Real (Power BI)</h3>
+                </div>
+                <div class="pillar-content">
+                    <p><strong>Conexión Directa con ClickUp:</strong> API nativa para datos en tiempo real</p>
+                    <p><strong>Dashboards a Medida:</strong> Paneles que responden "¿Quién debe hacer qué y para cuándo?" con vistas por responsable, fecha de vencimiento y estado de desvío</p>
+                </div>
+            </div>
+
+            <div class="pillar">
+                <div class="pillar-header">
+                    <div class="pillar-number">4</div>
+                    <h3 class="pillar-title">Copilot Interactivo (IA - Opcional)</h3>
+                </div>
+                <div class="pillar-content">
+                    <p><strong>Consultas en Lenguaje Natural:</strong> "@Copilot, ¿cuál es el estado de la 'Estructura Hormigon' en Juárez Celman?"</p>
+                    <p><strong>Navegación Asistida:</strong> Enlaces directos a tareas, fases o dashboards relevantes</p>
+                    <p><strong>Automatización de Reportes:</strong> El Copilot procesa reportes diarios y los registra en ClickUp</p>
+                    <p><strong>Storytelling a Demanda:</strong> "@Copilot, resumen del HITO 2" genera narrativa del estado actual, bloqueos y próximos pasos</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fases de Implementación -->
+    <section class="section" id="fases" data-section="fases">
+        <div class="container">
+            <h2 class="section-title">Siguientes Etapas: Despliegue por Fases</h2>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h3 class="phase-title">Fase I: Inmersión y Arquitectura</h3>
+                        <p>Talleres con equipos clave para mapear procesos y diseñar la configuración a medida de DICON.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h3 class="phase-title">Fase II: Proyecto Piloto</h3>
+                        <p>Implementación del Ecosistema Base (ClickUp + WhatsApp/Discord + Power BI) en una obra en curso.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h3 class="phase-title">Fase III: Despliegue Corporativo</h3>
+                        <p>Extensión de la solución a toda la organización con capacitación completa de equipos.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h3 class="phase-title">Próximas Etapas: Módulo Copilot IA</h3>
+                        <p>Desarrollo e integración del asistente conversacional inteligente en Discord.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert-box">
+                <div class="alert-title">⚡ Valor Temprano Garantizado</div>
+                <div class="alert-content">
+                    Cada fase está diseñada para entregar valor incremental. Verás mejoras operativas desde el Proyecto Piloto, 
+                    sin esperar al despliegue completo.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Equipo: Célula Multidisciplinaria -->
+    <section class="section" id="equipo" data-section="equipo">
+        <div class="container">
+            <h2 class="section-title">Célula Multidisciplinaria Dedicada</h2>
+            
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-icon">👨‍💼</div>
+                    <h3 class="team-role">Project Manager</h3>
+                    <p class="team-hours">160 hs/mes (Full Time)</p>
+                    <ul style="text-align: left; color: var(--gray); margin-top: 1rem;">
+                        <li>Custodio del Sistema de Gestión</li>
+                        <li>Coordinación de Procesos Vinculantes</li>
+                        <li>Gestión Proactiva de Riesgos</li>
+                        <li>Reportería y Comunicación</li>
+                    </ul>
+                </div>
+
+                <div class="team-card">
+                    <div class="team-icon">👨‍💻</div>
+                    <h3 class="team-role">Desarrollador Full Stack</h3>
+                    <p class="team-hours">160 hs/mes (Full Time)</p>
+                    <ul style="text-align: left; color: var(--gray); margin-top: 1rem;">
+                        <li>Infraestructura Digital</li>
+                        <li>Automatización de Flujos</li>
+                        <li>Tableros de Control</li>
+                        <li>Inteligencia del Sistema</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="margin-top: 3rem; background: white; padding: 2rem; border-radius: 16px;">
+                <h3 style="color: var(--dark); margin-bottom: 1rem;">🎯 Responsabilidades Clave del PM</h3>
+                <div class="card-grid">
+                    <div class="card">
+                        <h4 style="color: var(--primary);">Sistema de Gestión</h4>
+                        <p>100% de tareas con responsable + fecha. Validar 10 hitos críticos por obra. Auditar 4 elementos por tarea del camino crítico.</p>
+                    </div>
+                    <div class="card">
+                        <h4 style="color: var(--primary);">Coordinación Multi-área</h4>
+                        <p>Seguimiento con Compras, Ingeniería y Jefes de Obra. Mapeo de dependencias entre áreas.</p>
+                    </div>
+                    <div class="card">
+                        <h4 style="color: var(--primary);">Gestión de Riesgos</h4>
+                        <p>Identificar desvíos 7-15 días antes. Proponer planes B/C. Hacer seguimiento activo hasta resolver.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem; background: white; padding: 2rem; border-radius: 16px;">
+                <h3 style="color: var(--dark); margin-bottom: 1rem;">💻 Responsabilidades Clave del Dev</h3>
+                <div class="card-grid">
+                    <div class="card">
+                        <h4 style="color: var(--primary);">Infraestructura</h4>
+                        <p>Configurar ClickUp para DICON. Plantillas replicables. Arquitectura de conexión con todos los sistemas.</p>
+                    </div>
+                    <div class="card">
+                        <h4 style="color: var(--primary);">Automatización</h4>
+                        <p>Extracción desde WhatsApp. Conexión con Multisoft. Consolidación de planillas dispersas.</p>
+                    </div>
+                    <div class="card">
+                        <h4 style="color: var(--primary);">Inteligencia</h4>
+                        <p>Dashboards ejecutivos y operativos. Cálculos automáticos. Detección de patrones.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Propuesta Comercial -->
+    <section class="section" id="propuesta" data-section="propuesta">
+        <div class="container">
+            <h2 class="section-title">Propuesta Comercial: Modelo Long-Term</h2>
+            <div style="margin-top: 3rem;">
+                <h3 style="color: var(--dark); margin-bottom: 2rem; text-align: center;">¿Por qué Modelo Long-Term?</h3>
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-icon">⏱️</div>
+                        <h4 class="card-title">El Cambio Cultural Toma Tiempo</h4>
+                        <p class="card-description">Pasar de WhatsApp y llamadas a gestión proactiva no ocurre en 60 días. Obras de 10-12 meses requieren ver ciclos completos.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🎓</div>
+                        <h4 class="card-title">Conocimiento que se Acumula</h4>
+                        <p class="card-description">El equipo que entiende cómo piensa DICON vale oro. Cada iteración mejora la precisión del sistema.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🔄</div>
+                        <h4 class="card-title">Evolución Continua</h4>
+                        <p class="card-description">Las soluciones se adaptan orgánicamente a cambios en procesos, normativas o necesidades operativas.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">📈</div>
+                        <h4 class="card-title">Optimización Iterativa</h4>
+                        <p class="card-description">Ciclos constantes de mejora basados en uso real y feedback continuo del equipo.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="pricing-card">
+                <h3 style="color: var(--dark); font-size: 1.5rem;">Inversión Mensual</h3>
+                <div class="price">USD 16,000</div>
+                <p class="price-detail">+ impuestos | Compromiso mínimo 6 meses</p>
+                
+                <div class="features-list">
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>Célula multidisciplinaria dedicada (320 hs/mes)</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>PM Full Time + Dev Full Stack</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>Configuración completa de ClickUp</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>Dashboards en Power BI</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>Integración con Multisoft</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>Automatización de flujos</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>Soporte y optimización continua</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>Capacitación de equipos</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem; padding: 1.5rem; background: var(--light); border-radius: 12px;">
+                    <p style="color: var(--dark); margin-bottom: 0.5rem;"><strong>💡 Descuento del 15%</strong></p>
+                    <p style="color: var(--gray);">Este valor representa un descuento respecto a proyectos puntuales, reflejando el beneficio mutuo de una relación sostenida.</p>
+                </div>
+
+                <div style="margin-top: 1.5rem; padding: 1.5rem; background: #f0fdf4; border-radius: 12px; border-left: 4px solid var(--green);">
+                    <p style="color: var(--dark); margin-bottom: 0.5rem;"><strong>🔄 Después del período mínimo</strong></p>
+                    <p style="color: var(--gray);">DICON tiene libertad de continuar con más desarrollos de manera indeterminada bajo la misma estructura.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Condiciones de Éxito -->
+    <section class="section" id="condiciones" data-section="condiciones">
+        <div class="container">
+            <h2 class="section-title">Condiciones de Éxito para el Proyecto</h2>
+            
+            <div class="alert-box">
+                <div class="alert-title">⚠️ Desafío Principal</div>
+                <div class="alert-content">
+                    El principal desafío es <strong>cultural y organizacional</strong>, no tecnológico. 
+                    Necesitamos un equipo de coordinación de DICON como sponsor activo durante toda la ejecución.
+                </div>
+            </div>
+
+            <div class="conditions-grid" style="margin-top: 3rem;">
+                <div class="condition-item">
+                    <div class="condition-title">1. Sponsor Ejecutivo Activo</div>
+                    <p style="color: var(--gray); margin-bottom: 0.5rem;"><strong>Quién:</strong> Santiago (Socio) y/o Daniel (Gerente General)</p>
+                    <ul style="color: var(--gray); margin-left: 1.5rem;">
+                        <li>Kickoff formal: "Esto es prioridad estratégica 2026"</li>
+                        <li>Revisiones quincenales (30-45 min días 15 y 30)</li>
+                        <li>Respaldo al PMO con autoridad para solicitar información</li>
+                        <li>Decisiones rápidas ante resistencia organizacional</li>
+                    </ul>
+                </div>
+
+                <div class="condition-item">
+                    <div class="condition-title">2. Referente Técnico de Sistemas</div>
+                    <p style="color: var(--gray); margin-bottom: 0.5rem;"><strong>Quién:</strong> Victoria (Sistemas DICON) o designado</p>
+                    <ul style="color: var(--gray); margin-left: 1.5rem;">
+                        <li>Disponibilidad: 2-4 horas semanales</li>
+                        <li>Accesos a Multisoft en Semana 1</li>
+                        <li>Documentación de estructura de datos</li>
+                        <li>Soporte en troubleshooting de integraciones</li>
+                    </ul>
+                </div>
+
+                <div class="condition-item">
+                    <div class="condition-title">3. Referente Funcional de Procesos</div>
+                    <p style="color: var(--gray); margin-bottom: 0.5rem;"><strong>Quién:</strong> Gerente Administrativo/Financiero o Responsable de Planificación</p>
+                    <ul style="color: var(--gray); margin-left: 1.5rem;">
+                        <li>Disponibilidad: 4-6 horas semanales</li>
+                        <li>Validación de plantillas de obra y hitos críticos</li>
+                        <li>Definición de reglas de negocio</li>
+                        <li>Apoyo en gestión del cambio con Jefes de Obra</li>
+                    </ul>
+                </div>
+
+                <div class="condition-item">
+                    <div class="condition-title">4. Equipo de Obras Piloto Comprometido</div>
+                    <p style="color: var(--gray); margin-bottom: 0.5rem;"><strong>Quién:</strong> 1-2 Jefes de Obra + equipos (los más adeptos primero)</p>
+                    <ul style="color: var(--gray); margin-left: 1.5rem;">
+                        <li>Carga diaria/semanal durante primeros 90 días</li>
+                        <li>Obras piloto identificadas en Semana 1</li>
+                        <li>Nombres, fechas de inicio y responsables definidos</li>
+                    </ul>
+                </div>
+
+                <div class="condition-item">
+                    <div class="condition-title">5. Provisión Temprana de Accesos</div>
+                    <p style="color: var(--gray); margin-bottom: 0.5rem;"><strong>En Semana 1 del proyecto:</strong></p>
+                    <ul style="color: var(--gray); margin-left: 1.5rem;">
+                        <li>Credenciales y permisos a Multisoft</li>
+                        <li>Repositorio de documentos (presupuestos, plantillas, manuales)</li>
+                        <li>Organigrama actualizado con roles y contactos clave</li>
+                    </ul>
+                </div>
+
+                <div class="condition-item">
+                    <div class="condition-title">6. Protocolo de Comunicación</div>
+                    <p style="color: var(--gray); margin-bottom: 0.5rem;"><strong>Canales definidos:</strong></p>
+                    <ul style="color: var(--gray); margin-left: 1.5rem;">
+                        <li>Coordinación operativa: Semanal PMO + Referentes (30-45 min)</li>
+                        <li>Revisión ejecutiva: Quincenal con Gerencia (30 min)</li>
+                        <li>Tiempos de respuesta: Técnicas <48h, Validaciones <72h, Decisiones <1 semana</li>
+                    </ul>
+                </div>
+
+                <div class="condition-item">
+                    <div class="condition-title">7. Autoridad Operativa del PM</div>
+                    <p style="color: var(--gray); margin-bottom: 0.5rem;"><strong>DICON se compromete a:</strong></p>
+                    <ul style="color: var(--gray); margin-left: 1.5rem;">
+                        <li>Dar autoridad al PM para solicitar información a cualquier área</li>
+                        <li>Respaldar escalamientos ante incumplimientos</li>
+                        <li>Registrar decisiones y cambios en la herramienta</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="margin-top: 3rem; background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <h3 style="color: var(--dark); margin-bottom: 1.5rem;">📋 Términos y Condiciones Comerciales</h3>
+                <div class="card-grid">
+                    <div class="card">
+                        <h4 style="color: var(--primary);">Facturación</h4>
+                        <p>Anticipo del primer mes USD 16,000. Luego cada 30 días de manera recurrente.</p>
+                    </div>
+                    <div class="card">
+                        <h4 style="color: var(--primary);">Plazo de Pago</h4>
+                        <p>Hasta 5 días corridos desde la fecha de factura.</p>
+                    </div>
+                    <div class="card">
+                        <h4 style="color: var(--primary);">Tipo de Cambio</h4>
+                        <p>Dólar Contado con Liquidación publicado por Ámbito Financiero.</p>
+                    </div>
+                    <div class="card">
+                        <h4 style="color: var(--primary);">Duración</h4>
+                        <p>Contrato inicial de 6 meses de calendario.</p>
+                    </div>
+                    <div class="card">
+                        <h4 style="color: var(--primary);">Cancelación</h4>
+                        <p>Cualquier parte puede rescindir con 30 días de preaviso.</p>
+                    </div>
+                    <div class="card">
+                        <h4 style="color: var(--primary);">Extensión</h4>
+                        <p>Solicitable por email hasta 15 días antes de finalización.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem; text-align: center;">
+                <div style="background: white; padding: 3rem; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h3 style="color: var(--dark); margin-bottom: 1rem;">¿Listo para Transformar DICON?</h3>
+                    <p style="color: var(--gray); margin-bottom: 2rem; font-size: 1.1rem;">
+                        Hablemos sobre cómo llevar la gestión de proyectos de DICON al próximo nivel
+                    </p>
+                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                        <button class="cta-button">📧 bruno.magnano@rocbird.io</button>
+                        <button class="cta-button">📱 +54 9 351 3491935</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Navigation
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('.section, .hero');
+
+        function navigateToSection(sectionId) {
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                window.scrollTo(0, 0);
+            }
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.dataset.section === sectionId) {
+                    link.classList.add('active');
+                }
+            });
+
+            updateProgressBar();
+        }
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const sectionId = link.dataset.section;
+                navigateToSection(sectionId);
+            });
+        });
+
+        // Progress Bar
+        function updateProgressBar() {
+            const allSections = ['hero', 'intro', 'problema', 'solucion', 'alcance', 'fases', 'equipo', 'propuesta', 'condiciones'];
+            const activeSection = document.querySelector('.section.active, .hero.active');
+            const activeSectionId = activeSection ? activeSection.id : 'hero';
+            const currentIndex = allSections.indexOf(activeSectionId);
+            const progress = ((currentIndex + 1) / allSections.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        // Demo Interactive
+        const scenarios = {
+            before: `
+<p style="color: #ef4444; font-weight: bold;">❌ ESCENARIO ACTUAL (18:05 - Fin de Jornada)</p>
+<p>─────────────────────────────────────</p>
+<p style="color: #94a3b8;">📱 Grupo WhatsApp "Obra Droguería"</p>
+<p>[6:05 PM] Jefe Obra: "che pilotes 20% atrasados"</p>
+<p>[6:07 PM] Capataz: "si falto material"</p>
+<p>[6:08 PM] Jefe Obra: "y cuando llega?"</p>
+<p>[6:10 PM] Compras: "consulto y aviso"</p>
+<p>[6:45 PM] Gerente: "¿QUIEN ME PUEDE DECIR QUE PASA?"</p>
+<p style="color: #fbbf24; margin-top: 1rem;">⚠️ Resultado: 40 minutos para entender el problema</p>
+<p style="color: #fbbf24;">⚠️ Información fragmentada y sin historial</p>
+<p style="color: #fbbf24;">⚠️ Decisiones postergadas hasta mañana</p>
+            `,
+            after: `
+<p style="color: #10b981; font-weight: bold;">✅ CON SISTEMA ROCBIRD (18:05)</p>
+<p>─────────────────────────────────────</p>
+<p style="color: #94a3b8;">📊 Dashboard Power BI</p>
+<p style="color: #f59e0b;">🔔 ALERTA AUTOMÁTICA:</p>
+<p>Obra: Droguería del Sud</p>
+<p>Tarea: Ejecución de Pilotes</p>
+<p>Desvío: 20% (Crítico)</p>
+<p>Responsable: Ing. García</p>
+<p>Fecha límite: 18/11/2025</p>
+<p style="margin-top: 1rem;">───────────────────</p>
+<p style="color: #06b6d4;">💡 RECOMENDACIÓN INTELIGENTE:</p>
+<p>"Para cumplir ESTRUCTURA HORMIGÓN en fecha,</p>
+<p>se requiere aceleración del 25% en próximos 10 días."</p>
+<p style="margin-top: 1rem;">───────────────────</p>
+<p style="color: #10b981;">✓ Gerente ve el problema al instante</p>
+<p style="color: #10b981;">✓ Decisión tomada en 5 minutos</p>
+<p style="color: #10b981;">✓ Recursos asignados inmediatamente</p>
+            `,
+            reset: `
+<p>→ Selecciona un escenario para ver la diferencia...</p>
+            `
+        };
+
+        function showScenario(type) {
+            const demoContent = document.getElementById('demoContent');
+            demoContent.innerHTML = scenarios[type];
+        }
+
+        // Initialize
+        updateProgressBar();
+    </script>
+</body>
+</html>
