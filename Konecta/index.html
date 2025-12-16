@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ascend by Rocbird | Konecta</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            /* Palette */
+            --bg-color: #121B2E;
+            --accent-primary: #00A9CE;
+            --accent-glow: rgba(0, 169, 206, 0.4);
+            --text-main: #F0F4F8;
+            --text-muted: #94A3B8;
+            --success: #10B981;
+
+            /* Bento Setup */
+            --bento-gap: 20px;
+            --bento-radius: 16px;
+            --bento-bg: rgba(18, 27, 46, 0.7);
+            --bento-border: 1px solid rgba(255, 255, 255, 0.08);
+            --bento-hover-border: 1px solid rgba(0, 169, 206, 0.4);
+
+            /* UX */
+            --trans-speed: 0.4s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* --- BACKGROUND FX --- */
+        .bg-mesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background:
+                radial-gradient(circle at 10% 20%, rgba(0, 169, 206, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(8, 80, 107, 0.1) 0%, transparent 40%);
+        }
+
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(circle, black 40%, transparent 80%);
+        }
+
+        /* --- LAYOUT --- */
+        .slides-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            padding: 2rem 5%;
+            /* Mobile inner padding */
+        }
+
+        section {
+            min-height: 100dvh;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem 0;
+            /* Vertical spacing */
+            position: relative;
+        }
+
+        /* --- BENTO GRID --- */
+        .bento-grid {
+            display: grid;
+            width: 100%;
+            gap: var(--bento-gap);
+            grid-template-columns: 1fr;
+            /* Mobile Stack */
+            align-content: center;
+        }
+
+        /* --- CARD STYLES --- */
+        .bento-card {
+            background: var(--bento-bg);
+            border: var(--bento-border);
+            border-radius: var(--bento-radius);
+            padding: 1.8rem;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: all var(--trans-speed) ease;
+            backdrop-filter: blur(16px);
+            overflow: hidden;
+        }
+
+        @media (hover: hover) {
+            .bento-card:hover {
+                border-color: var(--accent-primary);
+                box-shadow: 0 10px 40px -5px rgba(0, 0, 0, 0.4);
+                transform: translateY(-4px);
+                z-index: 2;
+            }
+        }
+
+        .card-accent {
+            background: linear-gradient(135deg, rgba(0, 169, 206, 0.05) 0%, rgba(18, 27, 46, 0.9) 100%);
+            border-color: rgba(0, 169, 206, 0.2);
+        }
+
+        /* Typography */
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 5.5rem);
+            font-weight: 800;
+            letter-spacing: -2px;
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        h3 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        p {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .tag-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 50px;
+            background: rgba(0, 169, 206, 0.1);
+            border: 1px solid rgba(0, 169, 206, 0.2);
+            color: var(--accent-primary);
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            width: fit-content;
+            margin-bottom: 1.5rem;
+        }
+
+        /* --- ICONS (SVG) --- */
+        .icon {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        .icon-lg {
+            width: 48px;
+            height: 48px;
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+        }
+
+        /* --- INTERACTIVE COMPONENTS --- */
+
+        /* 1. Accordion / Collapsible */
+        .accordion {
+            margin-top: auto;
+            width: 100%;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .acc-item {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .acc-header {
+            width: 100%;
+            padding: 1rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.95rem;
+            font-family: inherit;
+            cursor: pointer;
+            text-align: left;
+            transition: color 0.3s;
+        }
+
+        .acc-header:hover {
+            color: var(--accent-primary);
+        }
+
+        .acc-icon {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.3s;
+            opacity: 0.5;
+            border: 1px solid currentColor;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+        }
+
+        .acc-header[aria-expanded="true"] .acc-icon {
+            transform: rotate(45deg);
+            opacity: 1;
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .acc-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0, 1, 0, 1);
+        }
+
+        .acc-inner {
+            padding: 0 0 1.5rem 0;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .acc-inner strong {
+            color: var(--text-main);
+            display: block;
+            margin-bottom: 4px;
+            margin-top: 8px;
+        }
+
+        /* 2. Dynamic Buttons */
+        .btn-dynamic {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 1rem 2rem;
+            background: linear-gradient(90deg, var(--accent-primary) 0%, #0891b2 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+        }
+
+        .btn-dynamic::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: 0.5s;
+        }
+
+        .btn-dynamic:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px var(--accent-glow);
+        }
+
+        .btn-dynamic:hover::before {
+            transform: translateX(100%);
+        }
+
+        /* --- DESKTOP GRID MAPS --- */
+        @media (min-width: 1024px) {
+            .slides-container {
+                padding: 0;
+            }
+
+            section {
+                padding: 0;
+                height: 100vh;
+            }
+
+            /* Slide 1: Hero */
+            .grid-hero {
+                grid-template-columns: 1.5fr 1fr;
+                grid-template-rows: 1fr 1fr;
+                height: 600px;
+            }
+
+            .hero-main {
+                grid-column: 1 / 2;
+                grid-row: 1 / 3;
+                justify-content: center;
+            }
+
+            /* Slide 3: Timeline (4 cols) */
+            .grid-timeline {
+                grid-template-columns: repeat(4, 1fr);
+                height: 500px;
+            }
+
+            /* Slide 4: Stats */
+            .grid-stats {
+                grid-template-columns: 1.2fr 1fr 1fr 1fr;
+                height: 500px;
+            }
+
+            .stat-main {
+                grid-row: 1 / 2;
+            }
+
+            /* Slide 5/6: Compare (2 cols) */
+            .grid-compare {
+                grid-template-columns: 1fr 1fr;
+                height: 600px;
+            }
+
+            /* Slide 7: Pillars */
+            .grid-pillars {
+                grid-template-columns: repeat(3, 1fr);
+                height: 550px;
+            }
+        }
+
+        /* Utils */
+        .text-gradient {
+            background: linear-gradient(90deg, #fff, var(--accent-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hidden {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: 0.6s ease;
+        }
+
+        .visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .d-100 {
+            transition-delay: 0.1s;
+        }
+
+        .d-200 {
+            transition-delay: 0.2s;
+        }
+
+        .d-300 {
+            transition-delay: 0.3s;
+        }
+
+        /* SVG Definitions hidden */
+        .svg-defs {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SVG Sprites -->
+    <svg class="svg-defs">
+        <defs>
+            <symbol id="icon-rocket" viewBox="0 0 24 24">
+                <path
+                    d="M12 2.5s-7 3-7 9.5c0 3 2.5 5.5 5.5 5.5h3c3 0 5.5-2.5 5.5-5.5C19 5.5 12 2.5 12 2.5zM12 19c-1 0-2 .5-2 1.5S10.5 22 12 22s2-.5 2-1.5S13 19 12 19zm0-15l2 3h-4l2-3z" />
+            </symbol>
+            <symbol id="icon-brain" viewBox="0 0 24 24">
+                <path
+                    d="M12 2a5 5 0 00-5 5v1H6a3 3 0 00-3 3v5a3 3 0 003 3h12a3 3 0 003-3v-5a3 3 0 00-3-3h-1V7a5 5 0 00-5-5zM9 7a3 3 0 016 0v1H9V7z" />
+            </symbol>
+            <symbol id="icon-chart" viewBox="0 0 24 24">
+                <path d="M3 3v18h18v-2H5V3H3zm4 10h2v4H7v-4zm4-6h2v10h-2V7zm4 3h2v7h-2v-7zm4-4h2v11h-2V6z" />
+            </symbol>
+            <symbol id="icon-check" viewBox="0 0 24 24">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+            </symbol>
+            <symbol id="icon-arrow" viewBox="0 0 24 24">
+                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" />
+            </symbol>
+            <symbol id="icon-plus" viewBox="0 0 24 24">
+                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+            </symbol>
+        </defs>
+    </svg>
+
+    <div class="grid-lines"></div>
+    <div class="bg-mesh"></div>
+
+    <div class="slides-container" id="container">
+
+        <!-- SLIDE 1: HERO -->
+        <section>
+            <div class="bento-grid grid-hero">
+                <div class="bento-card hero-main hidden">
+                    <div class="tag-pill">FUTURE OF WORK</div>
+                    <h1>ASCEND</h1>
+                    <p class="text-gradient" style="font-size: 1.5rem; font-weight: 500;">
+                        Automatización Inteligente de Procesos Empresariales
+                    </p>
+                    <p style="margin-top: 1rem;">
+                        Transforme la complejidad manual en eficiencia automatizada.
+                    </p>
+                    <div style="margin-top: 2rem;">
+                        <a href="#slide-offer" onclick="scrollToSlide(2)" class="btn-dynamic">
+                            Ver Solución <svg class="icon">
+                                <use href="#icon-arrow"></use>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="bento-card card-accent hidden d-100">
+                    <svg class="icon-lg">
+                        <use href="#icon-rocket"></use>
+                    </svg>
+                    <h3>Impacto Inmediato</h3>
+                    <p>Programa acelerado de 10 semanas para transformar sus operaciones.</p>
+                </div>
+                <div class="bento-card hidden d-200">
+                    <svg class="icon-lg">
+                        <use href="#icon-brain"></use>
+                    </svg>
+                    <h3>IA + Agile</h3>
+                    <p>Fusión de Inteligencia Artificial con metodologías ágiles.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 2: VISION -->
+        <section>
+            <div class="bento-grid grid-compare"> <!-- Reuse 2-col -->
+                <div class="bento-card hidden">
+                    <h3>VISIÓN DEL PRODUCTO</h3>
+                    <h2>Elevarse sobre la complejidad</h2>
+                    <p>
+                        Ascend es nuestro servicio diseñado para liberar a las organizaciones del peso de los procesos
+                        manuales.
+                    </p>
+
+                    <!-- Accordion 1 -->
+                    <div class="accordion">
+                        <div class="acc-item">
+                            <button class="acc-header" aria-expanded="false" onclick="toggleAcc(this)">
+                                ¿Qué es Ascend? <div class="acc-icon"><svg class="icon" style="width:10px;height:10px;">
+                                        <use href="#icon-plus"></use>
+                                    </svg></div>
+                            </button>
+                            <div class="acc-content">
+                                <div class="acc-inner">
+                                    Programa de transformación de 10 semanas que convierte tareas manuales en flujos
+                                    inteligentes mediante IA y automatización.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="acc-item">
+                            <button class="acc-header" aria-expanded="false" onclick="toggleAcc(this)">
+                                Propósito <div class="acc-icon"><svg class="icon" style="width:10px;height:10px;">
+                                        <use href="#icon-plus"></use>
+                                    </svg></div>
+                            </button>
+                            <div class="acc-content">
+                                <div class="acc-inner">
+                                    Dar alas a su equipo para enfocarse en lo verdaderamente estratégico, eliminando la
+                                    fricción operativa.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bento-card card-accent hidden d-100"
+                    style="justify-content: center; align-items: center; text-align: center;">
+                    <div style="font-size: 5rem; font-weight: 800; color: var(--accent-primary); line-height: 1;">10
+                    </div>
+                    <div style="font-size: 1.5rem; color: #fff; font-weight: 600;">SEMANAS</div>
+                    <p style="margin-top: 1rem;">Timeline fijo. Resultados medibles.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 3: TIMELINE -->
+        <section id="slide-offer">
+            <div class="bento-grid grid-timeline">
+                <div class="bento-card card-accent hidden">
+                    <h3>LA OFERTA CORE</h3>
+                    <p>Ciclo de Ejecución de 4 Etapas</p>
+                    <p style="font-size: 0.8rem; margin-top: auto;">Garantía de ROI rápido.</p>
+                </div>
+                <div class="bento-card hidden d-100">
+                    <div class="tag-pill">Semanas 1-3</div>
+                    <h3 style="color: #fff;">Descubrimiento</h3>
+                    <p style="font-size: 0.9rem;">Relevamiento AS-IS / TO-BE y cálculo de ROI.</p>
+                </div>
+                <div class="bento-card hidden d-200">
+                    <div class="tag-pill">Semanas 4-7</div>
+                    <h3 style="color: #fff;">Diseño</h3>
+                    <p style="font-size: 0.9rem;">Prototipado, motor de reglas y validaciones.</p>
+                </div>
+                <div class="bento-card hidden d-300">
+                    <div class="tag-pill">Semanas 8-10</div>
+                    <h3 style="color: #fff;">Implementación</h3>
+                    <p style="font-size: 0.9rem;">Ajustes, Go-Live y Habilitación.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 4: NOBIS -->
+        <section>
+            <div class="bento-grid grid-stats">
+                <div class="bento-card stat-main hidden">
+                    <div class="tag-pill">CASO SALUD</div>
+                    <h2>NOBIS Medical</h2>
+                    <p>Automatización de Auditoría de Prestaciones.</p>
+
+                    <div class="accordion">
+                        <div class="acc-item">
+                            <button class="acc-header" aria-expanded="true" onclick="toggleAcc(this)">
+                                El Desafío <div class="acc-icon"><svg class="icon" style="width:10px;height:10px;">
+                                        <use href="#icon-plus"></use>
+                                    </svg></div>
+                            </button>
+                            <div class="acc-content" style="max-height: 200px;">
+                                <div class="acc-inner">
+                                    Alta carga manual en la validación de miles de prestaciones médicas mensuales, con
+                                    riesgo de errores financieros.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bento-card hidden d-100" style="align-items: center; text-align: center;">
+                    <div style="font-size: 3.5rem; font-weight: 700; color: var(--accent-primary);">-20%</div>
+                    <p>Tiempo Auditoría</p>
+                </div>
+                <div class="bento-card hidden d-200" style="align-items: center; text-align: center;">
+                    <div style="font-size: 3.5rem; font-weight: 700; color: var(--success);">95%</div>
+                    <p>Precisión Errores</p>
+                </div>
+                <div class="bento-card hidden d-300" style="align-items: center; text-align: center;">
+                    <div style="font-size: 3.5rem; font-weight: 700; color: var(--accent-primary);">+15%</div>
+                    <p>Recupero Financiero</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 5: INSURANCE -->
+        <section>
+            <div class="bento-grid grid-compare">
+                <!-- Case A -->
+                <div class="bento-card hidden">
+                    <div class="tag-pill">SEGUROS (ART)</div>
+                    <h2>Experta ART</h2>
+                    <p>Gestión de Reintegros ILT</p>
+
+                    <div class="accordion">
+                        <div class="acc-item">
+                            <button class="acc-header" aria-expanded="false" onclick="toggleAcc(this)">
+                                El Dolor <div class="acc-icon"><svg class="icon" style="width:10px;height:10px;">
+                                        <use href="#icon-plus"></use>
+                                    </svg></div>
+                            </button>
+                            <div class="acc-content">
+                                <div class="acc-inner">
+                                    Validación manual de PDFs (Recibos de sueldo) lenta y propensa a error de cálculo en
+                                    pagos a empleadores.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="acc-item">
+                            <button class="acc-header" aria-expanded="false" onclick="toggleAcc(this)">
+                                Solución Ascend <div class="acc-icon"><svg class="icon" style="width:10px;height:10px;">
+                                        <use href="#icon-plus"></use>
+                                    </svg></div>
+                            </button>
+                            <div class="acc-content">
+                                <div class="acc-inner">
+                                    <strong>Intelligent Doc Processing (IDP)</strong> Extrae datos, valida contrato y
+                                    calcula reintegros automáticamente.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="acc-item" style="border-bottom: none;">
+                            <button class="acc-header" aria-expanded="true" onclick="toggleAcc(this)">
+                                Impacto <div class="acc-icon"><svg class="icon" style="width:10px;height:10px;">
+                                        <use href="#icon-plus"></use>
+                                    </svg></div>
+                            </button>
+                            <div class="acc-content" style="max-height: 100px;">
+                                <div class="acc-inner" style="color: var(--accent-primary); font-weight: 600;">
+                                    Liquidación en 24hs. -90% errores.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case B -->
+                <div class="bento-card hidden d-100">
+                    <div class="tag-pill">SEGUROS (AUTO)</div>
+                    <h2>San Cristóbal</h2>
+                    <p>Siniestros Fast-Track</p>
+
+                    <div class="accordion">
+                        <div class="acc-item">
+                            <button class="acc-header" aria-expanded="false" onclick="toggleAcc(this)">
+                                El Dolor <div class="acc-icon"><svg class="icon" style="width:10px;height:10px;">
+                                        <use href="#icon-plus"></use>
+                                    </svg></div>
+                            </button>
+                            <div class="acc-content">
+                                <div class="acc-inner">
+                                    Costo administrativo de un siniestro menor supera el costo del repuesto.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="acc-item">
+                            <button class="acc-header" aria-expanded="false" onclick="toggleAcc(this)">
+                                Solución Ascend <div class="acc-icon"><svg class="icon" style="width:10px;height:10px;">
+                                        <use href="#icon-plus"></use>
+                                    </svg></div>
+                            </button>
+                            <div class="acc-content">
+                                <div class="acc-inner">
+                                    <strong>Computer Vision IA</strong> Analiza fotos de daño y presupuestos para
+                                    aprobación automática.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="acc-item" style="border-bottom: none;">
+                            <button class="acc-header" aria-expanded="true" onclick="toggleAcc(this)">
+                                Impacto <div class="acc-icon"><svg class="icon" style="width:10px;height:10px;">
+                                        <use href="#icon-plus"></use>
+                                    </svg></div>
+                            </button>
+                            <div class="acc-content" style="max-height: 100px;">
+                                <div class="acc-inner" style="color: var(--accent-primary); font-weight: 600;">
+                                    -40% Carga Administrativa.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 6: RETAIL & ADT -->
+        <section>
+            <div class="bento-grid grid-compare">
+                <!-- Case C -->
+                <div class="bento-card hidden">
+                    <div class="tag-pill">RETAIL</div>
+                    <h2>Cencosud</h2>
+                    <p>Conciliación Financiera Masiva</p>
+
+                    <div class="accordion">
+                        <div class="acc-item">
+                            <button class="acc-header" aria-expanded="false" onclick="toggleAcc(this)">
+                                El Dolor <div class="acc-icon"><svg class="icon" style="width:10px;height:10px;">
+                                        <use href="#icon-plus"></use>
+                                    </svg></div>
+                            </button>
+                            <div class="acc-content">
+                                <div class="acc-inner">
+                                    "Agujero Negro Financiero". Imposible cruzar millones de TXs manuales (POS vs
+                                    Bancos).
+                                </div>
+                            </div>
+                        </div>
+                        <div class="acc-item">
+                            <button class="acc-header" aria-expanded="true" onclick="toggleAcc(this)">
+                                Solución & Impacto <div class="acc-icon"><svg class="icon"
+                                        style="width:10px;height:10px;">
+                                        <use href="#icon-plus"></use>
+                                    </svg></div>
+                            </button>
+                            <div class="acc-content" style="max-height: 200px;">
+                                <div class="acc-inner">
+                                    <strong>Motor de Conciliación Difusa.</strong><br>
+                                    Cierre contable diario y recupero de ingresos.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case D -->
+                <div class="bento-card hidden d-100">
+                    <div class="tag-pill">SEGURIDAD</div>
+                    <h2>ADT</h2>
+                    <p>Optimización Service (Truck-Rolls)</p>
+
+                    <div class="accordion">
+                        <div class="acc-item">
+                            <button class="acc-header" aria-expanded="false" onclick="toggleAcc(this)">
+                                El Dolor <div class="acc-icon"><svg class="icon" style="width:10px;height:10px;">
+                                        <use href="#icon-plus"></use>
+                                    </svg></div>
+                            </button>
+                            <div class="acc-content">
+                                <div class="acc-inner">
+                                    Costo altísimo de visitas técnicas por falsas alarmas o problemas de usuario.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="acc-item">
+                            <button class="acc-header" aria-expanded="true" onclick="toggleAcc(this)">
+                                Solución & Impacto <div class="acc-icon"><svg class="icon"
+                                        style="width:10px;height:10px;">
+                                        <use href="#icon-plus"></use>
+                                    </svg></div>
+                            </button>
+                            <div class="acc-content" style="max-height: 200px;">
+                                <div class="acc-inner">
+                                    <strong>Triaje Inteligente Remoto.</strong><br>
+                                    Análisis de logs previo a visita. -25% Visitas Innecesarias.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 7: FACTORY -->
+        <section>
+            <div class="bento-grid grid-pillars">
+                <div class="bento-card hidden" style="grid-column: 1 / -1;">
+                    <h2>Pipeline de Despliegue</h2>
+                    <p>No nos retiramos. Activamos su "Fábrica de Automatización".</p>
+                </div>
+
+                <div class="bento-card hidden d-100">
+                    <div class="tag-pill">01</div>
+                    <h3 style="color: #fff;">Backlog Estratégico</h3>
+                    <p>Inventario centralizado de procesos ineficientes.</p>
+                </div>
+                <div class="bento-card hidden d-200">
+                    <div class="tag-pill">02</div>
+                    <h3 style="color: #fff;">Priorización</h3>
+                    <p>Matriz Impacto vs Esfuerzo para Quick Wins.</p>
+                </div>
+                <div class="bento-card hidden d-300">
+                    <div class="tag-pill">03</div>
+                    <h3 style="color: #fff;">Q-Cycles</h3>
+                    <p>Ejecución trimestral. Escalar a 50 procesos/año.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 8: END -->
+        <section>
+            <div class="bento-grid" style="grid-template-columns: 1fr; text-align: center; justify-items: center;">
+                <div class="bento-card card-accent hidden" style="max-width: 800px; padding: 4rem 2rem;">
+                    <h3>CONCLUSIÓN</h3>
+                    <h2 style="font-size: clamp(2rem, 4vw, 3rem); line-height: 1.2; margin-bottom: 2rem;">
+                        Intervención quirúrgica en la<br> eficiencia operativa.
+                    </h2>
+                    <p style="font-size: 1.2rem; margin-bottom: 3rem;">
+                        Transforme la complejidad manual en eficiencia automatizada.
+                    </p>
+
+                    <button class="btn-dynamic" onclick="alert('Iniciando contacto...')">
+                        INICIAR AHORA <svg class="icon">
+                            <use href="#icon-arrow"></use>
+                        </svg>
+                    </button>
+
+                    <p style="margin-top: 3rem; font-size: 0.8rem; opacity: 0.5;">
+                        Konecta | Ascend by Rocbird © 2025
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // --- ACCORDION LOGIC ---
+        function toggleAcc(header) {
+            const content = header.nextElementSibling;
+            const isExpanded = header.getAttribute('aria-expanded') === 'true';
+
+            // Close all others in same group
+            const group = header.closest('.accordion');
+            group.querySelectorAll('.acc-header').forEach(h => {
+                if (h !== header) {
+                    h.setAttribute('aria-expanded', 'false');
+                    h.nextElementSibling.style.maxHeight = null;
+                }
+            });
+
+            // Toggle current
+            header.setAttribute('aria-expanded', !isExpanded);
+            if (!isExpanded) {
+                content.style.maxHeight = content.scrollHeight + "px";
+            } else {
+                content.style.maxHeight = null;
+            }
+        }
+
+        // --- SCROLL ANIMATIONS ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.querySelectorAll('.hidden').forEach(el => el.classList.add('visible'));
+
+                    // Init accordions that are open by default logic if needed, 
+                    // but we let CSS height transitions handle user interaction mostly.
+                }
+            });
+        }, { threshold: 0.2 });
+
+        document.querySelectorAll('section').forEach(s => observer.observe(s));
+
+        // Smooth Scroll helper
+        function scrollToSlide(idx) {
+            const container = document.getElementById('container');
+            const h = window.innerHeight;
+            container.scrollTo({ top: h * (idx - 1), behavior: 'smooth' });
+        }
+    </script>
+</body>
+
+</html>
