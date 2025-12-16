@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ascend by Rocbird</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #121212;
+            --text-color: #E0E0E0;
+            --accent-green: #39FF14;
+            --accent-blue: #00CCFF;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            --card-radius: 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            touch-action: none;
+        }
+
+        /* --- BACKGROUND CANVAS --- */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* --- LAYOUT & SCROLL --- */
+        .slides-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        section {
+            height: 100vh;
+            width: 100%;
+            scroll-snap-align: start;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* --- TYPOGRAPHY --- */
+        h1 {
+            font-size: clamp(2.5rem, 5vw + 1rem, 5rem);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #fff 0%, #ccc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+            line-height: 1.2;
+        }
+
+        h3 {
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            margin-bottom: 0.8rem;
+            color: var(--accent-blue);
+            font-weight: 700;
+        }
+
+        p {
+            font-size: clamp(0.9rem, 2vw, 1.05rem);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            color: #B0B0B0;
+        }
+
+        .tagline {
+            font-size: clamp(0.9rem, 3vw, 1.3rem);
+            color: var(--accent-green);
+            font-weight: 300;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-align: center;
+            margin-top: 1rem;
+            display: block;
+        }
+
+        .accent {
+            color: var(--accent-green);
+        }
+
+        .accent-blue {
+            color: var(--accent-blue);
+        }
+
+        .text-white {
+            color: white;
+        }
+
+        /* --- COMPONENTS --- */
+
+        /* Glass Cards */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: var(--glass-border);
+            border-radius: var(--card-radius);
+            padding: 1.5rem;
+            box-shadow: var(--glass-shadow);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            opacity: 0.5;
+        }
+
+        .glass-card:active {
+            transform: scale(0.98);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Grids */
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+            width: 100%;
+        }
+
+        .grid-2 {
+            grid-template-columns: 1fr;
+        }
+
+        .grid-3 {
+            grid-template-columns: 1fr;
+        }
+
+        /* Lists */
+        ul.clean-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul.clean-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 0.8rem;
+            font-size: 0.95rem;
+        }
+
+        ul.clean-list li span {
+            margin-top: 2px;
+        }
+
+        /* Timeline */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            position: relative;
+            padding-left: 2rem;
+            margin-top: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent-blue), transparent);
+        }
+
+        .timeline-step {
+            position: relative;
+        }
+
+        .timeline-bullet {
+            position: absolute;
+            left: -2.4rem;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            background: var(--bg-color);
+            border: 2px solid var(--accent-blue);
+            border-radius: 50%;
+            z-index: 2;
+        }
+
+        /* Stats */
+        .stat-group {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        /* Cycle */
+        .cycle {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .cycle-item {
+            width: 100%;
+            max-width: 250px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .cycle-arrow {
+            font-size: 1.5rem;
+            color: var(--accent-blue);
+            transform: rotate(90deg);
+        }
+
+        /* --- ANIMATIONS --- */
+        .animate-stagger>* {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .animate-stagger.visible>*:nth-child(1) {
+            transition-delay: 0.1s;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .animate-stagger.visible>*:nth-child(2) {
+            transition-delay: 0.2s;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .animate-stagger.visible>*:nth-child(3) {
+            transition-delay: 0.3s;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .animate-stagger.visible>*:nth-child(4) {
+            transition-delay: 0.4s;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .animate-stagger.visible>*:nth-child(5) {
+            transition-delay: 0.5s;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- NAVIGATION DOTS --- */
+        .nav-dots {
+            position: fixed;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        @media (max-width: 768px) {
+            .nav-dots {
+                display: none;
+            }
+        }
+
+        .nav-dot {
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-dot.active {
+            background: var(--accent-green);
+            transform: scale(1.5);
+            box-shadow: 0 0 10px var(--accent-green);
+        }
+
+        /* --- DESKTOP --- */
+        @media (min-width: 768px) {
+            section {
+                padding: 4rem 10%;
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .grid-3 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .timeline {
+                flex-direction: row;
+                justify-content: space-between;
+                padding-left: 0;
+                margin-top: 4rem;
+                border-left: none;
+                text-align: center;
+            }
+
+            .timeline::before {
+                left: 0;
+                right: 0;
+                top: 10px;
+                height: 2px;
+                width: 100%;
+                background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+            }
+
+            .timeline-bullet {
+                position: relative;
+                left: auto;
+                top: auto;
+                margin: 0 auto 1.5rem auto;
+            }
+
+            .cycle {
+                flex-direction: row;
+                justify-content: center;
+            }
+
+            .cycle-arrow {
+                transform: rotate(0deg);
+            }
+
+            .cycle-item {
+                height: 220px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .stat-number {
+                font-size: 3.5rem;
+            }
+
+            h1 {
+                font-size: 5rem;
+            }
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mb-2 {
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="particles-canvas"></canvas>
+    <div class="nav-dots" id="navDots"></div>
+
+    <div class="slides-container" id="slidesContainer">
+
+        <!-- Slide 1: Título -->
+        <section id="slide-1">
+            <div class="container text-center animate-stagger">
+                <h1>ASCEND</h1>
+                <h3 style="font-weight: 300; letter-spacing: 5px; color: #fff;">BY ROCBIRD</h3>
+                <h2 style="font-size: 1.2rem; color: #888; font-weight: 400; margin-top: 1rem;">AUTOMATIZACIÓN
+                    INTELIGENTE DE PROCESOS</h2>
+                <span class="tagline">"Eleve su operación por encima de la complejidad."</span>
+                <div style="margin-top: 4rem; animation: bounce 2s infinite;">
+                    <span style="font-size: 1.5rem; opacity: 0.5;">↓</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 2: Visión -->
+        <section id="slide-2">
+            <div class="container">
+                <div class="grid-2">
+                    <div class="animate-stagger">
+                        <h2>Visión del <span class="accent">Producto</span></h2>
+                        <p>Toda empresa merece elevarse por encima de la complejidad operativa.</p>
+                        <p>Ascend libera a las organizaciones del peso de los procesos manuales, transformándolos en
+                            <span class="accent-blue">flujos automatizados</span> y controlados.</p>
+                    </div>
+                    <div class="glass-card animate-stagger">
+                        <h3>¿Qué es Ascend?</h3>
+                        <p style="color: #fff; margin-bottom: 1.5rem;">Programa de transformación acelerada en <span
+                                class="accent">10 Semanas</span>.</p>
+                        <ul class="clean-list">
+                            <li><span>⚡</span> Agilidad operativa inmediata.</li>
+                            <li><span>🤖</span> IA y Metodologías Ágiles.</li>
+                            <li><span>�</span> De tareas manuales a estratégicas.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: La Oferta Core -->
+        <section id="slide-3">
+            <div class="container animate-stagger">
+                <div class="text-center mb-2">
+                    <h2>La Oferta <span class="accent-blue">Core</span></h2>
+                    <p>Genere impacto inmediato y valide valor antes de escalar.</p>
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-step">
+                        <div class="timeline-bullet"></div>
+                        <h3>Descubrimiento</h3>
+                        <p>Semanas 1-3<br>Relevamiento AS-IS / TO-BE</p>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="timeline-bullet"></div>
+                        <h3>Diseño y Dev</h3>
+                        <p>Semanas 4-7<br>Prototipado y Motor de Reglas</p>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="timeline-bullet"></div>
+                        <h3>Implementación</h3>
+                        <p>Semanas 8-9<br>Alertas y Trazabilidad</p>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="timeline-bullet"></div>
+                        <h3>Habilitación</h3>
+                        <p>Semana 10<br>Go-Live y Capacitación</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Caso NOBIS -->
+        <section id="slide-4">
+            <div class="container animate-stagger">
+                <div class="mb-2">
+                    <p class="accent-blue" style="font-weight: 700; font-size: 0.9rem;">CASO DE ÉXITO: SALUD</p>
+                    <h2>NOBIS Medical</h2>
+                    <p>Automatización del flujo de auditoría de prestaciones.</p>
+                </div>
+
+                <div class="grid-3">
+                    <div class="glass-card stat-group">
+                        <span class="stat-number count-up" data-target="20" data-prefix="-" data-suffix="%">0</span>
+                        <p>Tiempo de Auditoría</p>
+                        <small style="color: #666;">Reducción de carga manual</small>
+                    </div>
+                    <div class="glass-card stat-group">
+                        <span class="stat-number count-up" data-target="95" data-suffix="%">0</span>
+                        <p>Precisión</p>
+                        <small style="color: #666;">Detección de errores</small>
+                    </div>
+                    <div class="glass-card stat-group">
+                        <span class="stat-number count-up" data-target="15" data-prefix="+" data-suffix="%">0</span>
+                        <p>Recupero Financiero</p>
+                        <small style="color: #666;">Incremento directo</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Seguros & ART -->
+        <section id="slide-5">
+            <div class="container animate-stagger">
+                <h2>Impacto: <span class="accent-blue">Seguros & ART</span></h2>
+                <div class="grid-2">
+                    <div class="glass-card">
+                        <h3>Gestión Reintegros ILT</h3>
+                        <p style="font-size: 0.85rem; color: #888; margin-bottom: 0.5rem;">EJ. EXPERTA ART</p>
+                        <p><strong>Dolor:</strong> Validación manual lenta de recibos y propenso a errores de pago.</p>
+                        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 0.8rem 0;">
+                        <p><strong>Solución:</strong> <span class="accent">Intelligent Doc Processing (IDP)</span>.
+                            Extrae datos, valida vigencia y calcula montos.</p>
+                        <p class="accent-blue" style="margin-top: 0.5rem; font-weight: 600;">Liquidación en 24hs.</p>
+                    </div>
+                    <div class="glass-card">
+                        <h3>Siniestros Fast-Track</h3>
+                        <p style="font-size: 0.85rem; color: #888; margin-bottom: 0.5rem;">EJ. SAN CRISTÓBAL</p>
+                        <p><strong>Dolor:</strong> Costo admin supera costo del repuesto en siniestros menores.</p>
+                        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 0.8rem 0;">
+                        <p><strong>Solución:</strong> Portal autogestión con <span class="accent">IA Visión
+                                Computarizada</span> para aprobación automática.</p>
+                        <p class="accent-blue" style="margin-top: 0.5rem; font-weight: 600;">-40% Bandeja Entrada.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: Retail & Seguridad -->
+        <section id="slide-6">
+            <div class="container animate-stagger">
+                <h2>Impacto: <span class="accent">Retail & Servicios</span></h2>
+                <div class="grid-2">
+                    <div class="glass-card">
+                        <h3>Conciliación Financiera</h3>
+                        <p style="font-size: 0.85rem; color: #888; margin-bottom: 0.5rem;">EJ. CENCOSUD</p>
+                        <p><strong>Dolor:</strong> "Agujero Negro Financiero". Cruzar millones de tx de POS/Web vs
+                            Bancos.</p>
+                        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 0.8rem 0;">
+                        <p><strong>Solución:</strong> Motor de conciliación automatizado. Cruza por ID/Monto y aísla
+                            excepciones.</p>
+                        <p class="accent-blue" style="margin-top: 0.5rem; font-weight: 600;">Cierre contable diario.</p>
+                    </div>
+                    <div class="glass-card">
+                        <h3>Truck-Rolls (Service)</h3>
+                        <p style="font-size: 0.85rem; color: #888; margin-bottom: 0.5rem;">EJ. ADT</p>
+                        <p><strong>Dolor:</strong> Altísimo costo de visitas técnicas innecesarias (falsas alarmas).</p>
+                        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 0.8rem 0;">
+                        <p><strong>Solución:</strong> Triaje Inteligente Remoto. Analiza logs y clasifica incidente
+                            antes de viajar.</p>
+                        <p class="accent-blue" style="margin-top: 0.5rem; font-weight: 600;">-25% Visitas Innecesarias.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: Pipeline -->
+        <section id="slide-7">
+            <div class="container text-center animate-stagger">
+                <h2>Fábrica de Automatización</h2>
+                <p>Ascend First Steps es solo la calibración. Activamos un modelo cíclico y escalable.</p>
+
+                <div class="cycle">
+                    <div class="cycle-item">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">�️</div>
+                        <h3>Backlog Estratégico</h3>
+                        <p style="font-size: 0.8rem;">Inventario centralizado de procesos ineficientes junto a líderes.
+                        </p>
+                    </div>
+                    <div class="cycle-arrow">➔</div>
+                    <div class="cycle-item">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎯</div>
+                        <h3>Matriz Priorización</h3>
+                        <p style="font-size: 0.8rem;">Impacto vs Esfuerzo.<br><span class="accent">Quick Wins</span> vs
+                            Estructurales.</p>
+                    </div>
+                    <div class="cycle-arrow">➔</div>
+                    <div class="cycle-item" style="border-color: var(--accent-green);">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚙️</div>
+                        <h3 class="accent">Q-Cycles</h3>
+                        <p style="font-size: 0.8rem;">Ejecución trimestral.<br>Escalar de 1 a 50 procesos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 8: Cierre -->
+        <section id="slide-8">
+            <div class="container text-center animate-stagger">
+                <h2 style="font-size: clamp(1.8rem, 5vw, 3.5rem); margin-bottom: 1.5rem; line-height: 1.3;">
+                    "Transforme la complejidad manual en <span class="accent">eficiencia automatizada</span>."
+                </h2>
+                <div class="glass-card" style="display: inline-block; padding: 2rem 3rem; margin-bottom: 1rem;">
+                    <p style="margin-bottom: 0.5rem; font-size: 0.9rem;">¿Listo para iniciar las 10 Semanas?</p>
+                    <h3 style="margin-bottom: 0; font-size: 1.5rem; color: #fff;">Ascend by Rocbird</h3>
+
+                    <button
+                        style="margin-top: 1.5rem; background: var(--accent-green); border: none; padding: 12px 30px; border-radius: 50px; font-weight: 700; cursor: pointer; color: #000; transition: transform 0.2s; font-size: 1rem;"
+                        onclick="alert('Contactando...')">
+                        Contactar
+                    </button>
+                </div>
+                <p style="font-size: 0.8rem; margin-top: 2rem; opacity: 0.6;">Rocbird © 2025</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- SCRIPTS (UNCHANGED LOGIC) -->
+    <script>
+        // --- 1. PARTICLE CANVAS ---
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        // Configuration
+        const particleCount = window.innerWidth < 768 ? 40 : 100;
+        const connectionDistance = 150;
+        const mouseDistance = 200;
+
+        let mouse = { x: null, y: null };
+
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
+        window.addEventListener('touchmove', (e) => {
+            mouse.x = e.touches[0].clientX;
+            mouse.y = e.touches[0].clientY;
+        });
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            initParticles();
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2 + 1;
+                this.color = Math.random() > 0.5 ? 'rgba(57, 255, 20, ' : 'rgba(0, 204, 255, ';
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+
+                if (mouse.x != null) {
+                    let dx = mouse.x - this.x; let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < mouseDistance) {
+                        const forceDirectionX = dx / distance;
+                        const forceDirectionY = dy / distance;
+                        const force = (mouseDistance - distance) / mouseDistance;
+                        const directionX = forceDirectionX * force * 0.5;
+                        const directionY = forceDirectionY * force * 0.5;
+                        this.vx -= directionX; this.vy -= directionY;
+                    }
+                }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color + '0.5)';
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            let count = window.innerWidth < 768 ? 40 : 100;
+            for (let i = 0; i < count; i++) particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update(); particles[i].draw();
+                for (let j = i; j < particles.length; j++) {
+                    let dx = particles[i].x - particles[j].x;
+                    let dy = particles[i].y - particles[j].y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < connectionDistance) {
+                        ctx.beginPath();
+                        let opacity = 1 - (distance / connectionDistance);
+                        ctx.strokeStyle = 'rgba(255, 255, 255,' + (opacity * 0.1) + ')';
+                        ctx.lineWidth = 1;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+        resizeCanvas(); animateParticles();
+
+        // --- 2. LOGIC ---
+        const slides = document.querySelectorAll('section');
+        const dotsContainer = document.getElementById('navDots');
+
+        slides.forEach((slide, index) => {
+            const dot = document.createElement('div');
+            dot.classList.add('nav-dot');
+            if (index === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => { slide.scrollIntoView({ behavior: 'smooth' }); });
+            dotsContainer.appendChild(dot);
+        });
+
+        const observerOptions = { threshold: 0.3 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const index = Array.from(slides).indexOf(entry.target);
+                    document.querySelectorAll('.nav-dot').forEach((dot, i) => {
+                        dot.classList.toggle('active', i === index);
+                    });
+                    const staggers = entry.target.querySelectorAll('.animate-stagger');
+                    staggers.forEach(el => el.classList.add('visible'));
+                    const counters = entry.target.querySelectorAll('.count-up');
+                    counters.forEach(counter => animateCounter(counter));
+                }
+            });
+        }, observerOptions);
+        slides.forEach(slide => observer.observe(slide));
+
+        function animateCounter(el) {
+            if (el.classList.contains('counted')) return;
+            const target = parseInt(el.getAttribute('data-target'));
+            const prefix = el.getAttribute('data-prefix') || '';
+            const suffix = el.getAttribute('data-suffix') || '';
+            let current = 0;
+            const timer = setInterval(() => {
+                current += Math.ceil(target / 50);
+                if (current >= target) { current = target; el.classList.add('counted'); clearInterval(timer); }
+                el.innerText = prefix + current + suffix;
+            }, 30);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            const slidesContainer = document.getElementById('slidesContainer');
+            const h = window.innerHeight;
+            const currentSection = Math.round(slidesContainer.scrollTop / h);
+            if (['ArrowDown', 'ArrowRight', ' '].includes(e.key)) {
+                if (currentSection < slides.length - 1) slides[currentSection + 1].scrollIntoView({ behavior: 'smooth' });
+            } else if (['ArrowUp', 'ArrowLeft'].includes(e.key)) {
+                if (currentSection > 0) slides[currentSection - 1].scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    </script>
+</body>
+
+</html>

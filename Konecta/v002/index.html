@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ascend by Rocbird | Konecta</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            /* Palette */
+            --bg-color: #121B2E;
+            --accent-primary: #00A9CE;
+            --accent-secondary: #08506B;
+            --text-main: #F0F4F8;
+            --text-muted: #94A3B8;
+
+            /* Bento Setup */
+            --bento-gap: 16px;
+            --bento-radius: 20px;
+            --bento-bg: rgba(255, 255, 255, 0.03);
+            --bento-border: 1px solid rgba(255, 255, 255, 0.08);
+            --bento-hover-border: 1px solid rgba(0, 169, 206, 0.5);
+
+            /* Animation */
+            --trans-speed: 0.5s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* --- BACKGROUND MESH --- */
+        .bg-mesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background:
+                radial-gradient(circle at 15% 15%, rgba(0, 169, 206, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(8, 80, 107, 0.15) 0%, transparent 40%);
+            opacity: 1;
+        }
+
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -2;
+            mask-image: radial-gradient(circle at 50% 50%, black 40%, transparent 100%);
+        }
+
+        /* --- LAYOUT --- */
+        .slides-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        section {
+            height: 100dvh;
+            width: 100%;
+            max-width: 1300px;
+            margin: 0 auto;
+            scroll-snap-align: start;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        /* --- BENTO CARD SYSTEM --- */
+        .bento-grid {
+            display: grid;
+            width: 100%;
+            height: 100%;
+            max-height: 850px;
+            gap: var(--bento-gap);
+            grid-template-columns: 1fr;
+            /* Mobile Default */
+            grid-auto-rows: min-content;
+            overflow-y: auto;
+            /* Allow internal scroll on mobile if needed */
+        }
+
+        /* Hide scrollbar within grid for cleaner look */
+        .bento-grid::-webkit-scrollbar {
+            display: none;
+        }
+
+        .bento-card {
+            background: var(--bento-bg);
+            border: var(--bento-border);
+            border-radius: var(--bento-radius);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            transition: all var(--trans-speed) cubic-bezier(0.25, 0.8, 0.25, 1);
+            backdrop-filter: blur(12px);
+        }
+
+        @media (hover: hover) {
+            .bento-grid:hover .bento-card {
+                opacity: 0.6;
+                transform: scale(0.99);
+                filter: blur(1px);
+            }
+
+            .bento-grid:hover .bento-card:hover {
+                opacity: 1;
+                transform: scale(1);
+                filter: blur(0);
+                border: var(--bento-hover-border);
+                box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.5);
+                z-index: 5;
+            }
+        }
+
+        /* Card Styles */
+        .card-accent {
+            background: rgba(0, 169, 206, 0.08);
+            border-color: rgba(0, 169, 206, 0.3);
+        }
+
+        .card-dark {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .card-start {
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .card-center {
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: clamp(3rem, 6vw, 6rem);
+            font-weight: 800;
+            line-height: 0.95;
+            letter-spacing: -2px;
+        }
+
+        h2 {
+            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 0.8rem;
+            color: #fff;
+        }
+
+        h3 {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent-primary);
+            margin-bottom: 0.8rem;
+            font-weight: 700;
+        }
+
+        h4 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: #fff;
+            margin: 0.5rem 0;
+            line-height: 1;
+        }
+
+        p {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 0.8rem;
+        }
+
+        strong {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .tagline {
+            display: inline-block;
+            padding: 6px 12px;
+            border: 1px solid var(--accent-primary);
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .highlight {
+            color: var(--accent-primary);
+        }
+
+        /* --- DESKTOP ARRANGEMENTS --- */
+        @media (min-width: 900px) {
+            .bento-grid {
+                overflow-y: visible;
+            }
+
+            /* Hero */
+            .grid-hero {
+                grid-template-columns: 1.5fr 1fr;
+                grid-template-rows: 2fr 1.2fr;
+            }
+
+            .hero-main {
+                grid-column: 1 / 2;
+                grid-row: 1 / 3;
+            }
+
+            .hero-sub1 {
+                grid-column: 2 / 3;
+                grid-row: 1 / 2;
+            }
+
+            .hero-sub2 {
+                grid-column: 2 / 3;
+                grid-row: 2 / 3;
+            }
+
+            /* Vision */
+            .grid-vision {
+                grid-template-columns: 2fr 1fr;
+                grid-template-rows: 1fr 1fr;
+            }
+
+            .vis-main {
+                grid-column: 1 / 2;
+                grid-row: 1 / 3;
+            }
+
+            /* Timeline */
+            .grid-timeline {
+                grid-template-columns: repeat(4, 1fr);
+                grid-template-rows: 1fr 3fr;
+            }
+
+            .time-head {
+                grid-column: 1 / 5;
+                grid-row: 1 / 2;
+            }
+
+            /* Stats */
+            .grid-stats {
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: 1.2fr 1fr;
+            }
+
+            .stat-head {
+                grid-column: 1 / 4;
+                grid-row: 1 / 2;
+            }
+
+            /* Compare (Insurance/Retail) */
+            .grid-compare {
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: 1fr;
+            }
+
+            /* Factory */
+            .grid-factory {
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: 0.8fr 2fr;
+            }
+
+            .fact-head {
+                grid-column: 1 / 4;
+                grid-row: 1 / 2;
+            }
+
+            /* Conclusion */
+            .grid-concl {
+                grid-template-columns: 1.5fr 1fr;
+                grid-template-rows: 1fr;
+            }
+        }
+
+        /* --- ANIMATIONS --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-1 {
+            transition-delay: 0.1s;
+        }
+
+        .delay-2 {
+            transition-delay: 0.2s;
+        }
+
+        .delay-3 {
+            transition-delay: 0.3s;
+        }
+
+        .delay-4 {
+            transition-delay: 0.4s;
+        }
+
+        /* --- NAV --- */
+        .nav-sidebar {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px;
+            border-radius: 50px;
+            background-clip: content-box;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .nav-dot.active {
+            background-color: var(--accent-primary);
+            border-color: rgba(0, 169, 206, 0.3);
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 900px) {
+            .nav-sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="grid-lines"></div>
+    <div class="bg-mesh"></div>
+    <div class="nav-sidebar" id="navSidebar"></div>
+
+    <div class="slides-container" id="slidesContainer">
+
+        <!-- Slide 1: Hero -->
+        <section id="slide-1">
+            <div class="bento-grid grid-hero">
+                <div class="bento-card hero-main card-start reveal">
+                    <span class="tagline">FUTURE OF WORK</span>
+                    <h1 style="color: #fff;">ASCEND <span class="highlight"
+                            style="font-size: 0.5em; vertical-align: super;">TM</span></h1>
+                    <p style="font-size: 1.5rem; margin-top: 1rem; color: var(--text-main);">
+                        Automatización Inteligente de Procesos Empresariales.
+                    </p>
+                    <p style="margin-top: 2rem; opacity: 0.6; font-size: 0.9rem;">BY ROCBIRD</p>
+                </div>
+                <div class="bento-card hero-sub1 card-accent card-center reveal delay-1">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🚀</div>
+                    <p style="font-weight: 600; color: #fff;">Agilidad Operativa</p>
+                    <p style="font-size: 0.8rem;">En solo 10 semanas</p>
+                </div>
+                <div class="bento-card hero-sub2 card-center reveal delay-2"
+                    style="background: rgba(0,0,0,0.5); padding: 0;">
+                    <button onclick="slideTo(1)"
+                        style="width: 100%; height: 100%; background: transparent; border: none; color: var(--accent-primary); font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;">
+                        Descubrir Más ↓
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 2: Vision -->
+        <section id="slide-2">
+            <div class="bento-grid grid-vision">
+                <div class="bento-card vis-main card-start reveal">
+                    <h3>Visión del Producto</h3>
+                    <h2>Elevarse sobre la complejidad.</h2>
+                    <p style="font-size: 1.1rem; color: #fff;">Toda empresa merece liberarse del peso de los procesos
+                        manuales.</p>
+                    <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                        <p><strong>Ascend</strong> transforma procesos críticos en <span class="highlight">flujos
+                                automatizados</span> y controlados, dando alas a su equipo para enfocarse en lo
+                            estratégico.</p>
+                    </div>
+                </div>
+                <div class="bento-card card-dark card-center reveal delay-1">
+                    <h3>¿Qué es?</h3>
+                    <p style="margin-bottom: 0;">Programa de transformación acelerada.</p>
+                    <div style="margin-top: 1rem;">
+                        <span style="display: block; font-size: 2.5rem;">⚡</span>
+                        <strong style="color: var(--accent-primary);">10 Semanas</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: Timeline -->
+        <section id="slide-3">
+            <div class="bento-grid grid-timeline">
+                <div class="bento-card time-head card-center reveal">
+                    <h2>La Oferta Core</h2>
+                    <p>Timeline fijo para generar <span class="highlight">ROI Inmediato</span>.</p>
+                </div>
+
+                <div class="bento-card reveal delay-1">
+                    <h3>Semanas 1-3</h3>
+                    <strong style="font-size: 1.2rem; display: block; margin-bottom: 0.5rem;">Descubrimiento</strong>
+                    <p style="font-size: 0.85rem;">Relevamiento AS-IS / TO-BE y cálculo de ROI.</p>
+                </div>
+                <div class="bento-card reveal delay-2">
+                    <h3>Semanas 4-7</h3>
+                    <strong style="font-size: 1.2rem; display: block; margin-bottom: 0.5rem;">Diseño</strong>
+                    <p style="font-size: 0.85rem;">Prototipado, motor de reglas y validaciones.</p>
+                </div>
+                <div class="bento-card reveal delay-3">
+                    <h3>Semanas 8-9</h3>
+                    <strong style="font-size: 1.2rem; display: block; margin-bottom: 0.5rem;">Implementación</strong>
+                    <p style="font-size: 0.85rem;">Ajustes operativos, alertas y trazabilidad.</p>
+                </div>
+                <div class="bento-card card-accent reveal delay-4">
+                    <h3>Semana 10</h3>
+                    <strong style="font-size: 1.2rem; display: block; margin-bottom: 0.5rem;">Habilitación</strong>
+                    <p style="font-size: 0.85rem;">Capacitación, documentación y Go-Live.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: NOBIS -->
+        <section id="slide-4">
+            <div class="bento-grid grid-stats">
+                <div class="bento-card stat-head card-start reveal">
+                    <span class="tagline">CASO DE ÉXITO: SALUD</span>
+                    <h2>NOBIS Medical</h2>
+                    <p>Automatización End-to-End del flujo de auditoría de prestaciones médicas.</p>
+                </div>
+
+                <div class="bento-card card-center reveal delay-1">
+                    <h4 class="count-up" data-target="20" data-prefix="-">%</h4>
+                    <p>Tiempo de Auditoría</p>
+                </div>
+                <div class="bento-card card-center reveal delay-2">
+                    <h4 class="count-up" data-target="95" data-suffix="%">0</h4>
+                    <p>Precisión (Errores)</p>
+                </div>
+                <div class="bento-card card-center reveal delay-3">
+                    <h4 class="count-up" data-target="15" data-prefix="+" data-suffix="%">0</h4>
+                    <p>Recupero Financiero</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Insurance Cases -->
+        <section id="slide-5">
+            <div class="bento-grid grid-compare">
+                <div class="bento-card card-start reveal">
+                    <span class="tagline">SEGUROS / ART</span>
+                    <h3>Caso A: Experta ART</h3>
+                    <p style="margin-bottom: 1rem; color: #fff;"><strong>Gestión de Reintegros ILT</strong></p>
+
+                    <p style="font-size: 0.9rem;"><strong style="color: var(--text-muted);">Dolor:</strong> Validación
+                        manual lenta de miles de recibos de sueldo.</p>
+
+                    <div
+                        style="margin-top: auto; padding-top: 1rem; border-top: 1px dashed rgba(255,255,255,0.2); width: 100%;">
+                        <p style="font-size: 0.9rem; margin-bottom: 0.2rem;"><strong
+                                class="highlight">Solución:</strong> Intelligent Doc Processing (IDP).</p>
+                        <p style="font-size: 0.9rem;"><strong>Impacto:</strong> Liquidación en 24hs.</p>
+                    </div>
+                </div>
+
+                <div class="bento-card card-start reveal delay-1">
+                    <span class="tagline">SEGUROS</span>
+                    <h3>Caso B: San Cristóbal</h3>
+                    <p style="margin-bottom: 1rem; color: #fff;"><strong>Fast-Track Siniestros</strong></p>
+
+                    <p style="font-size: 0.9rem;"><strong style="color: var(--text-muted);">Dolor:</strong> Costo
+                        administrativo supera al costo del repuesto.</p>
+
+                    <div
+                        style="margin-top: auto; padding-top: 1rem; border-top: 1px dashed rgba(255,255,255,0.2); width: 100%;">
+                        <p style="font-size: 0.9rem; margin-bottom: 0.2rem;"><strong
+                                class="highlight">Solución:</strong> IA Visión Computarizada.</p>
+                        <p style="font-size: 0.9rem;"><strong>Impacto:</strong> -40% carga analistas.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: Retail & Service -->
+        <section id="slide-6">
+            <div class="bento-grid grid-compare">
+                <div class="bento-card card-start reveal">
+                    <span class="tagline">RETAIL</span>
+                    <h3>Caso: Cencosud</h3>
+                    <p style="margin-bottom: 1rem; color: #fff;"><strong>Conciliación Masiva</strong></p>
+
+                    <p style="font-size: 0.9rem;"><strong style="color: var(--text-muted);">Dolor:</strong> "Agujero
+                        Negro Financiero". Cruzar millones de tx de POS, Web y Bancos.</p>
+
+                    <div
+                        style="margin-top: auto; padding-top: 1rem; border-top: 1px dashed rgba(255,255,255,0.2); width: 100%;">
+                        <p style="font-size: 0.9rem; margin-bottom: 0.2rem;"><strong
+                                class="highlight">Solución:</strong> Motor de conciliación (Lógica Difusa).</p>
+                        <p style="font-size: 0.9rem;"><strong>Impacto:</strong> Cierre contable diario.</p>
+                    </div>
+                </div>
+
+                <div class="bento-card card-start reveal delay-1">
+                    <span class="tagline">SEGURIDAD</span>
+                    <h3>Caso: ADT</h3>
+                    <p style="margin-bottom: 1rem; color: #fff;"><strong>Optimización Service</strong></p>
+
+                    <p style="font-size: 0.9rem;"><strong style="color: var(--text-muted);">Dolor:</strong> Costo
+                        altísimo de visitas técnicas innecesarias (falsas alarmas).</p>
+
+                    <div
+                        style="margin-top: auto; padding-top: 1rem; border-top: 1px dashed rgba(255,255,255,0.2); width: 100%;">
+                        <p style="font-size: 0.9rem; margin-bottom: 0.2rem;"><strong
+                                class="highlight">Solución:</strong> Triaje Inteligente Remoto.</p>
+                        <p style="font-size: 0.9rem;"><strong>Impacto:</strong> -25% Truck-Rolls.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: Factory -->
+        <section id="slide-7">
+            <div class="bento-grid grid-factory">
+                <div class="bento-card fact-head card-center reveal">
+                    <h2>Fábrica de Automatización</h2>
+                    <p>Un modelo cíclico y escalable para avanzar a ritmo constante.</p>
+                </div>
+
+                <div class="bento-card card-start reveal delay-1">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🗂️</div>
+                    <strong style="margin-bottom: 0.5rem; display: block;">1. Backlog Estratégico</strong>
+                    <p style="font-size: 0.85rem;">Inventario centralizado de procesos ineficientes, construido junto a
+                        líderes.</p>
+                </div>
+
+                <div class="bento-card card-start reveal delay-2">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎯</div>
+                    <strong style="margin-bottom: 0.5rem; display: block;">2. Matriz Priorización</strong>
+                    <p style="font-size: 0.85rem;">Filtro de viabilidad (Impacto vs Esfuerzo) para identificar "Quick
+                        Wins".</p>
+                </div>
+
+                <div class="bento-card card-accent card-start reveal delay-3">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚙️</div>
+                    <strong style="margin-bottom: 0.5rem; display: block;">3. Q-Cycles</strong>
+                    <p style="font-size: 0.85rem;">Ejecución trimestral recurrente. Escalar de 1 a 50 procesos al año.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 8: Conclusion -->
+        <section id="slide-8">
+            <div class="bento-grid grid-concl">
+                <div class="bento-card card-start reveal">
+                    <h3>Conclusión</h3>
+                    <h2 style="font-size: clamp(1.5rem, 3vw, 2.5rem); line-height: 1.3;">Intervención quirúrgica en la
+                        eficiencia operativa.</h2>
+                    <p style="margin-top: 1.5rem; color: #fff;">
+                        Ya sea gestionando la salud en NOBIS, siniestros en Experta, o seguridad en ADT, la promesa es
+                        la misma:
+                    </p>
+                    <p style="margin-top: 1rem; color: var(--accent-primary); font-weight: 600; font-size: 1.2rem;">
+                        Transformar complejidad manual en eficiencia automatizada.
+                    </p>
+                </div>
+                <div class="bento-card card-center reveal delay-1" style="background: rgba(0,0,0,0.4);">
+                    <a href="#" onclick="alert('Contactando...')" style="
+                        background: var(--accent-primary); color: #fff; padding: 1.5rem 3rem;
+                        border-radius: 50px; text-decoration: none; font-weight: 700;
+                        box-shadow: 0 0 20px rgba(0, 169, 206, 0.4); text-align: center;
+                     ">
+                        INICIAR AHORA
+                    </a>
+                    <p style="margin-top: 1.5rem; font-size: 0.9rem;">Konecta | Ascend by Rocbird</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // --- LOGIC ---
+        const slides = document.querySelectorAll('section');
+        const nav = document.getElementById('navSidebar');
+
+        // Build Nav
+        slides.forEach((s, i) => {
+            const d = document.createElement('div');
+            d.className = 'nav-dot';
+            if (i === 0) d.classList.add('active');
+            d.onclick = () => s.scrollIntoView({ behavior: 'smooth' });
+            nav.appendChild(d);
+        });
+
+        window.slideTo = (i) => slides[i].scrollIntoView({ behavior: 'smooth' });
+
+        // Observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    // Update Nav
+                    const idx = Array.from(slides).indexOf(e.target);
+                    document.querySelectorAll('.nav-dot').forEach((d, i) =>
+                        d.classList.toggle('active', i === idx)
+                    );
+
+                    // Reveal Animations
+                    e.target.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
+
+                    // Counters
+                    e.target.querySelectorAll('.count-up').forEach(c => animateCounter(c));
+                }
+            });
+        }, { threshold: 0.4 });
+
+        slides.forEach(s => observer.observe(s));
+
+        function animateCounter(el) {
+            if (el.dataset.done) return;
+            const target = +el.dataset.target;
+            const pre = el.dataset.prefix || '';
+            const suf = el.dataset.suffix || '';
+            let val = 0;
+            const step = Math.ceil(target / 40);
+            const timer = setInterval(() => {
+                val += step;
+                if (val >= target) { val = target; clearInterval(timer); el.dataset.done = true; }
+                el.innerText = pre + val + suf;
+            }, 30);
+        }
+
+        // Keyboard
+        document.addEventListener('keydown', (e) => {
+            const h = window.innerHeight;
+            const sc = document.getElementById('slidesContainer');
+            const curr = Math.round(sc.scrollTop / h);
+            if (['ArrowDown', 'ArrowRight', ' '].includes(e.key) && curr < slides.length - 1) slides[curr + 1].scrollIntoView({ behavior: 'smooth' });
+            if (['ArrowUp', 'ArrowLeft'].includes(e.key) && curr > 0) slides[curr - 1].scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+
+</html>
